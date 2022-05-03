@@ -1,10 +1,9 @@
 using System.Linq;
-using Godot;
 
 public abstract class Tetromicon {
-    public Coordinate[] Coordinates { get; set; } = new Coordinate[4];
-
-    public abstract Coordinate[] TryRotate(Coordinate pivot);
+    public virtual Coordinate[] Coordinates { get; set; } = new Coordinate[4];
+    public virtual Coordinate Pivot { get; set; }
+    public virtual Coordinate[] RotationCoordinates => new Coordinate[0];
 
     public Coordinate[] PositiveCoordinates
     {
@@ -16,16 +15,14 @@ public abstract class Tetromicon {
                 minY < 0 ? minY * -1 : 0
             );
 
-            var newCoordinates = Coordinates.Select(x => x + offset).ToArray();
-            return newCoordinates;
+            return Coordinates.Select(x => x + offset).ToArray();
         }
     }
 
+    public abstract Coordinate[] TryRotate();
+    public abstract void Rotate();
+
     public Coordinate[] TryMove(Coordinate step) {
         return Coordinates.Select(c => c + step).ToArray();
-        // for (int i = 0; i < Coordinates.Length; i++)
-        // {
-        //     Coordinates[i] = Coordinates[i] + step;
-        // }
     }
 }
