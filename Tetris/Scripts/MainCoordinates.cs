@@ -9,27 +9,40 @@ public class MainCoordinates : Node2D
     private int mapSizeY = 20;
     private int mapOffset = 25;
     private int mapUnit = 50;
-    private int marginX = 0;
-    private int marginY = 0;
+    private int marginX = 110;
+    private int marginY = 280;
     private TetromiconFactory tetromiconFactory;
     private int frame = 0;
     private int speed = 60;
     private bool shouldRotate = false;
     private Cell[,] map;
     private Tetromicon currentTetromicon;
-    private Coordinate yMove = Coordinate.Zero;
-    private Coordinate xMove = Coordinate.Zero;
+    private Coordinate yMoveCoorditane = Coordinate.Zero;
+    private Coordinate xMoveCoordinate = Coordinate.Zero;
 
     private PackedScene block;
-    private BaseBlock[] blocks;
+    private Node2D[] blocks;
 
     #endregion
 
     public override void _Ready()
     {
+        if (OS.IsDebugBuild()) {
+            var debugCellTemplate = GD.Load<PackedScene>("res://Scenes/DebugCell.tscn");
+            for (int x = 0; x < mapSizeX; x++)
+            {
+                for (int y = 0; y < mapSizeY; y++)
+                {
+                    var debugCell = debugCellTemplate.Instance<DebugCell>();
+                    debugCell.SetText($"{x}:{y}");
+                    debugCell.Position = GetMappedCoordinates(x, y);
+                    AddChild(debugCell);
+                }
+            }
+        }
         GD.Randomize();
         tetromiconFactory = GetNode<TetromiconFactory>("/root/TetromiconFactory");
-        block = GD.Load<PackedScene>("res://Scenes/Blocks/BaseBlock.tscn");
+        block = GD.Load<PackedScene>("res://Scenes/BaseBlock.tscn");
 
         InitMap();
         InitBlocks();
@@ -43,18 +56,18 @@ public class MainCoordinates : Node2D
     public override void _Input(InputEvent @event)
     {
         if (Input.IsActionPressed("ui_right"))
-            xMove.x = 1;
+            xMoveCoordinate.x = 1;
 
         if (Input.IsActionPressed("ui_left"))
-            xMove.x = -1;
+            xMoveCoordinate.x = -1;
 
         /* for debug */
         if (Input.IsActionPressed("ui_up"))
-            yMove.y = -1;
+            yMoveCoorditane.y = -1;
         /* for debug */
 
         if (Input.IsActionPressed("ui_down"))
-            yMove.y = 1;
+            yMoveCoorditane.y = 1;
 
         if (Input.IsActionPressed("ui_accept"))
             shouldRotate = true;
@@ -69,6 +82,7 @@ public class MainCoordinates : Node2D
     public override void _Process(float delta)
     {
         frame++;
+        // TODO: fix rotation problem when space and one of up/down/left/right buttons pressed simutaneously
         HandleRotation();
         HandleInputXAxisShift();
         HandleInputYAxisShift();
@@ -89,11 +103,11 @@ public class MainCoordinates : Node2D
 
     private void InitBlocks()
     {
-        blocks = new BaseBlock[] {
-            block.Instance<BaseBlock>(),
-            block.Instance<BaseBlock>(),
-            block.Instance<BaseBlock>(),
-            block.Instance<BaseBlock>()
+        blocks = new Node2D[] {
+            block.Instance<Node2D>(),
+            block.Instance<Node2D>(),
+            block.Instance<Node2D>(),
+            block.Instance<Node2D>()
         };
     }
 
@@ -123,15 +137,18 @@ public class MainCoordinates : Node2D
 
     private void InitNewTetromicon()
     {
-        currentTetromicon = tetromiconFactory.BuildInPosition(new Coordinate(6, 0));
-        currentTetromicon.ConvertToPositiveCoordinates();
+        currentTetromicon = tetromiconFactory.Build();
+        currentTetromicon.MoveToCoordinate(new Coordinate(6, 0));
+        currentTetromicon.MoveToPositiveCoordinates();
+        // currentTetromicon.RandomRotate(?);
+        // currentTetromicon.Rotate(?);
     }
 
     private void HandleRotation()
     {
         if (shouldRotate)
         {
-            var coordinates = currentTetromicon.TryRotate();
+            var coordinates = currentTetromicon.GetNextRotationCoordinates();
             if (ShiftAllowed(coordinates) && ShiftAllowed(currentTetromicon.RotationCoordinates))
             {
                 currentTetromicon.Rotate();
@@ -143,9 +160,9 @@ public class MainCoordinates : Node2D
 
     private void HandleInputXAxisShift()
     {
-        if (xMove != Coordinate.Zero)
+        if (xMoveCoordinate != Coordinate.Zero)
         {
-            var coordinates = currentTetromicon.TryMove(xMove);
+            var coordinates = currentTetromicon.GetCoordinatesIfMovedTo(xMoveCoordinate);
             if (ShiftAllowed(coordinates))
             {
                 currentTetromicon.Coordinates = coordinates;
@@ -168,14 +185,14 @@ public class MainCoordinates : Node2D
 
     private void HandleInputYAxisShift()
     {
-        if (frame % speed == 0)
-        {
-            yMove.y = 1;
-        }
+        // if (frame % speed == 0)
+        // {
+        //     yMove.y = 1;
+        // }
 
-        if (yMove != Coordinate.Zero)
+        if (yMoveCoorditane != Coordinate.Zero)
         {
-            var coordinates = currentTetromicon.TryMove(yMove);
+            var coordinates = currentTetromicon.GetCoordinatesIfMovedTo(yMoveCoorditane);
             if (ShiftAllowed(coordinates))
             {
                 currentTetromicon.Coordinates = coordinates;
@@ -186,7 +203,7 @@ public class MainCoordinates : Node2D
                 {
                     var x = currentTetromicon.Coordinates[i].x;
                     var y = currentTetromicon.Coordinates[i].y;
-                    map[x, y].Block = block.Instance<BaseBlock>();
+                    map[x, y].Block = block.Instance<Node2D>();
                     map[x, y].Block.Position = GetMappedCoordinates(x, y);
                     AddChild(map[x, y].Block);
                 }
@@ -255,8 +272,8 @@ public class MainCoordinates : Node2D
 
     private void SetNextStepDefaults()
     {
-        xMove.x = 0;
-        yMove.y = 0;
+        xMoveCoordinate.x = 0;
+        yMoveCoorditane.y = 0;
     }
 
     private Vector2 GetMappedCoordinates(int x, int y)

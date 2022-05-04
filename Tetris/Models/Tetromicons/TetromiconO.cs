@@ -14,7 +14,7 @@ public class TetromiconO: Tetromicon
         InitCoordinates(pivot);
     }
 
-    public override Coordinate[] TryRotate()
+    public override Coordinate[] GetNextRotationCoordinates()
     {
         return Coordinates.Select(c => c).ToArray();
     }

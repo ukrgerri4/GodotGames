@@ -2,15 +2,23 @@ using Godot;
 
 public class TetromiconT : Tetromicon
 {
+    public override Coordinate[] Coordinates { get; set; } = 
+        new Coordinate[] {
+            new Coordinate(-1, 0),
+            new Coordinate(0, 0),
+            new Coordinate(0, -1),
+            new Coordinate(1, 0)
+        };
+
     public override Coordinate Pivot => Coordinates[1];
-    private Coordinate[] _rotationCoordinates;
+    private Coordinate[] _rotationCoordinates = new Coordinate[0];
     public override Coordinate[] RotationCoordinates => _rotationCoordinates;
     private enum RotationPosition
     {
-        Up,
-        Right,
-        Down,
-        Left
+        Degrees0,
+        Degrees90,
+        Degrees180,
+        Degrees270
     }
 
     private RotationPosition rotationPosition;
@@ -28,10 +36,14 @@ public class TetromiconT : Tetromicon
     private void Initialize(Coordinate pivot)
     {
         rotationPosition = (RotationPosition)(GD.Randi() % 4);
-        Coordinates = GetPivotBasedCoordinates(pivot, rotationPosition);
+        for (int i = 0; i < Coordinates.Length; i++)
+        {
+            Coordinates[i] += pivot;
+        }
+        // Coordinates = GetPivotBasedCoordinates(pivot, rotationPosition);
     }
 
-    public override Coordinate[] TryRotate()
+    public override Coordinate[] GetNextRotationCoordinates()
     {
         var nextPosition = GetNextPosition();
         var newCoordinates = GetPivotBasedCoordinates(Pivot, nextPosition);
@@ -54,69 +66,6 @@ public class TetromiconT : Tetromicon
 
     private Coordinate[] GetPivotBasedCoordinates(Coordinate pivot, RotationPosition position)
     {
-        var coordinates = new Coordinate[4];
-
-        switch (position)
-        {
-            case RotationPosition.Up:
-                coordinates[0] = new Coordinate(pivot.x - 1, pivot.y);
-                coordinates[1] = new Coordinate(pivot.x, pivot.y);
-                coordinates[2] = new Coordinate(pivot.x, pivot.y - 1);
-                coordinates[3] = new Coordinate(pivot.x + 1, pivot.y);
-
-                _rotationCoordinates = new Coordinate[]
-                { 
-                    new Coordinate(pivot.x - 1, pivot.y - 1),
-                    new Coordinate(pivot.x + 1, pivot.y - 1),
-                    new Coordinate(pivot.x, pivot.y + 1),
-                    new Coordinate(pivot.x + 1, pivot.y + 1)
-                };
-                break;
-            case RotationPosition.Down:
-                coordinates[0] = new Coordinate(pivot.x - 1, pivot.y);
-                coordinates[1] = new Coordinate(pivot.x, pivot.y);
-                coordinates[2] = new Coordinate(pivot.x, pivot.y + 1);
-                coordinates[3] = new Coordinate(pivot.x + 1, pivot.y);
-
-                _rotationCoordinates = new Coordinate[]
-                { 
-                    new Coordinate(pivot.x - 1, pivot.y - 1),
-                    new Coordinate(pivot.x, pivot.y - 1),
-                    new Coordinate(pivot.x - 1, pivot.y + 1),
-                    new Coordinate(pivot.x + 1, pivot.y + 1)
-                };
-                break;
-            case RotationPosition.Left:
-                coordinates[0] = new Coordinate(pivot.x - 1, pivot.y);
-                coordinates[1] = new Coordinate(pivot.x, pivot.y);
-                coordinates[2] = new Coordinate(pivot.x, pivot.y - 1);
-                coordinates[3] = new Coordinate(pivot.x, pivot.y + 1);
-
-                _rotationCoordinates = new Coordinate[]
-                { 
-                    new Coordinate(pivot.x - 1, pivot.y - 1),
-                    new Coordinate(pivot.x - 1, pivot.y + 1),
-                    new Coordinate(pivot.x + 1, pivot.y - 1),
-                    new Coordinate(pivot.x + 1, pivot.y)
-                };
-                break;
-
-            case RotationPosition.Right:
-                coordinates[0] = new Coordinate(pivot.x, pivot.y - 1);
-                coordinates[1] = new Coordinate(pivot.x, pivot.y);
-                coordinates[2] = new Coordinate(pivot.x + 1, pivot.y);
-                coordinates[3] = new Coordinate(pivot.x, pivot.y + 1);
-
-                _rotationCoordinates = new Coordinate[]
-                { 
-                    new Coordinate(pivot.x + 1, pivot.y - 1),
-                    new Coordinate(pivot.x + 1, pivot.y + 1),
-                    new Coordinate(pivot.x - 1, pivot.y - 1),
-                    new Coordinate(pivot.x - 1, pivot.y)
-                };
-                break;
-        }
-
-        return coordinates;
+        return TetromiconRotateHelper.Rotate90Clockwise(Coordinates, Pivot);
     }
 }

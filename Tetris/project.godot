@@ -23,8 +23,8 @@ TetromiconFactory="*res://Singletons/TetromiconFactory.cs"
 window/size/width=720
 window/size/height=1280
 window/size/always_on_top=true
-window/size/test_width=360
-window/size/test_height=640
+window/size/test_width=432
+window/size/test_height=768
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
 

@@ -1,3 +1,5 @@
+using Godot;
+
 public class Cell
 {
     private CellType _type = CellType.Empty;
@@ -15,8 +17,8 @@ public class Cell
         }
     }
 
-    public BaseBlock _block = null;
-    public BaseBlock Block
+    public Node2D _block = null;
+    public Node2D Block
     {
         get => _block;
         set

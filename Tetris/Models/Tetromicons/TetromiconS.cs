@@ -2,8 +2,15 @@ using Godot;
 
 public class TetromiconS : Tetromicon
 {
-    public override Coordinate Pivot => Coordinates[2];
-    private Coordinate[] _rotationCoordinates;
+    public override Coordinate[] Coordinates { get; set; } =
+        new Coordinate[] {
+            new Coordinate(-1,0),
+            new Coordinate(0,0),
+            new Coordinate(0, -1),
+            new Coordinate(1, -1)
+        };
+    public override Coordinate Pivot => Coordinates[1];
+    private Coordinate[] _rotationCoordinates = new Coordinate[0];
     public override Coordinate[] RotationCoordinates => _rotationCoordinates;
     private enum RotationPosition
     {
@@ -25,11 +32,11 @@ public class TetromiconS : Tetromicon
 
     private void Initialize(Coordinate pivot)
     {
-        rotationPosition = (RotationPosition)(GD.Randi() % 2);
-        Coordinates = GetPivotBasedCoordinates(pivot, rotationPosition);
+        // rotationPosition = (RotationPosition)(GD.Randi() % 2);
+        // Coordinates = GetPivotBasedCoordinates(pivot, rotationPosition);
     }
 
-    public override Coordinate[] TryRotate()
+    public override Coordinate[] GetNextRotationCoordinates()
     {
         var nextPosition = GetNextPosition();
         var newCoordinates = GetPivotBasedCoordinates(Pivot, nextPosition);
@@ -52,33 +59,6 @@ public class TetromiconS : Tetromicon
 
     private Coordinate[] GetPivotBasedCoordinates(Coordinate pivot, RotationPosition position)
     {
-        var coordinates = new Coordinate[4];
-        if (position == RotationPosition.Horisontal)
-        {
-            coordinates[0] = new Coordinate(pivot.x - 1, pivot.y + 1);
-            coordinates[1] = new Coordinate(pivot.x, pivot.y + 1);
-            coordinates[2] = new Coordinate(pivot.x, pivot.y);
-            coordinates[3] = new Coordinate(pivot.x + 1, pivot.y);
-
-            _rotationCoordinates = new Coordinate[]
-            {
-                new Coordinate(pivot.x + 1, pivot.y + 1)
-            };
-        }
-        else if (position == RotationPosition.Vertical)
-        {
-            coordinates[0] = new Coordinate(pivot.x - 1, pivot.y - 1);
-            coordinates[1] = new Coordinate(pivot.x - 1, pivot.y);
-            coordinates[2] = new Coordinate(pivot.x, pivot.y);
-            coordinates[3] = new Coordinate(pivot.x, pivot.y + 1);
-
-            _rotationCoordinates = new Coordinate[]
-            {
-                new Coordinate(pivot.x, pivot.y - 1),
-                new Coordinate(pivot.x + 1, pivot.y - 1)
-            };
-        }
-
-        return coordinates;
+        return TetromiconRotateHelper.Rotate90CounterClockwise(Coordinates, Pivot);
     }
 }

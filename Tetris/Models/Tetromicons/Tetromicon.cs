@@ -7,13 +7,21 @@ public abstract class Tetromicon
     public virtual Coordinate[] RotationCoordinates => new Coordinate[0];
 
     public abstract void Rotate();
-    public abstract Coordinate[] TryRotate();
-    public virtual Coordinate[] TryMove(Coordinate step)
+    public abstract Coordinate[] GetNextRotationCoordinates();
+    public virtual Coordinate[] GetCoordinatesIfMovedTo(Coordinate to)
     {
-        return Coordinates.Select(c => c + step).ToArray();
+        return Coordinates.Select(c => c + to).ToArray();
     }
 
-    public virtual void ConvertToPositiveCoordinates()
+    public virtual void MoveToCoordinate(Coordinate point)
+    {
+        for (int i = 0; i < Coordinates.Length; i++)
+        {
+            Coordinates[i] += point;
+        }
+    }
+
+    public virtual void MoveToPositiveCoordinates()
     {
         var minX = Coordinates.Min(coordinate => coordinate.x);
         var minY = Coordinates.Min(coordinate => coordinate.y);

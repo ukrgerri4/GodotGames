@@ -29,7 +29,7 @@ public class TetromiconZ : Tetromicon
         Coordinates = GetPivotBasedCoordinates(pivot, rotationPosition);
     }
 
-    public override Coordinate[] TryRotate()
+    public override Coordinate[] GetNextRotationCoordinates()
     {
         var nextPosition = GetNextPosition();
         var newCoordinates = GetPivotBasedCoordinates(Pivot, nextPosition);

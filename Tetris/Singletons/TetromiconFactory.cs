@@ -15,14 +15,16 @@ public class TetromiconFactory: Node {
     }
 
     public Tetromicon Build() {
-        return new TetromiconO();
+        // var randomIndex = GD.Randi() % tetromiconTypes.Length;
+        // var randomType = tetromiconTypes[randomIndex];
+        // return (Tetromicon)Activator.CreateInstance(randomType, pivot);
+        return new TetromiconS();
     }
 
-    public Tetromicon BuildInPosition(Coordinate point) {
-        var randomIndex = GD.Randi() % tetromiconTypes.Length;
-        var randomType = tetromiconTypes[randomIndex];
-        return (Tetromicon)Activator.CreateInstance(randomType, point);
+    public Tetromicon BuildInPosition(Coordinate pivot) {
+        // var randomIndex = GD.Randi() % tetromiconTypes.Length;
+        // var randomType = tetromiconTypes[randomIndex];
+        // return (Tetromicon)Activator.CreateInstance(randomType, pivot);
+        return new TetromiconS(pivot);
     }
-
-
 }
