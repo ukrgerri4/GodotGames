@@ -1,9 +1,9 @@
-public class TetromiconZ : Tetromicon
+public class TetromiconL : Tetromicon
 {
     public override Coordinate[] Coordinates { get; set; } =
         new Coordinate[] {
-            new Coordinate(-1,0),
-            new Coordinate(0,0),
+            new Coordinate(0, -1),
+            new Coordinate(0, 0),
             new Coordinate(0, 1),
             new Coordinate(1, 1)
         };
@@ -11,6 +11,6 @@ public class TetromiconZ : Tetromicon
     private Coordinate[] _rotationCoordinates = new Coordinate[0];
     public override Coordinate[] RotationCoordinates => _rotationCoordinates;
 
-    public TetromiconZ() { }
-    public TetromiconZ(Coordinate pivot) : base(pivot) { }
+    public TetromiconL() { }
+    public TetromiconL(Coordinate pivot) : base(pivot) { }
 }

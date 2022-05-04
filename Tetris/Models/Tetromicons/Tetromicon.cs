@@ -4,13 +4,28 @@ public abstract class Tetromicon
 {
     public virtual Coordinate[] Coordinates { get; set; } = new Coordinate[4];
     public virtual Coordinate Pivot { get; set; }
+
+    // TODO: implement this coordinates
     public virtual Coordinate[] RotationCoordinates => new Coordinate[0];
 
-    public abstract void Rotate();
-    public abstract Coordinate[] GetNextRotationCoordinates();
+    public Tetromicon() {}
+    public Tetromicon(Coordinate pivot)
+    {
+        MoveToCoordinate(pivot);
+    }
+
+    public virtual Coordinate[] GetNextRotationCoordinates()
+    {
+        return TetromiconRotateHelper.Rotate90CounterClockwise(Coordinates, Pivot);
+    }
     public virtual Coordinate[] GetCoordinatesIfMovedTo(Coordinate to)
     {
         return Coordinates.Select(c => c + to).ToArray();
+    }
+
+    public virtual void Rotate()
+    {
+        Coordinates = GetNextRotationCoordinates();
     }
 
     public virtual void MoveToCoordinate(Coordinate point)

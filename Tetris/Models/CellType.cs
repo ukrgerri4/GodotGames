@@ -1,5 +1,4 @@
 public enum CellType {
     Empty,
-    Filled,
-    Moving
+    Filled
 }
