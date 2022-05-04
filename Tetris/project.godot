@@ -16,8 +16,6 @@ config/icon="res://icon.png"
 
 [autoload]
 
-RotateBlockHelper="*res://Singletons/RotateBlockHelper.cs"
-RandomHelper="*res://Singletons/RandomHelper.cs"
 TetromiconFactory="*res://Singletons/TetromiconFactory.cs"
 
 [display]

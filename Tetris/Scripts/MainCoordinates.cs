@@ -9,18 +9,19 @@ public class MainCoordinates : Node2D
     private int mapSizeY = 20;
     private int mapOffset = 25;
     private int mapUnit = 50;
+    private int marginX = 0;
+    private int marginY = 0;
     private TetromiconFactory tetromiconFactory;
     private int frame = 0;
     private int speed = 60;
     private bool shouldRotate = false;
-    private CellType[,] map;
+    private Cell[,] map;
     private Tetromicon currentTetromicon;
     private Coordinate yMove = Coordinate.Zero;
     private Coordinate xMove = Coordinate.Zero;
 
     private PackedScene block;
     private BaseBlock[] blocks;
-    private bool debugStop = false;
 
     #endregion
 
@@ -29,8 +30,8 @@ public class MainCoordinates : Node2D
         GD.Randomize();
         tetromiconFactory = GetNode<TetromiconFactory>("/root/TetromiconFactory");
         block = GD.Load<PackedScene>("res://Scenes/Blocks/BaseBlock.tscn");
-        map = new CellType[mapSizeX, mapSizeY];
 
+        InitMap();
         InitBlocks();
         ChangeBlocksVisibility(false);
         AddBlocksToNode();
@@ -62,8 +63,8 @@ public class MainCoordinates : Node2D
         // if (@event is InputEventKey eventKey && eventKey.Pressed && eventKey.Scancode == (int)KeyList.Space)
         //     shouldRotate = true;
 
-        if (@event is InputEventKey eventKey && eventKey.Pressed && eventKey.Scancode == (int)KeyList.Control)
-            debugStop = true;
+        // if (@event is InputEventKey eventKey && eventKey.Pressed && eventKey.Scancode == (int)KeyList.Control)
+        //     debugStop = true;
     }
     public override void _Process(float delta)
     {
@@ -72,6 +73,18 @@ public class MainCoordinates : Node2D
         HandleInputXAxisShift();
         HandleInputYAxisShift();
         SetNextStepDefaults();
+    }
+
+    private void InitMap()
+    {
+        map = new Cell[mapSizeX, mapSizeY];
+        for (int x = 0; x < map.GetLength(0); x++)
+        {
+            for (int y = 0; y < map.GetLength(1); y++)
+            {
+                map[x, y] = new Cell();
+            }
+        }
     }
 
     private void InitBlocks()
@@ -104,16 +117,14 @@ public class MainCoordinates : Node2D
     {
         for (int i = 0; i < currentTetromicon.Coordinates.Length; i++)
         {
-            blocks[i].Position = new Vector2(
-                currentTetromicon.Coordinates[i].x * mapUnit + mapOffset,
-                currentTetromicon.Coordinates[i].y * mapUnit + mapOffset
-            );
+            blocks[i].Position = GetMappedCoordinates(currentTetromicon.Coordinates[i].x, currentTetromicon.Coordinates[i].y);
         }
     }
 
     private void InitNewTetromicon()
     {
-        currentTetromicon = tetromiconFactory.BuildInPosition(new Coordinate(3, 3));
+        currentTetromicon = tetromiconFactory.BuildInPosition(new Coordinate(6, 0));
+        currentTetromicon.ConvertToPositiveCoordinates();
     }
 
     private void HandleRotation()
@@ -147,7 +158,7 @@ public class MainCoordinates : Node2D
     {
         for (int i = 0; i < c.Length; i++)
         {
-            if (c[i].x >= mapSizeX || c[i].x < 0 || c[i].y >= mapSizeY || c[i].y < 0 || map[c[i].x, c[i].y] != CellType.Empty)
+            if (c[i].x >= mapSizeX || c[i].x < 0 || c[i].y >= mapSizeY || c[i].y < 0 || map[c[i].x, c[i].y].Type != CellType.Empty)
             {
                 return false;
             }
@@ -157,10 +168,10 @@ public class MainCoordinates : Node2D
 
     private void HandleInputYAxisShift()
     {
-        // if (frame % speed == 0)
-        // {
-        //     yMove.y = 1;
-        // }
+        if (frame % speed == 0)
+        {
+            yMove.y = 1;
+        }
 
         if (yMove != Coordinate.Zero)
         {
@@ -175,13 +186,9 @@ public class MainCoordinates : Node2D
                 {
                     var x = currentTetromicon.Coordinates[i].x;
                     var y = currentTetromicon.Coordinates[i].y;
-                    var newBlock = block.Instance<BaseBlock>();
-                    newBlock.Position = new Vector2(
-                        x * mapUnit + mapOffset,
-                        y * mapUnit + mapOffset
-                    );
-                    AddChild(newBlock);
-                    map[x, y] = CellType.Filled;
+                    map[x, y].Block = block.Instance<BaseBlock>();
+                    map[x, y].Block.Position = GetMappedCoordinates(x, y);
+                    AddChild(map[x, y].Block);
                 }
                 CheckLines();
                 InitNewTetromicon();
@@ -194,42 +201,56 @@ public class MainCoordinates : Node2D
     private void CheckLines()
     {
         var lineIndexesToDelete = new List<int>();
-        for (int i = map.GetLength(0) - 1; i <= 0; i--)
+
+        var lx = map.GetLength(0); // 10
+        var ly = map.GetLength(1); // 20
+
+        for (int lineIndex = map.GetLength(1) - 1; lineIndex >= 0; lineIndex--)
         {
             int lineCount = 0;
-            for (int j = 0; j < map.GetLength(1); j++)
+            for (int columnIndex = 0; columnIndex < map.GetLength(0); columnIndex++)
             {
-                if (map[i, j] == CellType.Filled)
+                if (map[columnIndex, lineIndex].Type == CellType.Filled)
                 {
                     lineCount++;
                 }
             }
 
-            if (lineCount == 10) {
-                lineIndexesToDelete.Add(i);
+            if (lineCount == 10)
+            {
+                lineIndexesToDelete.Add(lineIndex);
             }
         }
 
-        for (int i = map.GetLength(0) - 1; i <= 0; i--)
+        if (lineIndexesToDelete.Count > 0)
         {
-            if (lineIndexesToDelete.Contains(i)){
-                for (int j = 0; j < map.GetLength(1); j++)
+            for (int i = 0; i < lineIndexesToDelete.Count; i++)
+            {
+                var lineIndex = lineIndexesToDelete[i];
+                for (int columnIndex = 0; columnIndex < map.GetLength(0); columnIndex++)
                 {
-                    map[i, j] = CellType.Empty;
+                    map[columnIndex, lineIndex].FreeCell();
+                }
+            }
+
+            for (int lineIndex = map.GetLength(1) - 1; lineIndex >= 0; lineIndex--)
+            {
+                var yOffset = lineIndexesToDelete.Count(x => x > lineIndex);
+                if (yOffset > 0)
+                {
+                    for (int columnIndex = 0; columnIndex < map.GetLength(0); columnIndex++)
+                    {
+                        if (map[columnIndex, lineIndex].Type == CellType.Filled)
+                        {
+                            var newLineIndex = lineIndex + yOffset;
+                            map[columnIndex, newLineIndex] = map[columnIndex, lineIndex];
+                            map[columnIndex, newLineIndex].Block.Position = GetMappedCoordinates(columnIndex, newLineIndex);
+                            map[columnIndex, lineIndex] = new Cell();
+                        }
+                    }
                 }
             }
         }
-
-        
-        // for (int i = lineIndexesToDelete.Max(); i <= 0; i--)
-        // {
-        //     for (int j = 0; j < map.GetLength(1); j++)
-        //     {
-        //         if (map[i, j] == CellType.Filled) {
-
-        //         }
-        //     }
-        // }
     }
 
     private void SetNextStepDefaults()
@@ -238,11 +259,11 @@ public class MainCoordinates : Node2D
         yMove.y = 0;
     }
 
-    // private void ClearMap()
-    // {
-    //     for (int i = 0; i < map.GetLength(0); i++)
-    //         for (int j = 0; j < map.GetLength(1); j++)
-    //             if (map[i, j] == CellType.Moving)
-    //                 map[i, j] = 0;
-    // }
+    private Vector2 GetMappedCoordinates(int x, int y)
+    {
+        return new Vector2(
+            x * mapUnit + mapOffset + marginX,
+            y * mapUnit + mapOffset + marginY
+        );
+    }
 }

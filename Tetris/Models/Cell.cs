@@ -33,4 +33,8 @@ public class Cell
             _block = value;
         }
     }
+
+    public void FreeCell() {
+        Type = CellType.Empty;
+    }
 }
