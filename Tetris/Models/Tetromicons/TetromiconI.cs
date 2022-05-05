@@ -14,17 +14,30 @@ public class TetromiconI : Tetromicon
         {
             return new Coordinate[]
             {
-                new Coordinate(Pivot.x + 1, Pivot.y - 1),
-                new Coordinate(Pivot.x - 1, Pivot.y + 1),
-                new Coordinate(Pivot.x - 2, Pivot.y + 1),
-                new Coordinate(Pivot.x - 1, Pivot.y + 2),
-                new Coordinate(Pivot.x - 2, Pivot.y + 2)
+                new Coordinate(Pivot.x + 1, Pivot.y + 1),
+                new Coordinate(Pivot.x - 1, Pivot.y - 1),
+                new Coordinate(Pivot.x - 2, Pivot.y - 1),
+                new Coordinate(Pivot.x - 1, Pivot.y - 2),
+                new Coordinate(Pivot.x - 2, Pivot.y - 2)
             };
         }
     }
     
+    private bool isHorisontal = true;
+
     public TetromiconI() {}
     public TetromiconI(Coordinate pivot) : base(pivot) { }
 
-    // TODO: implement rotation
+    public override Coordinate[] GetNextRotationCoordinates()
+    {
+        return isHorisontal 
+            ? TetromiconRotateHelper.Rotate90CounterClockwise(Coordinates, Pivot)
+            : TetromiconRotateHelper.Rotate90Clockwise(Coordinates, Pivot);
+    }
+
+    public override void Rotate()
+    {
+        Coordinates = GetNextRotationCoordinates();
+        isHorisontal = !isHorisontal;
+    }
 }

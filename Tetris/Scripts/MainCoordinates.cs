@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -8,8 +7,9 @@ using Godot;
     2. Random rotation on start
     3. First page
     4. Save stats
-    5. Decrease speed after 4 lines collect by 1 time
+    5. Decrease speed after 4 lines collect by 1 time (4 lines - 5 speed, 3 lines - 2 speed)
     6. Optimization
+    7. End game
 */
 public class MainCoordinates : Node2D
 {
@@ -26,36 +26,40 @@ public class MainCoordinates : Node2D
     public int frameTickRate = 60;
     public int collectedLines = 0;
     private bool shouldRotate = false;
+    private bool gameEnded = false;
     private Cell[,] map;
     private Tetromicon currentTetromicon;
+    public Tetromicon nextTetromicon;
+
     private Coordinate yMoveCoorditane = Coordinate.Zero;
     private Coordinate xMoveCoordinate = Coordinate.Zero;
 
     private PackedScene block;
     private Node2D[] blocks;
 
-    private ScorePanel scorePanel;
-    public delegate void LinesDestroyed();
+    public delegate void LinesDestroyed(int linesDestroyed);
     public event LinesDestroyed LinesDestroyedEvent;
+
+    public delegate void NextTetromiconCreated();
+    public event NextTetromiconCreated NextTetromiconCreatedEvent;
+
+    public delegate void GameStarted();
+    public event GameStarted GameStartedEvent;
+    public delegate void GameEnded();
+    public event GameEnded GameEndedEvent;
     #endregion
 
     public override void _Ready()
     {
         GD.Randomize();
-        scorePanel = GetNode<ScorePanel>(nameof(ScorePanel));
-        LinesDestroyedEvent += scorePanel.LinesDestroyed;
-
         tetromiconFactory = GetNode<TetromiconFactory>("/root/TetromiconFactory");
         block = GD.Load<PackedScene>("res://Scenes/BaseBlock.tscn");
 
-        Reload();
+        // InitDebugMode();
         InitMap();
         InitBlocks();
-        ChangeBlocksVisibility(false);
         AddBlocksToNode();
-        InitNewTetromicon();
-        UpdateBlocksPositions();
-        ChangeBlocksVisibility(true);
+        Reload();
     }
 
     public override void _Input(InputEvent @event)
@@ -87,6 +91,11 @@ public class MainCoordinates : Node2D
     }
     public override void _Process(float delta)
     {
+        if (gameEnded) {
+            HandleEndGame();
+            return;
+        }
+
         frame++;
         HandleRotation();
         HandleInputXAxisShift();
@@ -116,6 +125,17 @@ public class MainCoordinates : Node2D
     {
         frameTickRate = initSpeed;
         collectedLines = 0;
+        frame = 0;
+        ChangeBlocksVisibility(false);
+        RefreshMap();
+        InitNextTetromicon();
+        InitNewTetromicon();
+        UpdateBlocksPositions();
+        ChangeBlocksVisibility(true);
+        LinesDestroyedEvent?.Invoke(0);
+        NextTetromiconCreatedEvent?.Invoke();
+        gameEnded = false;
+        GameStartedEvent?.Invoke();
     }
 
     private void InitMap()
@@ -126,6 +146,21 @@ public class MainCoordinates : Node2D
             for (int y = 0; y < map.GetLength(1); y++)
             {
                 map[x, y] = new Cell();
+                map[x, y].Block = block.Instance<Node2D>();
+                map[x, y].Block.Position = GetMappedCoordinates(x, y);
+                map[x, y].Disable();
+                AddChild(map[x, y].Block);
+            }
+        }
+    }
+
+    private void RefreshMap()
+    {
+        for (int x = 0; x < map.GetLength(0); x++)
+        {
+            for (int y = 0; y < map.GetLength(1); y++)
+            {
+                map[x, y].Disable();
             }
         }
     }
@@ -164,19 +199,44 @@ public class MainCoordinates : Node2D
         }
     }
 
+    private void InitNextTetromicon()
+    {
+        nextTetromicon = tetromiconFactory.Build();
+        // TODO: nextTetromicon.RandomRotate(?);
+    }
+
     private void InitNewTetromicon()
     {
-        currentTetromicon = tetromiconFactory.Build();
+        currentTetromicon = nextTetromicon;
         currentTetromicon.MoveToCoordinate(new Coordinate(6, 0));
         currentTetromicon.MoveToPositiveCoordinates();
-        // currentTetromicon.RandomRotate(?);
-        // currentTetromicon.Rotate(?);
+        InitNextTetromicon();
+        NextTetromiconCreatedEvent?.Invoke();
+    }
+
+    private void CheckIfGameEnded()
+    {
+        for (int i = 0; i < currentTetromicon.Coordinates.Length; i++)
+        {
+            if (map[currentTetromicon.Coordinates[i].x, currentTetromicon.Coordinates[i].y].Type == CellType.Filled) {
+                gameEnded = true;
+                GameEndedEvent?.Invoke();
+                return;
+            }
+        }
+    }
+
+    private void HandleEndGame()
+    {
+        if (Input.IsActionJustPressed("ui_accept")) {
+            Reload();
+        }
     }
 
     private void HandleRotation()
     {
         if (!shouldRotate) { return; }
-        
+
         var coordinates = currentTetromicon.GetNextRotationCoordinates();
         if (ShiftAllowed(coordinates) && ShiftAllowed(currentTetromicon.RotationCoordinates))
         {
@@ -217,8 +277,8 @@ public class MainCoordinates : Node2D
             yMoveCoorditane.y = 1;
         }
 
-        if (yMoveCoorditane != Coordinate.Zero) { return; }
-        
+        if (yMoveCoorditane == Coordinate.Zero) { return; }
+
         var coordinates = currentTetromicon.GetCoordinatesIfMovedTo(yMoveCoorditane);
         if (ShiftAllowed(coordinates))
         {
@@ -230,13 +290,11 @@ public class MainCoordinates : Node2D
             {
                 var x = currentTetromicon.Coordinates[i].x;
                 var y = currentTetromicon.Coordinates[i].y;
-                map[x, y].Block = block.Instance<Node2D>();
-                map[x, y].Block.Position = GetMappedCoordinates(x, y);
-                AddChild(map[x, y].Block);
+                map[x, y].Enable();
             }
             CheckLines();
             InitNewTetromicon();
-
+            CheckIfGameEnded();
         }
         UpdateBlocksPositions();
     }
@@ -256,7 +314,7 @@ public class MainCoordinates : Node2D
                 }
             }
 
-            if (lineCount == 10)
+            if (lineCount == map.GetLength(0))
             {
                 lineIndexesToDelete.Add(lineIndex);
             }
@@ -269,7 +327,7 @@ public class MainCoordinates : Node2D
                 var lineIndex = lineIndexesToDelete[i];
                 for (int columnIndex = 0; columnIndex < map.GetLength(0); columnIndex++)
                 {
-                    map[columnIndex, lineIndex].FreeCell();
+                    map[columnIndex, lineIndex].Disable();
                 }
             }
 
@@ -283,17 +341,16 @@ public class MainCoordinates : Node2D
                         if (map[columnIndex, lineIndex].Type == CellType.Filled)
                         {
                             var newLineIndex = lineIndex + yOffset;
-                            map[columnIndex, newLineIndex] = map[columnIndex, lineIndex];
-                            map[columnIndex, newLineIndex].Block.Position = GetMappedCoordinates(columnIndex, newLineIndex);
-                            map[columnIndex, lineIndex] = new Cell();
+                            map[columnIndex, lineIndex].Disable();
+                            map[columnIndex, newLineIndex].Enable();
                         }
                     }
                 }
             }
 
-            LinesDestroyedEvent?.Invoke();
             collectedLines += lineIndexesToDelete.Count;
             frameTickRate -= lineIndexesToDelete.Count;
+            LinesDestroyedEvent?.Invoke(lineIndexesToDelete.Count);
         }
     }
 

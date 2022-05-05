@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Fonts/Press_Start_2P/PressStart2P-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scripts/NextTetromiconPanel.cs" type="Script" id=2]
 
 [sub_resource type="Theme" id=1]
 
@@ -14,6 +15,7 @@ show_behind_parent = true
 margin_left = 450.0
 margin_right = 720.0
 margin_bottom = 250.0
+script = ExtResource( 2 )
 
 [node name="NameLabel" type="Label" parent="."]
 anchor_left = 0.5
@@ -29,8 +31,25 @@ text = "Next figure:"
 align = 1
 valign = 1
 
-[node name="Label2" type="Label" parent="."]
-margin_left = 75.0
-margin_top = 100.0
-margin_right = 200.0
-margin_bottom = 225.0
+[node name="Border" type="ColorRect" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -65.0
+margin_top = -40.0
+margin_right = 65.0
+margin_bottom = 90.0
+color = Color( 1, 0, 0, 0.360784 )
+
+[node name="Board" type="ColorRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -63.0
+margin_top = -38.0
+margin_right = 63.0
+margin_bottom = 88.0
+color = Color( 0, 0, 0, 1 )

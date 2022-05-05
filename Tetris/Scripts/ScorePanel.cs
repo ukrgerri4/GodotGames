@@ -8,8 +8,8 @@ public class ScorePanel : Panel
     private Label LineCountValueLabel;
     private Label MultiplyValueLabel;
     private Label SpeedValueLabel;
+    
     private int lineCost = 10;
-
     private int score = 0;
     private int multiply = 1;
     private int maxSpeed = 60;
@@ -18,6 +18,8 @@ public class ScorePanel : Panel
     public override void _Ready()
     {
         parent = GetParent<MainCoordinates>();
+        parent.LinesDestroyedEvent += LinesDestroyed;
+
         ScoreValueLabel = GetNode<Label>(nameof(ScoreValueLabel));
         LineCountValueLabel = GetNode<Label>(nameof(LineCountValueLabel));
         MultiplyValueLabel = GetNode<Label>(nameof(MultiplyValueLabel));
@@ -26,8 +28,8 @@ public class ScorePanel : Panel
         UpdatePanelValues();
     }
 
-    public void LinesDestroyed() {
-        multiply += parent.collectedLines / 2;
+    public void LinesDestroyed(int linesDestroyed) {
+        multiply += linesDestroyed / 2;
         score = parent.collectedLines * lineCost * multiply;
         speed = parent.frameTickRate % maxSpeed;
         
