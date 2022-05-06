@@ -3,7 +3,7 @@ using System;
 
 public class ScorePanel : Panel
 {
-    private MainCoordinates parent;
+    private Main parent;
     private Label ScoreValueLabel;
     private Label LineCountValueLabel;
     private Label MultiplyValueLabel;
@@ -17,22 +17,28 @@ public class ScorePanel : Panel
 
     public override void _Ready()
     {
-        parent = GetParent<MainCoordinates>();
-        parent.LinesDestroyedEvent += LinesDestroyed;
-
         ScoreValueLabel = GetNode<Label>(nameof(ScoreValueLabel));
         LineCountValueLabel = GetNode<Label>(nameof(LineCountValueLabel));
         MultiplyValueLabel = GetNode<Label>(nameof(MultiplyValueLabel));
         SpeedValueLabel = GetNode<Label>(nameof(SpeedValueLabel));
 
+        parent = GetParent<Main>();
+        parent.GameStartedEvent += Refresh;
+        parent.LinesDestroyedEvent += LinesDestroyed;
+    }
+
+    private void Refresh() {
+        score = 0;
+        multiply = 1;
+        speed = 0;
         UpdatePanelValues();
     }
 
     public void LinesDestroyed(int linesDestroyed) {
+        // TODO: make right score count
         multiply += linesDestroyed / 2;
         score = parent.collectedLines * lineCost * multiply;
-        speed = parent.frameTickRate % maxSpeed;
-        
+        speed = (maxSpeed - parent.frameTickRate) % maxSpeed;
         UpdatePanelValues();
     }
 

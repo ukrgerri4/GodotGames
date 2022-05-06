@@ -2,11 +2,11 @@ using Godot;
 
 public class EndGamePanel : Panel
 {
-    private MainCoordinates parent;
+    private Main parent;
     public override void _Ready()
     {
         this.Visible = false;
-        parent = GetParent<MainCoordinates>();
+        parent = GetParent<Main>();
         parent.GameStartedEvent += () => this.Visible = false;
         parent.GameEndedEvent += () => this.Visible = true;
     }

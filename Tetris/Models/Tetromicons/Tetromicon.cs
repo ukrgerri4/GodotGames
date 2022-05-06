@@ -1,4 +1,5 @@
 using System.Linq;
+using Godot;
 
 public abstract class Tetromicon
 {
@@ -8,7 +9,7 @@ public abstract class Tetromicon
     // TODO: implement this coordinates
     public virtual Coordinate[] RotationCoordinates => new Coordinate[0];
 
-    public Tetromicon() {}
+    public Tetromicon() { }
     public Tetromicon(Coordinate pivot)
     {
         MoveToCoordinate(pivot);
@@ -26,6 +27,22 @@ public abstract class Tetromicon
     public virtual void Rotate()
     {
         Coordinates = GetNextRotationCoordinates();
+    }
+
+    public virtual void RandomRotate()
+    {
+        var rotations = GD.Randi() % 3 + 1;
+        if (rotations == 0)
+        { 
+            return;
+        }
+
+        var randomRotateCoordinates = Coordinates;
+        for (int i = 0; i < rotations; i++)
+        {
+            randomRotateCoordinates = TetromiconRotateHelper.Rotate90CounterClockwise(randomRotateCoordinates, new Coordinate(0,0));
+        }
+        Coordinates = randomRotateCoordinates;
     }
 
     public virtual void MoveToCoordinate(Coordinate point)

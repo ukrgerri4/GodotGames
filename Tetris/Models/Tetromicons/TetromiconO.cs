@@ -21,4 +21,5 @@ public class TetromiconO : Tetromicon
     }
 
     public override void Rotate() { }
+    public override void RandomRotate() { }
 }

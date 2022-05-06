@@ -1,3 +1,5 @@
+using Godot;
+
 public class TetromiconI : Tetromicon
 {
     public override Coordinate[] Coordinates { get; set; } =
@@ -22,15 +24,15 @@ public class TetromiconI : Tetromicon
             };
         }
     }
-    
+
     private bool isHorisontal = true;
 
-    public TetromiconI() {}
+    public TetromiconI() { }
     public TetromiconI(Coordinate pivot) : base(pivot) { }
 
     public override Coordinate[] GetNextRotationCoordinates()
     {
-        return isHorisontal 
+        return isHorisontal
             ? TetromiconRotateHelper.Rotate90CounterClockwise(Coordinates, Pivot)
             : TetromiconRotateHelper.Rotate90Clockwise(Coordinates, Pivot);
     }
@@ -39,5 +41,16 @@ public class TetromiconI : Tetromicon
     {
         Coordinates = GetNextRotationCoordinates();
         isHorisontal = !isHorisontal;
+    }
+
+    public override void RandomRotate()
+    {
+        var rotations = GD.Randi() % 2;
+        if (rotations == 0)
+        {
+            return;
+        }
+
+        Rotate();
     }
 }
