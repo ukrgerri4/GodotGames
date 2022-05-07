@@ -58,8 +58,8 @@ public class Main : Node2D
         GD.Randomize();
         tetromiconFactory = GetNode<TetromiconFactory>("/root/TetromiconFactory");
         block = GD.Load<PackedScene>("res://Scenes/BaseBlock.tscn");
-        mapContainer = GetNode<Node2D>("MapContainer");
-        rotationSound = GetNode<AudioStreamPlayer>("RotationSound");
+        mapContainer = GetNode<Node2D>("GameContainer/MapContainer");
+        rotationSound = GetNode<AudioStreamPlayer>("GameContainer/RotationSound");
 
         InitMap();
         InitBlocks();
@@ -84,8 +84,13 @@ public class Main : Node2D
         if (Input.IsActionPressed("ui_down"))
             yMoveCoorditane.y = 1;
 
-        if (Input.IsActionJustPressed("ui_accept") || Input.IsActionJustPressed("ui_up"))
+        if (Input.IsActionJustPressed("ui_accept")
+            || Input.IsActionJustPressed("ui_up")
+            || (@event is InputEventMouse mouseEvent && mouseEvent.IsPressed())
+        )
+        {
             shouldRotate = true;
+        }
     }
     public override void _Process(float delta)
     {
@@ -237,12 +242,24 @@ public class Main : Node2D
     {
         if (!shouldRotate) { return; }
 
-        var coordinates = currentTetromicon.GetNextRotationCoordinates();
+        var coordinates = currentTetromicon.GetNext90RotationCoordinates();
         if (ShiftAllowed(coordinates) && ShiftAllowed(currentTetromicon.RotationCoordinates))
         {
             rotationSound.Play();
-            currentTetromicon.Rotate();
+            currentTetromicon.Rotate(coordinates);
             UpdateBlocksPositions();
+            shouldRotate = false;
+            return;
+        }
+
+        coordinates = currentTetromicon.GetNext270RotationCoordinates();
+        if (ShiftAllowed(coordinates) && ShiftAllowed(currentTetromicon.RotationCoordinates))
+        {
+            rotationSound.Play();
+            currentTetromicon.Rotate(coordinates);
+            UpdateBlocksPositions();
+            shouldRotate = false;
+            return;
         }
         shouldRotate = false;
     }
@@ -362,17 +379,13 @@ public class Main : Node2D
     private void HandleSpeedDecrease(int collectedLinesPerTick)
     {
         var ticks = frameTickRate;
-        if (collectedLinesPerTick == 2)
+        if (collectedLinesPerTick == 3)
         {
             ticks += 1;
         }
-        else if (collectedLinesPerTick == 3)
-        {
-            ticks += 2;
-        }
         else if (collectedLinesPerTick >= 4)
         {
-            ticks += 5;
+            ticks += 3;
         }
         frameTickRate = ticks < initFrameTickRate ? ticks : initFrameTickRate;
     }

@@ -6,7 +6,7 @@ public class EndGamePanel : Panel
     public override void _Ready()
     {
         this.Visible = false;
-        parent = GetParent<Main>();
+        parent = GetNode<Main>("/root/Main");
         parent.GameStartedEvent += () => this.Visible = false;
         parent.GameEndedEvent += () => this.Visible = true;
     }

@@ -15,18 +15,24 @@ public abstract class Tetromicon
         MoveToCoordinate(pivot);
     }
 
-    public virtual Coordinate[] GetNextRotationCoordinates()
+    public virtual Coordinate[] GetNext90RotationCoordinates()
     {
         return TetromiconRotateHelper.Rotate90CounterClockwise(Coordinates, Pivot);
     }
+
+    public virtual Coordinate[] GetNext270RotationCoordinates()
+    {
+        return TetromiconRotateHelper.Rotate90Clockwise(Coordinates, Pivot);
+    }
+
     public virtual Coordinate[] GetCoordinatesIfMovedTo(Coordinate to)
     {
         return Coordinates.Select(c => c + to).ToArray();
     }
 
-    public virtual void Rotate()
+    public virtual void Rotate(Coordinate[] rotatedCoordinates)
     {
-        Coordinates = GetNextRotationCoordinates();
+        Coordinates = rotatedCoordinates;
     }
 
     public virtual void RandomRotate()

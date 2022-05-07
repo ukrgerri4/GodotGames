@@ -3,15 +3,13 @@ using System.Net.Http;
 
 public class StartupPanel : Panel
 {
-    // Declare member variables here. Examples:
-    // private int a = 2;
-    // private string b = "text";
+    private bool startButtonVisible;
+    private bool exitButtonVisible;
 
-    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        // var x = new ConfigFile();
-        // var http = new HttpClient();
+        startButtonVisible = true;
+        exitButtonVisible = false;
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.

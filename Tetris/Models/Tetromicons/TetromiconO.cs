@@ -15,11 +15,11 @@ public class TetromiconO : Tetromicon
     public TetromiconO() { }
     public TetromiconO(Coordinate pivot) : base(pivot) { }
 
-    public override Coordinate[] GetNextRotationCoordinates()
+    public override Coordinate[] GetNext90RotationCoordinates()
     {
         return Coordinates.Select(c => c).ToArray();
     }
 
-    public override void Rotate() { }
+    public override void Rotate(Coordinate[] rotatedCoordinates) { }
     public override void RandomRotate() { }
 }

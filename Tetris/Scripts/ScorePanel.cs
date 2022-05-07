@@ -22,7 +22,7 @@ public class ScorePanel : Panel
         MultiplyValueLabel = GetNode<Label>(nameof(MultiplyValueLabel));
         SpeedValueLabel = GetNode<Label>(nameof(SpeedValueLabel));
 
-        parent = GetParent<Main>();
+        parent = GetNode<Main>("/root/Main");
         parent.GameStartedEvent += Refresh;
         parent.LinesDestroyedEvent += LinesDestroyed;
     }

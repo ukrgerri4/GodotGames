@@ -30,17 +30,11 @@ public class TetromiconI : Tetromicon
     public TetromiconI() { }
     public TetromiconI(Coordinate pivot) : base(pivot) { }
 
-    public override Coordinate[] GetNextRotationCoordinates()
+    public override Coordinate[] GetNext90RotationCoordinates()
     {
         return isHorisontal
             ? TetromiconRotateHelper.Rotate90CounterClockwise(Coordinates, Pivot)
             : TetromiconRotateHelper.Rotate90Clockwise(Coordinates, Pivot);
-    }
-
-    public override void Rotate()
-    {
-        Coordinates = GetNextRotationCoordinates();
-        isHorisontal = !isHorisontal;
     }
 
     public override void RandomRotate()
@@ -51,6 +45,6 @@ public class TetromiconI : Tetromicon
             return;
         }
 
-        Rotate();
+        Coordinates = TetromiconRotateHelper.Rotate90CounterClockwise(Coordinates, Pivot);
     }
 }
