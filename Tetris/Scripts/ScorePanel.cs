@@ -3,7 +3,7 @@ using System;
 
 public class ScorePanel : Panel
 {
-    private Main parent;
+    private Tetris parent;
     private Label ScoreValueLabel;
     private Label LineCountValueLabel;
     private Label MultiplyValueLabel;
@@ -22,7 +22,7 @@ public class ScorePanel : Panel
         MultiplyValueLabel = GetNode<Label>(nameof(MultiplyValueLabel));
         SpeedValueLabel = GetNode<Label>(nameof(SpeedValueLabel));
 
-        parent = GetNode<Main>("/root/Main");
+        parent = GetNode<Tetris>("/root/Main/Tetris");
         parent.GameStartedEvent += Refresh;
         parent.LinesDestroyedEvent += LinesDestroyed;
     }
@@ -39,6 +39,7 @@ public class ScorePanel : Panel
         multiply += linesDestroyed / 2;
         score = parent.collectedLines * lineCost * multiply;
         speed = (maxSpeed - parent.frameTickRate) % maxSpeed;
+        GD.Print(speed, maxSpeed, parent.frameTickRate);
         UpdatePanelValues();
     }
 

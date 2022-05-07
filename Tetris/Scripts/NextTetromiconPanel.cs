@@ -1,14 +1,14 @@
 using Godot;
 public class NextTetromiconPanel : Panel
 {
-    private Main parent;
+    private Tetris parent;
     private PackedScene block;
     private Node2D[] blocks;
 
     private ColorRect board;
     public override void _Ready()
     {
-        parent = GetNode<Main>("/root/Main");
+        parent = GetNode<Tetris>("/root/Main/Tetris");
         parent.NextTetromiconCreatedEvent += UpdateNextTetromiconView;
 
         block = GD.Load<PackedScene>("res://Scenes/BaseBlock.tscn");

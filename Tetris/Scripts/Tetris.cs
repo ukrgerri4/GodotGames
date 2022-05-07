@@ -9,7 +9,7 @@ using Godot;
     8. Dissapear animation
     10. Main sound theme
 */
-public class Main : Node2D
+public class Tetris : Node2D
 {
     #region Properties
     private const int initFrameTickRate = 60;
@@ -24,7 +24,7 @@ public class Main : Node2D
     private int frame = 0;
     public int frameTickRate = initFrameTickRate;
     public int collectedLines = 0;
-    public int speedIncreaseDelta = 5;
+    public int speedIncreaseDelta = 1;
     public int speedIncreasePoint = 0;
     private AudioStreamPlayer rotationSound;
 
@@ -58,8 +58,8 @@ public class Main : Node2D
         GD.Randomize();
         tetromiconFactory = GetNode<TetromiconFactory>("/root/TetromiconFactory");
         block = GD.Load<PackedScene>("res://Scenes/BaseBlock.tscn");
-        mapContainer = GetNode<Node2D>("GameContainer/MapContainer");
-        rotationSound = GetNode<AudioStreamPlayer>("GameContainer/RotationSound");
+        mapContainer = GetNode<Node2D>("MapContainer");
+        rotationSound = GetNode<AudioStreamPlayer>("RotationSound");
 
         InitMap();
         InitBlocks();
@@ -130,6 +130,7 @@ public class Main : Node2D
         frameTickRate = initFrameTickRate;
         collectedLines = 0;
         frame = 0;
+        speedIncreasePoint = 0;
         ChangeBlocksVisibility(false);
         RefreshMap();
         InitNextTetromicon();

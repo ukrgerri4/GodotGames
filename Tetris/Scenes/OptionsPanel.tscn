@@ -1,5 +1,76 @@
-[gd_scene format=2]
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/Icons/check-white.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Icons/uncheck-white.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Themes/DefaultTheme.tres" type="Theme" id=3]
+[ext_resource path="res://Assets/Fonts/Press_Start_2P/PressStart2P-Regular.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 30
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 36
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 64
+font_data = ExtResource( 4 )
 
 [node name="OptionsPanel" type="Panel"]
-margin_right = 40.0
-margin_bottom = 40.0
+self_modulate = Color( 0, 0, 0, 1 )
+margin_right = 720.0
+margin_bottom = 1280.0
+
+[node name="MusicOption" type="CheckBox" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -190.0
+margin_top = -90.0
+margin_right = 190.0
+margin_bottom = -10.0
+custom_fonts/font = SubResource( 1 )
+custom_icons/checked = ExtResource( 1 )
+custom_icons/unchecked = ExtResource( 2 )
+pressed = true
+text = "Music"
+align = 1
+
+[node name="SoundOption" type="CheckBox" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -190.0
+margin_top = 60.0
+margin_right = 190.0
+margin_bottom = 140.0
+custom_fonts/font = SubResource( 1 )
+custom_icons/checked = ExtResource( 1 )
+custom_icons/unchecked = ExtResource( 2 )
+pressed = true
+text = "Sound"
+align = 1
+
+[node name="Button" type="Button" parent="."]
+margin_left = 375.0
+margin_top = 950.0
+margin_right = 625.0
+margin_bottom = 1075.0
+theme = ExtResource( 3 )
+custom_fonts/font = SubResource( 2 )
+text = "BACK"
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -360.0
+margin_top = 325.0
+margin_right = 360.0
+margin_bottom = 475.0
+custom_fonts/font = SubResource( 3 )
+text = "Options:"
+align = 1
+valign = 1
