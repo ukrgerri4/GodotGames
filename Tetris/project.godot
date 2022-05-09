@@ -41,8 +41,8 @@ ui_accept={
 
 [layer_names]
 
-2d_render/layer_1="main"
-2d_render/layer_2="background"
+2d_render/layer_1="navigation"
+2d_render/layer_2="game"
 
 [physics]
 

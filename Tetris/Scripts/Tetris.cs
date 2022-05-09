@@ -12,7 +12,7 @@ using Godot;
 public class Tetris : Node2D
 {
     #region Properties
-    private const int initFrameTickRate = 60;
+    private const int initFrameTickRate = 60; // 55 max!
 
     private const int mapSizeX = 10;
     private const int mapSizeY = 20;
@@ -52,6 +52,8 @@ public class Tetris : Node2D
     public event GameEnded GameEndedEvent;
 
     private Node2D mapContainer;
+    private Tween tween;
+
     #endregion
     public override void _Ready()
     {
@@ -60,6 +62,8 @@ public class Tetris : Node2D
         block = GD.Load<PackedScene>("res://Scenes/BaseBlock.tscn");
         mapContainer = GetNode<Node2D>("MapContainer");
         rotationSound = GetNode<AudioStreamPlayer>("RotationSound");
+        tween = GetNode<Tween>("Tween");
+
 
         InitMap();
         InitBlocks();
@@ -74,12 +78,6 @@ public class Tetris : Node2D
 
         if (Input.IsActionPressed("ui_left"))
             xMoveCoordinate.x = -1;
-
-        // if (OS.IsDebugBuild())
-        // {
-        //     if (Input.IsActionPressed("ui_up"))
-        //         yMoveCoorditane.y = -1;
-        // }
 
         if (Input.IsActionPressed("ui_down"))
             yMoveCoorditane.y = 1;
@@ -105,24 +103,6 @@ public class Tetris : Node2D
         HandleInputXAxisShift();
         HandleInputYAxisShift();
         RefreshMoveData();
-    }
-
-    private void InitDebugMode()
-    {
-        if (OS.IsDebugBuild())
-        {
-            var debugCellTemplate = GD.Load<PackedScene>("res://Scenes/DebugCell.tscn");
-            for (int x = 0; x < mapSizeX; x++)
-            {
-                for (int y = 0; y < mapSizeY; y++)
-                {
-                    var debugCell = debugCellTemplate.Instance<DebugCell>();
-                    debugCell.SetText($"{x}:{y}");
-                    debugCell.Position = GetMappedCoordinates(x, y);
-                    mapContainer.AddChild(debugCell);
-                }
-            }
-        }
     }
 
     private void Reload()

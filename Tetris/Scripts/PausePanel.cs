@@ -25,6 +25,10 @@ public class PausePanel : Panel
 
     private void Pause()
     {
+        if (GetTree().Paused) {
+            return;
+        }
+
         gamePaused = true;
         Visible = true;
         GetTree().Paused = true;

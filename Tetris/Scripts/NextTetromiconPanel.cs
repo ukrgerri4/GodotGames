@@ -8,7 +8,7 @@ public class NextTetromiconPanel : Panel
     private ColorRect board;
     public override void _Ready()
     {
-        parent = GetNode<Tetris>("/root/Main/Tetris");
+        parent = GetNode<Tetris>("/root/Main/Games/Tetris");
         parent.NextTetromiconCreatedEvent += UpdateNextTetromiconView;
 
         block = GD.Load<PackedScene>("res://Scenes/BaseBlock.tscn");

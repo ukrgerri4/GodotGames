@@ -9,26 +9,23 @@ public class StartupPanel : Panel
     private bool exitButtonVisible;
 
     private Panel optionsPanel;
+    private PackedScene tetrisTemplate;
+    private Tetris tetris;
     private Button startButton;
     private Button exitButton;
 
     public override void _Ready()
     {
-        Visible = true;
-        startButtonVisible = true;
-        exitButtonVisible = false;
-
         optionsPanel = GetNode<Panel>("OptionsPanel");
         startButton = GetNode<Button>("StartButton");
         exitButton = GetNode<Button>("ExitButton");
+        tetrisTemplate = GD.Load<PackedScene>("res://Scenes/Games/Tetris.tscn");
 
-        UpdateButtonVisibility();
-    }
-
-    private void UpdateButtonVisibility()
-    {
-       startButton.Visible = startButtonVisible;
-       exitButton.Visible = exitButtonVisible;
+        Visible = true;
+        ShowOnTop = true;
+        startButton.Visible = true;
+        startButton.GrabFocus();
+        exitButton.Visible = false;
     }
 
     public override void _Input(InputEvent @event)
@@ -59,18 +56,28 @@ public class StartupPanel : Panel
         }
     }
 
+    private void ToggleStartExitButtons() {
+        startButton.Visible = !startButton.Visible;
+        exitButton.Visible = !exitButton.Visible;
+    }
+
     private void StartGame() {
         gameStarted = true;
-        // load scene
-        UpdateButtonVisibility();
+        tetris = tetrisTemplate.Instance<Tetris>();
+        GetNode("/root/Main/Games").AddChild(tetris);
+        ToggleStartExitButtons();
         Visible = false;
+        tetris.ShowOnTop = false;
+        tetris.Visible = true;
     }
 
     private void ExitGame() {
         gameStarted = false;
-        // free scene
-        UpdateButtonVisibility();
+        tetris.Visible = false;
+        tetris.QueueFree();
+        ToggleStartExitButtons();
         Visible = true;
+        GetTree().Paused = false;
     }
 
     private void OpenOptionsPanel() {
