@@ -30,7 +30,7 @@ public class Tetris : Node2D
 
     private bool shouldRotate = false;
     private bool gameEnded = false;
-    private Cell[,] map;
+    private BaseBlock[,] map;
     private Tetromicon currentTetromicon;
     public Tetromicon nextTetromicon;
 
@@ -38,7 +38,7 @@ public class Tetris : Node2D
     private Coordinate xMoveCoordinate = Coordinate.Zero;
 
     private PackedScene block;
-    private Node2D[] blocks;
+    private BaseBlock[] blocks;
 
     public delegate void LinesDestroyed(int linesDestroyed);
     public event LinesDestroyed LinesDestroyedEvent;
@@ -52,7 +52,6 @@ public class Tetris : Node2D
     public event GameEnded GameEndedEvent;
 
     private Node2D mapContainer;
-    private Tween tween;
 
     #endregion
     public override void _Ready()
@@ -62,8 +61,6 @@ public class Tetris : Node2D
         block = GD.Load<PackedScene>("res://Scenes/BaseBlock.tscn");
         mapContainer = GetNode<Node2D>("MapContainer");
         rotationSound = GetNode<AudioStreamPlayer>("RotationSound");
-        tween = GetNode<Tween>("Tween");
-
 
         InitMap();
         InitBlocks();
@@ -124,16 +121,16 @@ public class Tetris : Node2D
 
     private void InitMap()
     {
-        map = new Cell[mapSizeX, mapSizeY];
+        map = new BaseBlock[mapSizeX, mapSizeY];
         for (int x = 0; x < map.GetLength(0); x++)
         {
             for (int y = 0; y < map.GetLength(1); y++)
             {
-                map[x, y] = new Cell();
-                map[x, y].Block = block.Instance<Node2D>();
-                map[x, y].Block.Position = GetMappedCoordinates(x, y);
+                map[x, y] = new BaseBlock();
+                map[x, y] = block.Instance<BaseBlock>();
+                map[x, y].Position = GetMappedCoordinates(x, y);
                 map[x, y].Disable();
-                mapContainer.AddChild(map[x, y].Block);
+                mapContainer.AddChild(map[x, y]);
             }
         }
     }
@@ -151,11 +148,11 @@ public class Tetris : Node2D
 
     private void InitBlocks()
     {
-        blocks = new Node2D[] {
-            block.Instance<Node2D>(),
-            block.Instance<Node2D>(),
-            block.Instance<Node2D>(),
-            block.Instance<Node2D>()
+        blocks = new BaseBlock[] {
+            block.Instance<BaseBlock>(),
+            block.Instance<BaseBlock>(),
+            block.Instance<BaseBlock>(),
+            block.Instance<BaseBlock>()
         };
     }
 
@@ -332,7 +329,8 @@ public class Tetris : Node2D
             var lineIndex = filledLineIndexes[i];
             for (int columnIndex = 0; columnIndex < map.GetLength(0); columnIndex++)
             {
-                map[columnIndex, lineIndex].Disable();
+                map[columnIndex, lineIndex].AnimateDissapearing();
+                // map[columnIndex, lineIndex].Disable();
             }
         }
     }
