@@ -2,7 +2,7 @@ using Godot;
 
 public class BaseBlock : Node2D
 {
-    private Color defaultColor = new Color(255,0,0,92);
+    private Color defaultColor = new Color("920000");
     [Signal]
     public delegate void AnimationEnded();
 
@@ -12,7 +12,7 @@ public class BaseBlock : Node2D
     public bool Empty => Type == CellType.Empty;
 
     private Tween tween;
-    
+
     private ColorRect bgColor;
 
     private Tetris parent;
@@ -23,12 +23,15 @@ public class BaseBlock : Node2D
         tween = GetNode<Tween>("Tween");
     }
 
-    public void AnimateDissapearing() {
-        tween.InterpolateProperty(bgColor, "color", new Color(15,15,15,120), defaultColor, 3f);
-        // tween.Start();
+    public void AnimateDissapearing()
+    {
+        tween.InterpolateProperty(bgColor, "color", bgColor.Color, new Color(0, 0, 0), 0.4f);
+        tween.Start();
     }
 
-    private void OnTweenCompleted(Object @object, NodePath nodePath) {
+    private void OnTweenCompleted(Object @object, NodePath nodePath)
+    {
+        bgColor.Color = defaultColor;
         Disable();
         EmitSignal(nameof(AnimationEnded));
     }
@@ -37,11 +40,22 @@ public class BaseBlock : Node2D
     {
         Type = CellType.Empty;
         Visible = false;
+        // EnableDefaultBgColor();
+
     }
 
     public void Enable()
     {
         Type = CellType.Filled;
+        // EnableDefaultBgColor();
         Visible = true;
+    }
+
+    private void EnableDefaultBgColor()
+    {
+        if (bgColor != null)
+        {
+            bgColor.Color = defaultColor;
+        }
     }
 }

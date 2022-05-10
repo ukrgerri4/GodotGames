@@ -15,8 +15,9 @@ public class TetromiconFactory: Node {
     }
 
     public Tetromicon Build() {
-        var randomIndex = GD.Randi() % tetromiconTypes.Length;
-        var randomType = tetromiconTypes[randomIndex];
-        return (Tetromicon)Activator.CreateInstance(randomType);
+        // var randomIndex = GD.Randi() % tetromiconTypes.Length;
+        // var randomType = tetromiconTypes[randomIndex];
+        // return (Tetromicon)Activator.CreateInstance(randomType);
+        return new TetromiconI();
     }
 }

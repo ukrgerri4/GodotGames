@@ -30,5 +30,6 @@ color = Color( 0, 0, 0, 1 )
 [node name="NextTetromiconPanel" parent="." instance=ExtResource( 2 )]
 
 [node name="RotationSound" parent="." instance=ExtResource( 4 )]
+volume_db = -50.0
 
 [node name="EndGamePanel" parent="." instance=ExtResource( 3 )]

@@ -203,6 +203,7 @@ public class Tetris : Node2D
         for (int i = 0; i < currentTetromicon.Coordinates.Length; i++)
         {
             blocks[i].Position = GetMappedCoordinates(currentTetromicon.Coordinates[i].x, currentTetromicon.Coordinates[i].y);
+            blocks[i].Visible = true;
         }
     }
 
@@ -299,6 +300,10 @@ public class Tetris : Node2D
         }
         else
         {
+            for (int i = 0; i < currentTetromicon.Coordinates.Length; i++)
+            {
+                blocks[i].Visible = false;
+            }
             FixStopedFigureOnMap();
             linesToDelete = GetFilledLines();
             StartLinesAnimation(linesToDelete);
