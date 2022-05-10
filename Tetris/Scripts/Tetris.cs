@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -30,6 +31,11 @@ public class Tetris : Node2D
 
     private bool shouldRotate = false;
     private bool gameEnded = false;
+
+    private int animatingTetromiconInProcess = 0;
+    private bool animationInProcess => animatingTetromiconInProcess > 0;
+    private bool shouldInitNextTetromicon = true;
+    private List<int> linesToDelete = new List<int>();
     private BaseBlock[,] map;
     private Tetromicon currentTetromicon;
     public Tetromicon nextTetromicon;
@@ -91,8 +97,27 @@ public class Tetris : Node2D
     {
         if (gameEnded)
         {
-            HandleEndGame();
+            HandleGameEndedInput();
             return;
+        }
+        if (animationInProcess) { return; }
+
+        if (shouldInitNextTetromicon)
+        {
+            InitNewTetromicon();
+            UpdateBlocksPositions();
+            shouldInitNextTetromicon = false;
+        }
+        HandleGameEnded();
+
+        if (linesToDelete.Any())
+        {
+            LowerCells(linesToDelete);
+            collectedLines += linesToDelete.Count;
+            HandleSpeedDecrease(linesToDelete.Count);
+            HandleSpeedIncrease();
+            LinesDestroyedEvent?.Invoke(linesToDelete.Count);
+            linesToDelete.Clear();
         }
 
         frame++;
@@ -130,6 +155,7 @@ public class Tetris : Node2D
                 map[x, y] = block.Instance<BaseBlock>();
                 map[x, y].Position = GetMappedCoordinates(x, y);
                 map[x, y].Disable();
+                map[x, y].Connect("AnimationEnded", this, nameof(OnBlockAnimationEnded));
                 mapContainer.AddChild(map[x, y]);
             }
         }
@@ -195,7 +221,7 @@ public class Tetris : Node2D
         NextTetromiconCreatedEvent?.Invoke();
     }
 
-    private void CheckIfGameEnded()
+    private bool HandleGameEnded()
     {
         for (int i = 0; i < currentTetromicon.Coordinates.Length; i++)
         {
@@ -203,12 +229,14 @@ public class Tetris : Node2D
             {
                 gameEnded = true;
                 GameEndedEvent?.Invoke();
-                return;
+                return true;
             }
         }
+
+        return false;
     }
 
-    private void HandleEndGame()
+    private void HandleGameEndedInput()
     {
         if (Input.IsActionJustPressed("ui_accept"))
         {
@@ -267,31 +295,27 @@ public class Tetris : Node2D
         if (ShiftAllowed(coordinates))
         {
             currentTetromicon.Coordinates = coordinates;
+            UpdateBlocksPositions();
         }
         else
         {
             FixStopedFigureOnMap();
-            CollectLines();
-            InitNewTetromicon();
-            CheckIfGameEnded();
+            linesToDelete = GetFilledLines();
+            StartLinesAnimation(linesToDelete);
+            shouldInitNextTetromicon = true;
         }
-        UpdateBlocksPositions();
     }
 
-    private void CollectLines()
+    private void StartLinesAnimation(List<int> linesToDelete)
     {
-        var filledLineIndexes = GetFilledLines();
-
-        if (filledLineIndexes.Any())
+        animatingTetromiconInProcess = linesToDelete.Count * map.GetLength(0);
+        for (int i = 0; i < linesToDelete.Count; i++)
         {
-            RemoveFilledLines(filledLineIndexes);
-            LowerCells(filledLineIndexes);
-
-            collectedLines += filledLineIndexes.Count;
-            HandleSpeedDecrease(filledLineIndexes.Count);
-            HandleSpeedIncrease();
-
-            LinesDestroyedEvent?.Invoke(filledLineIndexes.Count);
+            var lineIndex = linesToDelete[i];
+            for (int columnIndex = 0; columnIndex < map.GetLength(0); columnIndex++)
+            {
+                map[columnIndex, lineIndex].AnimateDissapearing();
+            }
         }
     }
 
@@ -329,8 +353,7 @@ public class Tetris : Node2D
             var lineIndex = filledLineIndexes[i];
             for (int columnIndex = 0; columnIndex < map.GetLength(0); columnIndex++)
             {
-                map[columnIndex, lineIndex].AnimateDissapearing();
-                // map[columnIndex, lineIndex].Disable();
+                map[columnIndex, lineIndex].Disable();
             }
         }
     }
@@ -413,5 +436,10 @@ public class Tetris : Node2D
             x * mapUnit + mapOffset + marginX,
             y * mapUnit + mapOffset + marginY
         );
+    }
+
+    private void OnBlockAnimationEnded()
+    {
+        animatingTetromiconInProcess = animatingTetromiconInProcess > 0 ? animatingTetromiconInProcess - 1 : 0;
     }
 }
