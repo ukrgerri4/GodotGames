@@ -1,16 +1,16 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Icons/check-white.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Icons/uncheck-white.png" type="Texture" id=2]
-[ext_resource path="res://Scenes/Themes/DefaultTheme.tres" type="Theme" id=3]
+[ext_resource path="res://Scenes/UI/BaseUiButton/BaseUIButton.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Fonts/Press_Start_2P/PressStart2P-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Scripts/OptionsPanel.cs" type="Script" id=5]
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.2, 0.2, 0.2, 1 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 30
-font_data = ExtResource( 4 )
-
-[sub_resource type="DynamicFont" id=2]
-size = 36
 font_data = ExtResource( 4 )
 
 [sub_resource type="DynamicFont" id=3]
@@ -18,9 +18,10 @@ size = 64
 font_data = ExtResource( 4 )
 
 [node name="OptionsPanel" type="Panel"]
-self_modulate = Color( 0, 0, 0, 1 )
 margin_right = 720.0
 margin_bottom = 1280.0
+custom_styles/panel = SubResource( 4 )
+script = ExtResource( 5 )
 
 [node name="MusicOption" type="CheckBox" parent="."]
 anchor_left = 0.5
@@ -54,13 +55,11 @@ pressed = true
 text = "Sound"
 align = 1
 
-[node name="Button" type="Button" parent="."]
-margin_left = 375.0
-margin_top = 950.0
-margin_right = 625.0
-margin_bottom = 1075.0
-theme = ExtResource( 3 )
-custom_fonts/font = SubResource( 2 )
+[node name="BackButton" parent="." instance=ExtResource( 3 )]
+margin_left = 15.0
+margin_top = 310.0
+margin_right = 265.0
+margin_bottom = 435.0
 text = "BACK"
 
 [node name="Label" type="Label" parent="."]
@@ -74,3 +73,5 @@ custom_fonts/font = SubResource( 3 )
 text = "Options:"
 align = 1
 valign = 1
+
+[connection signal="pressed" from="BackButton" to="." method="CloseOptionsPanel"]
