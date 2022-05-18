@@ -6,6 +6,9 @@ public class SpeedProgress : ProgressBar
     private ScorePanel Parent;
     public override void _Ready()
     {
+				MaxValue = 55;
+				Step = 1;
+
         Parent = GetParent<ScorePanel>();
         Parent.SpeedChangedEvent += OnSpeedChanged;
     }

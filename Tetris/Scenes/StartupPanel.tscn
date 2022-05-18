@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/StartupPanel.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/OptionsPanel.tscn" type="PackedScene" id=3]
@@ -6,6 +6,9 @@
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.2, 0.2, 0.2, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0, 0, 0, 1 )
 
 [node name="StartupPanel" type="Panel"]
 margin_right = 720.0
@@ -35,9 +38,15 @@ margin_right = 260.0
 margin_bottom = 210.0
 text = "Options"
 
-[node name="OptionsPanel" parent="." instance=ExtResource( 3 )]
-visible = false
+[node name="OptionsDialog" type="WindowDialog" parent="."]
+visible = true
+margin_right = 720.0
+margin_bottom = 1280.0
+custom_styles/panel = SubResource( 4 )
 
+[node name="OptionsPanel" parent="OptionsDialog" instance=ExtResource( 3 )]
+
+[connection signal="visibility_changed" from="." to="." method="OnVisibilityChanged"]
 [connection signal="pressed" from="StartButton" to="." method="StartGame"]
 [connection signal="pressed" from="ExitButton" to="." method="ExitGame"]
 [connection signal="pressed" from="OptionsButton" to="." method="OpenOptionsPanel"]

@@ -35,7 +35,6 @@ margin_bottom = -10.0
 custom_fonts/font = SubResource( 1 )
 custom_icons/checked = ExtResource( 1 )
 custom_icons/unchecked = ExtResource( 2 )
-pressed = true
 text = "Music"
 align = 1
 
@@ -51,7 +50,6 @@ margin_bottom = 140.0
 custom_fonts/font = SubResource( 1 )
 custom_icons/checked = ExtResource( 1 )
 custom_icons/unchecked = ExtResource( 2 )
-pressed = true
 text = "Sound"
 align = 1
 
@@ -74,4 +72,6 @@ text = "Options:"
 align = 1
 valign = 1
 
+[connection signal="toggled" from="MusicOption" to="." method="OnMusicCheckboxChanged"]
+[connection signal="toggled" from="SoundOption" to="." method="OnSoundCheckboxChanged"]
 [connection signal="pressed" from="BackButton" to="." method="CloseOptionsPanel"]
