@@ -31,7 +31,6 @@ public class Tetris : Node2D
 	public int speedIncreaseDelta = 1;
 	public int speedIncreasePoint = 0;
 	private AudioStreamPlayer rotationSound;
-	private AudioStreamPlayer backgroundMusic;
 
 	private bool shouldRotate = false;
 	private bool gameEnded = false;
@@ -72,33 +71,11 @@ public class Tetris : Node2D
 		block = GD.Load<PackedScene>("res://Scenes/BaseBlock.tscn");
 		mapContainer = GetNode<Node2D>("MapContainer");
 		rotationSound = GetNode<AudioStreamPlayer>("RotationSound");
-		backgroundMusic = GetNode<AudioStreamPlayer>("BackgroundMusic");
-
-		gameConfigurations.SoundAdjustmentsChangedEvent += OnSoundAdjustmentsChanged;
-		gameConfigurations.MusicAdjustmentsChangedEvent += OnMusicAdjustmentsChanged;
 
 		InitMap();
 		InitBlocks();
 		AddBlocksToNode();
 		Reload();
-	}
-
-	private void OnSoundAdjustmentsChanged(bool enable)
-	{
-		rotationSound.StreamPaused = !enable;
-	}
-
-	private void OnMusicAdjustmentsChanged(bool enable)
-	{
-		backgroundMusic.StreamPaused = !enable;
-		if (backgroundMusic.StreamPaused)
-		{
-			backgroundMusic.Stop();
-		}
-		else
-		{
-			backgroundMusic.Play();
-		}
 	}
 
 	public override void _Input(InputEvent @event)
@@ -274,7 +251,7 @@ public class Tetris : Node2D
 		var coordinates = currentTetromicon.GetNext90RotationCoordinates();
 		if (ShiftAllowed(coordinates) && ShiftAllowed(currentTetromicon.RotationCoordinates))
 		{
-			rotationSound.Play();
+			PlayRotationSound();
 			currentTetromicon.Rotate(coordinates);
 			UpdateBlocksPositions();
 			shouldRotate = false;
@@ -284,7 +261,7 @@ public class Tetris : Node2D
 		coordinates = currentTetromicon.GetNext270RotationCoordinates();
 		if (ShiftAllowed(coordinates) && ShiftAllowed(currentTetromicon.RotationCoordinates))
 		{
-			rotationSound.Play();
+			PlayRotationSound();
 			currentTetromicon.Rotate(coordinates);
 			UpdateBlocksPositions();
 			shouldRotate = false;
@@ -480,5 +457,11 @@ public class Tetris : Node2D
 	private void OnBlockAnimationEnded()
 	{
 		animatingTetromiconInProcess = animatingTetromiconInProcess > 0 ? animatingTetromiconInProcess - 1 : 0;
+	}
+
+	private void PlayRotationSound() {
+		if (gameConfigurations.SoundOn) {
+			rotationSound.Play();
+		}
 	}
 }

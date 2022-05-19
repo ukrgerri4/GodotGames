@@ -4,29 +4,23 @@ public class OptionsPanel : Panel
 	private GameConfigurations gameConfigurations;
 	private WindowDialog optionsDialog;
 
-	private CheckBox musicOption;
 	private CheckBox soundOption;
-
+	private Button backButton;
 
 	public override void _Ready()
 	{
 		gameConfigurations = GetNode<GameConfigurations>("/root/GameConfigurations");
 		optionsDialog = GetParent<WindowDialog>();
-		musicOption = GetNode<CheckBox>("MusicOption");
 		soundOption = GetNode<CheckBox>("SoundOption");
+		backButton = GetNode<Button>("BackButton");
 
-		musicOption.Pressed = gameConfigurations.MusicOn;
 		soundOption.Pressed = gameConfigurations.SoundOn;
+		backButton.GrabFocus();
 	}
 
 	private void CloseOptionsPanel()
 	{
 		optionsDialog.Hide();
-	}
-
-	private void OnMusicCheckboxChanged(bool pressed)
-	{
-		gameConfigurations.MusicOn = pressed;
 	}
 
 	private void OnSoundCheckboxChanged(bool pressed)
