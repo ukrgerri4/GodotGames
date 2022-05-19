@@ -13,12 +13,14 @@ public class StartupPanel : Panel
 	private Tetris tetris;
 	private Button startButton;
 	private Button exitButton;
+	private Button continueButton;
 
 	public override void _Ready()
 	{
 		optionsDialog = GetNode<WindowDialog>("OptionsDialog");
-		startButton = GetNode<Button>("StartButton");
-		exitButton = GetNode<Button>("ExitButton");
+		startButton = GetNode<Button>("CenterContainer/VBoxContainer/StartButton");
+		exitButton = GetNode<Button>("CenterContainer/VBoxContainer/ExitButton");
+		continueButton = GetNode<Button>("CenterContainer/VBoxContainer/ContinueButton");
 		tetrisTemplate = GD.Load<PackedScene>("res://Scenes/Games/Tetris.tscn");
 
 		Visible = true;
@@ -26,6 +28,7 @@ public class StartupPanel : Panel
 		startButton.Visible = true;
 		startButton.GrabFocus();
 		exitButton.Visible = false;
+		continueButton.Visible = false;
 	}
 
 	public override void _Input(InputEvent @event)
@@ -54,6 +57,7 @@ public class StartupPanel : Panel
 	{
 		startButton.Visible = !startButton.Visible;
 		exitButton.Visible = !exitButton.Visible;
+		continueButton.Visible = !continueButton.Visible;
 	}
 
 	private void StartGame()
@@ -73,8 +77,14 @@ public class StartupPanel : Panel
 		tetris.Visible = false;
 		tetris.QueueFree();
 		ToggleStartExitButtons();
-		Visible = true;
 		GetTree().Paused = false;
+		OnVisibilityChanged();
+	}
+
+	private void ContinueGame()
+	{
+		GetTree().Paused = false;
+		Visible = false;
 	}
 
 	private void OpenOptionsPanel()
@@ -88,7 +98,7 @@ public class StartupPanel : Panel
 		{
 			if (GetTree().Paused)
 			{
-				exitButton.GrabFocus();
+				continueButton.GrabFocus();
 			}
 			else
 			{

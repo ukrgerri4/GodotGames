@@ -9,6 +9,7 @@ using Godot;
 		3. Rotate Z,S tetr
 		4. Options save
 		5. UI things
+			- options panel
 */
 public class Tetris : Node2D
 {

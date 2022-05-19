@@ -55,9 +55,11 @@ align = 1
 
 [node name="BackButton" parent="." instance=ExtResource( 3 )]
 margin_left = 15.0
-margin_top = 310.0
-margin_right = 265.0
-margin_bottom = 435.0
+margin_top = 307.0
+margin_right = 315.0
+margin_bottom = 457.0
+rect_min_size = Vector2( 0, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
 text = "BACK"
 
 [node name="Label" type="Label" parent="."]

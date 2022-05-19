@@ -1,7 +1,35 @@
+using System.Collections.Generic;
 using Godot;
 
 public class TetromiconI : Tetromicon
 {
+		private Coordinate[][] Test = new Coordinate[][] {
+			new Coordinate[] {
+            new Coordinate(-1, -2),
+            new Coordinate(-1, -1),
+            new Coordinate(-1, 0),
+            new Coordinate(-1, 1),
+        },
+				new Coordinate[] {
+            new Coordinate(-2, -1),
+            new Coordinate(-1, -1),
+            new Coordinate(0, -1),
+            new Coordinate(1, -1),
+        },
+				new Coordinate[] {
+            new Coordinate(0, -2),
+            new Coordinate(0, -1),
+            new Coordinate(0, 0),
+            new Coordinate(0, 1),
+        },
+				new Coordinate[] {
+            new Coordinate(-2, 0),
+            new Coordinate(-1, 0),
+            new Coordinate(0, 0),
+            new Coordinate(1, 0),
+        }
+		};
+
     public override Coordinate[] Coordinates { get; set; } =
         new Coordinate[] {
             new Coordinate(-2, 0),
@@ -27,7 +55,7 @@ public class TetromiconI : Tetromicon
 
     private bool isHorisontal = true;
 
-    public TetromiconI() { }
+    public TetromiconI() {}
     public TetromiconI(Coordinate pivot) : base(pivot) { }
 
     public override Coordinate[] GetNext90RotationCoordinates()
@@ -39,12 +67,17 @@ public class TetromiconI : Tetromicon
 
     public override void RandomRotate()
     {
-        var rotations = GD.Randi() % 2;
-        if (rotations == 0)
-        {
-            return;
-        }
+        // var rotations = GD.Randi() % 2;
+        // if (rotations == 0)
+        // {
+        //     return;
+        // }
 
-        Coordinates = TetromiconRotateHelper.Rotate90CounterClockwise(Coordinates, Pivot);
+        // Coordinates = TetromiconRotateHelper.Rotate90CounterClockwise(Coordinates, Pivot);
+
+				var rotations = GD.Randi() % 4;
+				Coordinates = TetromiconRotateHelper.Rotate90CounterClockwise(Coordinates, Pivot);
     }
+
+
 }
