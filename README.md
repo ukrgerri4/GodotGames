@@ -1,2 +1,2 @@
 # GodotGames
-Playground project to get acquainted with Godot
+Playground project to get acquainted with Godot!
