@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://sitf2e4symdy"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://Ball.cs" id="1_0i3am"]
+[ext_resource type="Script" path="res://Scenes/Ball/Ball.cs" id="1_0i3am"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2o2h5"]
 radius = 5.0
