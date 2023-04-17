@@ -1,0 +1,85 @@
+[gd_scene load_steps=10 format=3 uid="uid://3ws1wef8vrs7"]
+
+[ext_resource type="PackedScene" uid="uid://sitf2e4symdy" path="res://ball.tscn" id="1_7s3ln"]
+[ext_resource type="Script" path="res://Main.cs" id="1_ev668"]
+[ext_resource type="Script" path="res://Map.cs" id="2_0q81m"]
+[ext_resource type="PackedScene" uid="uid://buufgasa03cwv" path="res://player.tscn" id="2_58ehh"]
+[ext_resource type="PackedScene" uid="uid://c2mf57gjv5fj" path="res://wallAngle.tscn" id="3_h6mcq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s5rfw"]
+size = Vector2(2000, 1080)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wxvxq"]
+size = Vector2(2000, 1080)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4232p"]
+size = Vector2(5080, 2000)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ejgsp"]
+size = Vector2(5080, 2000)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_ev668")
+
+[node name="Map" type="Node2D" parent="."]
+script = ExtResource("2_0q81m")
+
+[node name="Player" parent="Map" instance=ExtResource("2_58ehh")]
+position = Vector2(0, 536)
+
+[node name="WallLeft" type="StaticBody2D" parent="Map"]
+position = Vector2(-1540, 0)
+collision_layer = 4
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/WallLeft"]
+shape = SubResource("RectangleShape2D_s5rfw")
+
+[node name="WallRight" type="StaticBody2D" parent="Map"]
+position = Vector2(1540, 0)
+collision_layer = 4
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/WallRight"]
+shape = SubResource("RectangleShape2D_wxvxq")
+
+[node name="WallTop" type="StaticBody2D" parent="Map"]
+position = Vector2(0, -1540)
+collision_layer = 4
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/WallTop"]
+shape = SubResource("RectangleShape2D_4232p")
+
+[node name="WallBottom" type="StaticBody2D" parent="Map"]
+position = Vector2(0, 1540)
+collision_layer = 4
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/WallBottom"]
+shape = SubResource("RectangleShape2D_ejgsp")
+
+[node name="WallAngleTopLeft" parent="Map" instance=ExtResource("3_h6mcq")]
+position = Vector2(-540, -540)
+
+[node name="WallAngleBottomLeft" parent="Map" instance=ExtResource("3_h6mcq")]
+position = Vector2(-540, 540)
+rotation = -1.5708
+
+[node name="WallAngleTopRight" parent="Map" instance=ExtResource("3_h6mcq")]
+position = Vector2(540, 540)
+rotation = -3.14159
+
+[node name="WallAngleBottomRight" parent="Map" instance=ExtResource("3_h6mcq")]
+position = Vector2(540, -540)
+rotation = 1.5708
+
+[node name="Ball" parent="." instance=ExtResource("1_7s3ln")]
+top_level = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_58ehh")]
+position = Vector2(-536, 0)
+rotation = 1.5708
