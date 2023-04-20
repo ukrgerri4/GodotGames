@@ -8,8 +8,7 @@ public partial class Ball : CharacterBody2D
 
     public override void _Ready()
     {
-        ResetPosition();
-        RandomizeDirection();
+        Reset();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -20,32 +19,28 @@ public partial class Ball : CharacterBody2D
         {
             var collider = collision.GetCollider();
 
-            if (collider is Corner corner)
-            {
-                corner.TouchedByBall();
-                velocity = velocity.Bounce(collision.GetNormal());
-            }
-            else if (collider is Player player)
+            if (collider is Player player)
             {
                 player.TouchedByBall();
                 velocity = velocity.Bounce(collision.GetNormal());
             }
-            else if (collider is OutArea outArea)
+            else if (collider is Corner corner)
             {
-                ResetPosition();
-                RandomizeDirection();
-                return;
+                corner.TouchedByBall();
+                velocity = velocity.Bounce(collision.GetNormal());
             }
-            else if (collider is PlayerStub playerStub)
+            else if (collider is PlayerStub stub)
             {
+                stub.TouchedByBall();
                 velocity = velocity.Bounce(collision.GetNormal());
             }
         }
     }
 
-    private void ResetPosition()
+    public void Reset()
     {
         Position = Vector2.Zero;
+        RandomizeDirection();
     }
 
     private void RandomizeDirection()

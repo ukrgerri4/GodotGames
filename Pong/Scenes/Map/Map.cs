@@ -22,12 +22,12 @@ public partial class Map : Node2D
             if (_tweener is null || _canTween)
             {
                 _canTween = false;
-                _mapEventsBus.NotifyMapRotatingStarted();
+                GetTree().Paused = true;
                 _tweener = CreateTween().TweenProperty(this, "rotation", Rotation + Mathf.DegToRad(90), 2f);
                 _tweener.Finished += () =>
                 {
                     _canTween = true;
-                    _mapEventsBus.NotifyMapRotatingEnded();
+                    GetTree().Paused = false;
                 };
             }
         }

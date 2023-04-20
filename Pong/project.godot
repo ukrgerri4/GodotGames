@@ -55,6 +55,10 @@ accelerate={
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Corner"
 2d_physics/layer_4="OutArea"
+2d_physics/layer_5="ActionArea"
+2d_physics/layer_6="Wall"
+2d_physics/layer_7="BallCenter"
+2d_physics/layer_8="RotationArea"
 
 [physics]
 

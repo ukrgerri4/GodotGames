@@ -5,8 +5,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_btvjl"]
 size = Vector2(1032, 64)
 
-[node name="StaticBody2D" type="StaticBody2D"]
-collision_layer = 4
+[node name="PlayerStub" type="StaticBody2D"]
+collision_layer = 32
 collision_mask = 0
 script = ExtResource("1_obkk5")
 metadata/_edit_group_ = true

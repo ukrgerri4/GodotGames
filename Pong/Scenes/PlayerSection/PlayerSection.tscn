@@ -1,0 +1,21 @@
+[gd_scene load_steps=6 format=3 uid="uid://dps7jornlit1l"]
+
+[ext_resource type="PackedScene" uid="uid://pma8wt7unhk0" path="res://Scenes/PlayerStub/PlayerStub.tscn" id="1_a7f63"]
+[ext_resource type="Script" path="res://Scenes/PlayerSection/PlayerSection.cs" id="1_hj20w"]
+[ext_resource type="PackedScene" uid="uid://dn45l15s6ulsb" path="res://Scenes/ActionArea/ActionArea.tscn" id="1_mr40h"]
+[ext_resource type="PackedScene" uid="uid://ck8lsf0nj5eo8" path="res://Scenes/Player/Player.tscn" id="2_l02a3"]
+[ext_resource type="PackedScene" uid="uid://brp5wqwdpyt73" path="res://Scenes/OutArea/OutArea.tscn" id="2_stvo0"]
+
+[node name="PlayerSection" type="Node2D"]
+script = ExtResource("1_hj20w")
+
+[node name="ActionArea" parent="." instance=ExtResource("1_mr40h")]
+position = Vector2(0, 0)
+
+[node name="OutArea" parent="." instance=ExtResource("2_stvo0")]
+
+[node name="PlayerStub" parent="." instance=ExtResource("1_a7f63")]
+position = Vector2(0, 564)
+
+[node name="Player" parent="." instance=ExtResource("2_l02a3")]
+position = Vector2(0, 536)

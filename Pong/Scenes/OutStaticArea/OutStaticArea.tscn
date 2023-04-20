@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scenes/OutStaticArea/OutStaticArea.cs" id="1_v5km6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hxiua"]
+size = Vector2(200, 1080)
+
+[node name="StaticBody2D" type="StaticBody2D"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_v5km6")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_hxiua")

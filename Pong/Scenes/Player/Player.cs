@@ -14,8 +14,6 @@ public partial class Player : CharacterBody2D
     public override void _Ready()
     {
         ControllerType = ControllerType.Keyboard;
-        _mapEventsBus = GetNode<MapEventsBus>("/root/MapEventsBus");
-        _mapEventsBus.AddMapRotatingHandler(OnMapRotating);
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -73,7 +71,6 @@ public partial class Player : CharacterBody2D
 
     public void TouchedByBall()
     {
-        GD.Print("Player touched by Ball.");
         // add points
         // activete post hit ball
     }
@@ -86,7 +83,6 @@ public partial class Player : CharacterBody2D
         }
         else if (state == MapRotateState.Ended)
         {
-            GD.Print(GlobalRotationDegrees);
             GetTree().Paused = false;
         }
     }

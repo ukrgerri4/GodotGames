@@ -1,91 +1,59 @@
-[gd_scene load_steps=9 format=3 uid="uid://c4btchud5xh7a"]
+[gd_scene load_steps=6 format=3 uid="uid://cglq4ciobbu1r"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_jhkjm"]
-[ext_resource type="Script" path="res://Scenes/Map/Map.cs" id="2_2nqfa"]
-[ext_resource type="PackedScene" uid="uid://b5vka6gltpwl5" path="res://Scenes/OutArea/OutArea.tscn" id="3_v32dg"]
-[ext_resource type="PackedScene" path="res://Scenes/Corner/Corner.tscn" id="4_l8eng"]
+[ext_resource type="PackedScene" uid="uid://dps7jornlit1l" path="res://Scenes/PlayerSection/PlayerSection.tscn" id="2_ojant"]
+[ext_resource type="PackedScene" uid="uid://dinq0k78663fy" path="res://Scenes/Corner/Corner.tscn" id="4_l8eng"]
 [ext_resource type="PackedScene" uid="uid://jb82o6acl81" path="res://Scenes/Ball/Ball.tscn" id="5_hw464"]
-[ext_resource type="Script" path="res://Scenes/RotationArea/RotationArea.cs" id="6_kf126"]
-[ext_resource type="PackedScene" uid="uid://pma8wt7unhk0" path="res://Scenes/PlayerStub/PlayerStub.tscn" id="6_qx6tx"]
+[ext_resource type="PackedScene" uid="uid://t5jaspadowbt" path="res://Scenes/RotationArea/RotationArea.tscn" id="6_t4mlh"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_utcwo"]
-radius = 400.0
-
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node"]
+process_mode = 3
 script = ExtResource("1_jhkjm")
 
 [node name="Map" type="Node2D" parent="."]
-process_mode = 3
-script = ExtResource("2_2nqfa")
 
-[node name="Player2Stub" parent="Map" instance=ExtResource("6_qx6tx")]
-position = Vector2(-564, 0)
+[node name="PlayerSection" parent="Map" instance=ExtResource("2_ojant")]
+Active = true
+metadata/_edit_lock_ = true
+
+[node name="PlayerSection2" parent="Map" instance=ExtResource("2_ojant")]
 rotation = 1.5708
 metadata/_edit_lock_ = true
 
-[node name="Player3Stub" parent="Map" instance=ExtResource("6_qx6tx")]
-position = Vector2(0, -564)
+[node name="PlayerSection3" parent="Map" instance=ExtResource("2_ojant")]
+rotation = -3.14159
 metadata/_edit_lock_ = true
 
-[node name="Player4Stub" parent="Map" instance=ExtResource("6_qx6tx")]
-position = Vector2(564, 0)
-rotation = 1.5708
+[node name="PlayerSection4" parent="Map" instance=ExtResource("2_ojant")]
+rotation = -1.5708
 metadata/_edit_lock_ = true
 
-[node name="Player1Out" parent="Map" instance=ExtResource("3_v32dg")]
-position = Vector2(0, 640)
-rotation = 1.5708
-metadata/_edit_lock_ = true
+[node name="Corners" type="Node2D" parent="Map"]
 
-[node name="Player2Out" parent="Map" instance=ExtResource("3_v32dg")]
-position = Vector2(-640, 0)
-metadata/_edit_lock_ = true
-
-[node name="Player3Out" parent="Map" instance=ExtResource("3_v32dg")]
-position = Vector2(0, -640)
-rotation = 1.5708
-metadata/_edit_lock_ = true
-
-[node name="Player4Out" parent="Map" instance=ExtResource("3_v32dg")]
-position = Vector2(640, 0)
-metadata/_edit_lock_ = true
-
-[node name="Corner1" parent="Map" instance=ExtResource("4_l8eng")]
+[node name="Corner1" parent="Map/Corners" instance=ExtResource("4_l8eng")]
 position = Vector2(-540, -540)
 metadata/_edit_lock_ = true
 
-[node name="Corner2" parent="Map" instance=ExtResource("4_l8eng")]
+[node name="Corner2" parent="Map/Corners" instance=ExtResource("4_l8eng")]
 position = Vector2(-540, 540)
 rotation = -1.5708
 metadata/_edit_lock_ = true
 
-[node name="Corner3" parent="Map" instance=ExtResource("4_l8eng")]
+[node name="Corner3" parent="Map/Corners" instance=ExtResource("4_l8eng")]
 position = Vector2(540, 540)
 rotation = -3.14159
 metadata/_edit_lock_ = true
 
-[node name="Corner4" parent="Map" instance=ExtResource("4_l8eng")]
+[node name="Corner4" parent="Map/Corners" instance=ExtResource("4_l8eng")]
 position = Vector2(540, -540)
 rotation = 1.5708
 metadata/_edit_lock_ = true
 
-[node name="RotationArea" type="Area2D" parent="."]
-collision_layer = 256
-script = ExtResource("6_kf126")
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RotationArea"]
-shape = SubResource("CircleShape2D_utcwo")
-debug_color = Color(0, 0.172549, 0.701961, 0.0901961)
-
-[node name="Area2D" type="Area2D" parent="."]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
-polygon = PackedVector2Array(-540, 540, 540, 540, 0, 0)
-
 [node name="Ball" parent="." instance=ExtResource("5_hw464")]
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="RotationArea" parent="." instance=ExtResource("6_t4mlh")]
+position = Vector2(-4, -4)
+collision_layer = 128
+metadata/_edit_lock_ = true
 
-[connection signal="body_entered" from="RotationArea" to="RotationArea" method="_on_body_entered"]
-[connection signal="body_exited" from="RotationArea" to="RotationArea" method="_on_body_exited"]
+[node name="Camera2D" type="Camera2D" parent="."]

@@ -1,6 +1,13 @@
 using Godot;
 using System;
 
-public partial class OutArea : StaticBody2D
+public partial class OutArea : Area2D
 {
+    private void _on_body_entered(Node2D body)
+    {
+        if (body is Ball ball)
+        {
+            ball.Reset();
+        }
+    }
 }
