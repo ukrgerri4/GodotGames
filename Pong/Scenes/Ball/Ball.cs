@@ -4,10 +4,14 @@ using System;
 public partial class Ball : CharacterBody2D
 {
     public const float Speed = 300.0f;
-    public Vector2 velocity = new Vector2(0, -1);
+    public Vector2 velocity = Vector2.Zero;
+    private RayCast2D _rayCast2D;
+    private Line2D _line2D;
 
     public override void _Ready()
     {
+        _rayCast2D = GetNode<RayCast2D>("RayCast2D");
+        _line2D = GetNode<Line2D>("Line2D");
         Reset();
     }
 
@@ -22,17 +26,35 @@ public partial class Ball : CharacterBody2D
             if (collider is Player player)
             {
                 player.TouchedByBall();
-                velocity = velocity.Bounce(collision.GetNormal());
+                GD.Print("Player: ", player.GlobalPosition, "Point: ", collision.GetPosition());
+                velocity = velocity.Bounce(collision.GetNormal()).Normalized();
+                velocity.X = velocity.X * ((collision.GetPosition().X - player.GlobalPosition.X) / 64 * 2 - 0.5f);
             }
             else if (collider is Corner corner)
             {
                 corner.TouchedByBall();
-                velocity = velocity.Bounce(collision.GetNormal());
+                velocity = velocity.Bounce(collision.GetNormal()).Normalized();
             }
             else if (collider is PlayerStub stub)
             {
                 stub.TouchedByBall();
-                velocity = velocity.Bounce(collision.GetNormal());
+                velocity = velocity.Bounce(collision.GetNormal()).Normalized();
+            }
+
+            return;
+        }
+
+        if (OS.IsDebugBuild())
+        {
+            _rayCast2D.LookAt(ToGlobal(velocity));
+            var debugCollider = _rayCast2D.GetCollider();
+            if (debugCollider is not null)
+            {
+                var end = velocity.Bounce(_rayCast2D.GetCollisionNormal()) * 500;
+                var point = _rayCast2D.GetCollisionPoint();
+
+                _line2D.ClearPoints();
+                _line2D.Points = new Vector2[] { point, new Vector2(end.X + point.X, end.Y + point.Y) };
             }
         }
     }

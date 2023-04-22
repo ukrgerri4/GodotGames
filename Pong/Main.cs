@@ -15,6 +15,10 @@ public partial class Main : Node
 
     public override void _Input(InputEvent @event)
     {
+        if (Input.IsActionJustPressed("ui_accept"))
+        {
+            GetTree().Paused = !GetTree().Paused;
+        }
         // if (@event is InputEventJoypadButton joypadButtonEvent)
         // {
         //     if (!_players.Any(x => x.JoyPadId == joypadButtonEvent.Device))
@@ -26,7 +30,7 @@ public partial class Main : Node
 
     public override void _Process(double delta)
     {
-        if (Input.IsActionJustPressed("ui_accept") && _rotationArea.RotationAllowed)
+        if (Input.IsActionJustPressed("pause") && _rotationArea.RotationAllowed)
         {
             if (_tweener is null || _canTween)
             {

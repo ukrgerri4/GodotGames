@@ -17,3 +17,13 @@ metadata/_edit_group_ = true
 shape = SubResource("CircleShape2D_2o2h5")
 
 [node name="BallCenterArea" parent="." instance=ExtResource("2_wpi10")]
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(500, 0)
+collision_mask = 38
+
+[node name="Line2D" type="Line2D" parent="."]
+top_level = true
+width = 1.0
+default_color = Color(0.121569, 1, 0.0588235, 1)
+sharp_limit = 0.0
