@@ -1,10 +1,23 @@
 using System.Linq;
 using Godot;
 
+public class DefaultInputAction
+{
+	public StringName ActionName { get; set; }
+	public InputEventKey Key { get; set; }
+	public InputEventJoypadButton Joy { get; set; }
+}
+
 public static class InputAction
 {
-	// public static readonly object x = new {
+	// public static readonly DefaultInputAction x = new (){
 	// 	ActionName = new StringName("move_left"),
+	// 	Key = new InputEventKey { PhysicalKeycode = Key.Shift },
+	// 	Joy = new InputEventJoypadButton { ButtonIndex =  }
+	// };
+
+	// public static readonly DefaultInputAction x1 = new (){
+	// 	ActionName = new StringName("move_right"),
 	// 	Key = new InputEventKey { PhysicalKeycode = Key.Shift },
 	// 	Joy = new InputEventJoypadButton{ ButtonIndex = JoyButton.RightStick },
 	// };

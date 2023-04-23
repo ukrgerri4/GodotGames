@@ -38,7 +38,7 @@ public partial class Main : Node
 			{
 				_canTween = false;
 				GetTree().Paused = true;
-				_tweener = CreateTween().TweenProperty(_map, "rotation", _map.Rotation + Mathf.DegToRad(90), 1f);
+				_tweener = CreateTween().TweenProperty(_map, "rotation_degrees", _map.RotationDegrees + 90, 1f);
 				_tweener.Finished += () =>
 				{
 					_canTween = true;

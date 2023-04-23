@@ -21,11 +21,11 @@ rotation = 1.5708
 metadata/_edit_lock_ = true
 
 [node name="PlayerSection3" parent="Map" instance=ExtResource("2_ojant")]
-rotation = -3.14159
+rotation = 3.14159
 metadata/_edit_lock_ = true
 
 [node name="PlayerSection4" parent="Map" instance=ExtResource("2_ojant")]
-rotation = -1.5708
+rotation = 4.71239
 metadata/_edit_lock_ = true
 
 [node name="Corners" type="Node2D" parent="Map"]
