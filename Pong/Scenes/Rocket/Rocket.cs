@@ -3,15 +3,17 @@ using System;
 
 public partial class Rocket : CharacterBody2D
 {
+	// WHO launched?
+	// Controller?
+
 	public Vector2 velocity = Vector2.Up;
 	public float Speed = 300f;
-
 	private float _rotationMultiplier = 3f;
 
 	public override void _PhysicsProcess(double delta)
 	{
-		velocity = GetVelocityByJoypad(delta);
-		// velocity = GetVelocityByKeyboard(delta);
+		// velocity = GetVelocityByJoypad(delta);
+		velocity = GetVelocityByKeyboard(delta);
 
 		var collision = MoveAndCollide(velocity.Normalized() * Speed * (float)delta);
 

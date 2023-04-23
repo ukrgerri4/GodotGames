@@ -55,7 +55,19 @@ public partial class Ball : CharacterBody2D
 			var debugCollider = _rayCast2D.GetCollider();
 			if (debugCollider is not null)
 			{
-				var end = velocity.Bounce(_rayCast2D.GetCollisionNormal()) * 500;
+				Vector2 end = Vector2.Zero;
+				if (debugCollider is Player player)
+				{
+					end = velocity.Bounce(_rayCast2D.GetCollisionNormal());
+					end.X = ((_rayCast2D.GetCollisionPoint().X - player.GlobalPosition.X + player.PanelWidth / 2) / player.PanelWidth - 0.5f) * 2;
+					end = end.Normalized();
+				}
+				else
+				{
+					end = velocity.Bounce(_rayCast2D.GetCollisionNormal()).Normalized();
+				}
+
+				end = end * 500;
 				var point = _rayCast2D.GetCollisionPoint();
 
 				_line2D.ClearPoints();

@@ -3,7 +3,6 @@ using System;
 
 public partial class Player : CharacterBody2D
 {
-	public ControllerType ControllerType;
 	private PackedScene _roocketTemplate;
 	private MapEventsBus _mapEventsBus;
 	public int JoyPadId = -1;
@@ -21,8 +20,15 @@ public partial class Player : CharacterBody2D
 
 	public override void _Ready()
 	{
-		ControllerType = ControllerType.Keyboard;
 		_roocketTemplate = GD.Load<PackedScene>("res://Scenes/Rocket/Rocket.tscn");
+	}
+
+	public override void _Input(InputEvent @event)
+	{
+		if (Input.IsActionJustPressed(InputAction.RocketLaunch))
+		{
+			LaunchRocket();
+		}
 	}
 
 	public override void _Process(double delta)
@@ -32,18 +38,13 @@ public partial class Player : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (Input.IsActionJustPressed("rocket_launch"))
+		if (JoyPadId >= 0)
 		{
-			LaunchRocket();
-		}
-
-		if (JoyPadId == -1)
-		{
-			MoveByKeyboard(delta);
+			MoveByJoy(delta);
 		}
 		else
 		{
-			MoveByJoy(delta);
+			MoveByKeyboard(delta);
 		}
 	}
 
