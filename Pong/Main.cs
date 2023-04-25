@@ -17,6 +17,14 @@ public partial class Main : Node
 
 	public override void _Input(InputEvent @event)
 	{
+		/*
+		if (_playerInputManager.IsActionJustPressed(InputAction.Pause))
+		{
+			
+		}
+		
+		*/
+
 		if (Input.IsActionJustPressed(InputAction.Pause))
 		{
 			GetTree().Paused = !GetTree().Paused;

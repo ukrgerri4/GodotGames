@@ -3,51 +3,51 @@ using System;
 
 public partial class Rocket : CharacterBody2D
 {
-	// WHO launched?
-	// Controller?
+    // WHO launched?
+    // Controller?
 
-	public Vector2 velocity = Vector2.Up;
-	public float Speed = 300f;
-	private float _rotationMultiplier = 3f;
+    public Vector2 velocity = Vector2.Up;
+    public float Speed = 300f;
+    private float _rotationMultiplier = 3f;
 
-	public override void _PhysicsProcess(double delta)
-	{
-		// velocity = GetVelocityByJoypad(delta);
-		velocity = GetVelocityByKeyboard(delta);
+    public override void _PhysicsProcess(double delta)
+    {
+        // velocity = GetVelocityByJoypad(delta);
+        velocity = GetVelocityByKeyboard(delta);
 
-		var collision = MoveAndCollide(velocity.Normalized() * Speed * (float)delta);
+        var collision = MoveAndCollide(velocity.Normalized() * Speed * (float)delta);
 
-		if (collision is not null)
-		{
-			var collider = collision.GetCollider();
+        if (collision is not null)
+        {
+            var collider = collision.GetCollider();
 
-			QueueFree();
-			return;
-		}
+            QueueFree();
+            return;
+        }
 
 
-		LookAt(GlobalPosition + velocity.Normalized());
-	}
+        LookAt(GlobalPosition + velocity.Normalized());
+    }
 
-	private Vector2 GetVelocityByJoypad(double delta)
-	{
-		var moveDirection = new Vector2(
-			Input.GetJoyAxis(0, JoyAxis.RightX),
-			Input.GetJoyAxis(0, JoyAxis.RightY)
-		);
+    private Vector2 GetVelocityByJoypad(double delta)
+    {
+        var moveDirection = new Vector2(
+            Input.GetJoyAxis(0, JoyAxis.RightX),
+            Input.GetJoyAxis(0, JoyAxis.RightY)
+        );
 
-		if (moveDirection.LengthSquared() > 0.25f)
-		{
-			var angle = velocity.AngleTo(moveDirection);
-			return velocity.Rotated(angle * (float)delta * _rotationMultiplier);
-		}
+        if (moveDirection.LengthSquared() > 0.25f)
+        {
+            var angle = velocity.AngleTo(moveDirection);
+            return velocity.Rotated(angle * (float)delta * _rotationMultiplier);
+        }
 
-		return velocity;
-	}
+        return velocity;
+    }
 
-	private Vector2 GetVelocityByKeyboard(double delta)
-	{
-		var rotationStrength = Input.GetActionStrength("rocket_right") - Input.GetActionStrength("rocket_left");
-		return velocity.Rotated(Mathf.Pi / 6 * rotationStrength * (float)delta * 3);
-	}
+    private Vector2 GetVelocityByKeyboard(double delta)
+    {
+        var rotationStrength = Input.GetActionStrength("rocket_right") - Input.GetActionStrength("rocket_left");
+        return velocity.Rotated(Mathf.Pi / 6 * rotationStrength * (float)delta * _rotationMultiplier);
+    }
 }

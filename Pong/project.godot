@@ -17,8 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Configuration="*res://Services/Configuration.cs"
-MapEventsBus="*res://Services/MapEventsBus.cs"
+Configuration="*res://Services/Singletons/Configuration.cs"
+MapEventsBus="*res://Services/Singletons/MapEventsBus.cs"
 
 [debug]
 

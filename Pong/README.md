@@ -35,6 +35,7 @@
     - sticky + choose direction(3 point)
     - shooting?
     - magnetism
+15. Add some perk mechanic, like in crimsonland
 
 ## Levels:
 
