@@ -10,6 +10,16 @@
 process_mode = 3
 script = ExtResource("1_jhkjm")
 
+[node name="UserInterface" type="Node" parent="."]
+
+[node name="StartScreen" type="Node" parent="UserInterface"]
+
+[node name="PauseScreen" type="Node" parent="UserInterface"]
+
+[node name="SettingsScreen" type="Node" parent="UserInterface"]
+
+[node name="Game" type="Node" parent="."]
+
 [node name="Map" type="Node2D" parent="."]
 
 [node name="PlayerSection" parent="Map" instance=ExtResource("2_ojant")]

@@ -8,16 +8,17 @@ public class PlayerInputManager
     }
 
     public int DeviceId { get; set; }
+    public float Deadzone { get; set; } = 0.15f;
 
     public bool IsPauseButtonPressed()
     {
         if (DeviceId < 0)
         {
-            return Input.IsPhysicalKeyPressed(Key.P);
+            return Input.IsActionPressed(InputAction.GamePause);
         }
         else
         {
-            return Input.IsJoyButtonPressed(DeviceId, JoyButton.Start);
+            return Input.IsJoyButtonPressed(DeviceId, JoyInputMap.GamePause);
         }
     }
 
@@ -25,11 +26,11 @@ public class PlayerInputManager
     {
         if (DeviceId < 0)
         {
-            return Input.IsPhysicalKeyPressed(Key.Space);
+            return Input.IsActionPressed(InputAction.RocketLaunch);
         }
         else
         {
-            return Input.IsJoyButtonPressed(DeviceId, JoyButton.Y);
+            return Input.IsJoyButtonPressed(DeviceId, JoyInputMap.RocketLaunch);
         }
     }
 
@@ -37,23 +38,23 @@ public class PlayerInputManager
     {
         if (DeviceId < 0)
         {
-            return Input.IsPhysicalKeyPressed(Key.R);
+            return Input.IsActionPressed(InputAction.MapRotate);
         }
         else
         {
-            return Input.IsJoyButtonPressed(DeviceId, JoyButton.A);
+            return Input.IsJoyButtonPressed(DeviceId, JoyInputMap.MapRotate);
         }
     }
 
-    public bool IsAccelerateButtonPressed()
+    public bool IsPadAccelerateButtonPressed()
     {
         if (DeviceId < 0)
         {
-            return Input.IsPhysicalKeyPressed(InputAction.Actions[InputAction.Accelerate].KeyButton.Keycode);
+            return Input.IsActionPressed(InputAction.PadAccelerate);
         }
         else
         {
-            return Input.IsJoyButtonPressed(DeviceId, JoyButton.RightShoulder);
+            return Input.IsJoyButtonPressed(DeviceId, JoyInputMap.PadAccelerate);
         }
     }
 
@@ -61,11 +62,21 @@ public class PlayerInputManager
     {
         if (DeviceId < 0)
         {
-            if (Input.IsPhysicalKeyPressed(Key.D))
+            return Input.GetActionStrength(InputAction.MoveRight) - Input.GetActionStrength(InputAction.MoveLeft);
+        }
+        else
+        {
+            var strength = Input.GetJoyAxis(DeviceId, JoyAxis.LeftX);
+            if (Mathf.Abs(strength) > Deadzone)
+            {
+                return strength;
+            }
+
+            if (Input.IsJoyButtonPressed(DeviceId, JoyInputMap.MoveRight))
             {
                 return 1;
             }
-            else if (Input.IsPhysicalKeyPressed(Key.A))
+            else if (Input.IsJoyButtonPressed(DeviceId, JoyInputMap.MoveLeft))
             {
                 return -1;
             }
@@ -73,10 +84,6 @@ public class PlayerInputManager
             {
                 return 0;
             }
-        }
-        else
-        {
-            return Input.GetJoyAxis(DeviceId, JoyAxis.LeftX);
         }
     }
 
@@ -84,11 +91,21 @@ public class PlayerInputManager
     {
         if (DeviceId < 0)
         {
-            if (Input.IsPhysicalKeyPressed(Key.W))
+            return Input.GetActionStrength(InputAction.MoveUp) - Input.GetActionStrength(InputAction.MoveDown);
+        }
+        else
+        {
+            var strength = Input.GetJoyAxis(DeviceId, JoyAxis.LeftY);
+            if (strength > Deadzone)
+            {
+                return strength;
+            }
+
+            if (Input.IsJoyButtonPressed(DeviceId, JoyInputMap.MoveUp))
             {
                 return 1;
             }
-            else if (Input.IsPhysicalKeyPressed(Key.S))
+            else if (Input.IsJoyButtonPressed(DeviceId, JoyInputMap.MoveDown))
             {
                 return -1;
             }
@@ -97,9 +114,31 @@ public class PlayerInputManager
                 return 0;
             }
         }
+    }
+
+    public float GetRightXStrength()
+    {
+        if (DeviceId < 0)
+        {
+            return Input.GetActionStrength(InputAction.RocketRight) - Input.GetActionStrength(InputAction.RocketLeft);
+        }
         else
         {
-            return Input.GetJoyAxis(DeviceId, JoyAxis.LeftY);
+            var strength = Input.GetJoyAxis(DeviceId, JoyAxis.RightX);
+            return Mathf.Abs(strength) > Deadzone ? strength : 0;
+        }
+    }
+
+    public float GetRightYStrength()
+    {
+        if (DeviceId < 0)
+        {
+            return Input.GetActionStrength(InputAction.RocketUp) - Input.GetActionStrength(InputAction.RocketDown);
+        }
+        else
+        {
+            var strength = Input.GetJoyAxis(DeviceId, JoyAxis.RightY);
+            return Mathf.Abs(strength) > Deadzone ? strength : 0;
         }
     }
 }

@@ -5,7 +5,7 @@ public partial class Player : CharacterBody2D
 {
     private PackedScene _roocketTemplate;
     private MapEventsBus _mapEventsBus;
-    public int DeviceId = -1;
+    public int DeviceId = 0;
     public string Nickname;
 
     private PlayerInputManager _inputManager;
@@ -46,7 +46,7 @@ public partial class Player : CharacterBody2D
     {
         motion = motion.Normalized();
         motion = motion * Speed * (float)delta;
-        if (_inputManager.IsAccelerateButtonPressed())
+        if (_inputManager.IsPadAccelerateButtonPressed())
         {
             motion = motion * 2;
         }
@@ -75,6 +75,7 @@ public partial class Player : CharacterBody2D
     private void LaunchRocket()
     {
         var rocket = _roocketTemplate.Instantiate<Rocket>();
+        rocket.Init(_inputManager);
         AddChild(rocket);
         rocket.TopLevel = true;
         rocket.GlobalPosition = new Vector2(400, 400);

@@ -1,6 +1,6 @@
 ## TODO:
 1. ~~Block all inputs, movement, etc. while map rotating.~~
-2. Add accelerate button for joypad.
+2. ~~Add accelerate button for joypad.~~
 3. Choose direction in the moment of collision like arrove and few sec to choose
 4. Objects with events
    - add points for bounsing, destroy blocks etc.
