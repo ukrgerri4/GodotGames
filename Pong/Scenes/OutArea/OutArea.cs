@@ -9,5 +9,9 @@ public partial class OutArea : Area2D
         {
             ball.Reset();
         }
+        else if (body is Rocket rocket)
+        {
+            rocket.QueueFree();
+        }
     }
 }

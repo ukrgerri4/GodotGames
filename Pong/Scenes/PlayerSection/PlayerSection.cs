@@ -16,13 +16,36 @@ public partial class PlayerSection : Node2D
 
         if (Active)
         {
-            _playerStub.ProcessMode = ProcessModeEnum.Disabled;
-            _playerStub.Visible = false;
+            ActivatePlayer((int)Device.Keyboard);
         }
         else
         {
-            _player.ProcessMode = ProcessModeEnum.Disabled;
-            _player.Visible = false;
+            ActivateStub();
         }
+    }
+
+    public void ActivatePlayer(int deviceId)
+    {
+        _playerStub.ProcessMode = ProcessModeEnum.Disabled;
+        _playerStub.Visible = false;
+
+        _player.ProcessMode = ProcessModeEnum.Inherit;
+        _player.Visible = true;
+        _player.DeviceId = deviceId;
+
+        Active = true;
+
+    }
+
+    public void ActivateStub()
+    {
+        _player.ProcessMode = ProcessModeEnum.Disabled;
+        _player.Visible = false;
+        // TODO: do somthing with player deviceId
+
+        _playerStub.ProcessMode = ProcessModeEnum.Inherit;
+        _playerStub.Visible = true;
+
+        Active = false;
     }
 }

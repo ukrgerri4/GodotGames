@@ -15,3 +15,6 @@ metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_6x256")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(0, -8)

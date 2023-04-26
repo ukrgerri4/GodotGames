@@ -4,24 +4,29 @@ using System;
 public partial class Rocket : CharacterBody2D
 {
     // WHO launched?
-    // Controller?
 
-    public Vector2 velocity = Vector2.Up;
-    public float Speed = 300f;
+    public Vector2 _velocity = Vector2.Zero;
+    public float _speed = 300f;
     private float _rotationMultiplier = 3f;
     private float _minRotationAngle = Mathf.Pi / 6;
     private PlayerInputManager _inputManager;
 
-    public void Init(PlayerInputManager inputManager)
+    public override void _Ready()
+    {
+
+    }
+
+    public void Init(PlayerInputManager inputManager, Vector2 baseVelocity)
     {
         _inputManager = inputManager;
+        _velocity = baseVelocity;
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        velocity = GetVelocity(delta);
+        _velocity = GetVelocity(delta);
 
-        var collision = MoveAndCollide(velocity.Normalized() * Speed * (float)delta);
+        var collision = MoveAndCollide(_velocity.Normalized() * _speed * (float)delta);
 
         if (collision is not null)
         {
@@ -31,8 +36,7 @@ public partial class Rocket : CharacterBody2D
             return;
         }
 
-
-        LookAt(GlobalPosition + velocity.Normalized());
+        LookAt(GlobalPosition + _velocity.Normalized());
     }
 
     private Vector2 GetVelocity(double delta)
@@ -42,8 +46,20 @@ public partial class Rocket : CharacterBody2D
             _inputManager.GetRightYStrength()
         );
 
-        var rotationAngle = velocity.AngleTo(moveDirection);
-        var angle = rotationAngle >= _minRotationAngle ? rotationAngle : _minRotationAngle;
-        return velocity.Rotated(angle * (float)delta * _rotationMultiplier);
+        if (moveDirection.LengthSquared() < 0.15f)
+        {
+            return _velocity;
+        }
+
+        var rotationAngle = _velocity.AngleTo(moveDirection);
+
+        // TODO: refactoring
+        var angle = Mathf.Abs(rotationAngle) >= _minRotationAngle
+            ? rotationAngle
+            : rotationAngle >= 0
+                ? _minRotationAngle
+                : _minRotationAngle * -1;
+
+        return _velocity.Rotated(angle * (float)delta * _rotationMultiplier);
     }
 }

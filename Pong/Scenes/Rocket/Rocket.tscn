@@ -7,7 +7,7 @@ size = Vector2(8, 16)
 
 [node name="Rocket" type="CharacterBody2D"]
 collision_layer = 256
-collision_mask = 46
+collision_mask = 38
 motion_mode = 1
 script = ExtResource("1_0vqq7")
 metadata/_edit_group_ = true

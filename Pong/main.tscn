@@ -1,16 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://cglq4ciobbu1r"]
+[gd_scene load_steps=8 format=3 uid="uid://cglq4ciobbu1r"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_jhkjm"]
 [ext_resource type="PackedScene" uid="uid://dps7jornlit1l" path="res://Scenes/PlayerSection/PlayerSection.tscn" id="2_ojant"]
+[ext_resource type="Script" path="res://Scenes/Game/Game.cs" id="2_sdotq"]
 [ext_resource type="PackedScene" uid="uid://dinq0k78663fy" path="res://Scenes/Corner/Corner.tscn" id="4_l8eng"]
 [ext_resource type="PackedScene" uid="uid://jb82o6acl81" path="res://Scenes/Ball/Ball.tscn" id="5_hw464"]
 [ext_resource type="PackedScene" uid="uid://t5jaspadowbt" path="res://Scenes/RotationArea/RotationArea.tscn" id="6_t4mlh"]
+[ext_resource type="PackedScene" uid="uid://dejaxtlvgobvy" path="res://Scenes/Blocks/SimpleBlock/SimpleBlock.tscn" id="7_6e4qc"]
 
 [node name="Main" type="Node"]
 process_mode = 3
 script = ExtResource("1_jhkjm")
 
 [node name="UserInterface" type="Node" parent="."]
+process_mode = 3
 
 [node name="StartScreen" type="Node" parent="UserInterface"]
 
@@ -19,51 +22,70 @@ script = ExtResource("1_jhkjm")
 [node name="SettingsScreen" type="Node" parent="UserInterface"]
 
 [node name="Game" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("2_sdotq")
 
-[node name="Map" type="Node2D" parent="."]
+[node name="Background" type="Node" parent="Game"]
 
-[node name="PlayerSection" parent="Map" instance=ExtResource("2_ojant")]
-Active = true
+[node name="Map" type="Node2D" parent="Game"]
+process_mode = 1
+
+[node name="PlayerSection1" parent="Game/Map" instance=ExtResource("2_ojant")]
 metadata/_edit_lock_ = true
 
-[node name="PlayerSection2" parent="Map" instance=ExtResource("2_ojant")]
+[node name="PlayerSection2" parent="Game/Map" instance=ExtResource("2_ojant")]
 rotation = 1.5708
 metadata/_edit_lock_ = true
 
-[node name="PlayerSection3" parent="Map" instance=ExtResource("2_ojant")]
+[node name="PlayerSection3" parent="Game/Map" instance=ExtResource("2_ojant")]
 rotation = 3.14159
 metadata/_edit_lock_ = true
 
-[node name="PlayerSection4" parent="Map" instance=ExtResource("2_ojant")]
+[node name="PlayerSection4" parent="Game/Map" instance=ExtResource("2_ojant")]
 rotation = 4.71239
 metadata/_edit_lock_ = true
 
-[node name="Corners" type="Node2D" parent="Map"]
+[node name="Corners" type="Node2D" parent="Game/Map"]
 
-[node name="Corner1" parent="Map/Corners" instance=ExtResource("4_l8eng")]
+[node name="Corner1" parent="Game/Map/Corners" instance=ExtResource("4_l8eng")]
 position = Vector2(-540, -540)
 metadata/_edit_lock_ = true
 
-[node name="Corner2" parent="Map/Corners" instance=ExtResource("4_l8eng")]
+[node name="Corner2" parent="Game/Map/Corners" instance=ExtResource("4_l8eng")]
 position = Vector2(-540, 540)
 rotation = -1.5708
 metadata/_edit_lock_ = true
 
-[node name="Corner3" parent="Map/Corners" instance=ExtResource("4_l8eng")]
+[node name="Corner3" parent="Game/Map/Corners" instance=ExtResource("4_l8eng")]
 position = Vector2(540, 540)
 rotation = -3.14159
 metadata/_edit_lock_ = true
 
-[node name="Corner4" parent="Map/Corners" instance=ExtResource("4_l8eng")]
+[node name="Corner4" parent="Game/Map/Corners" instance=ExtResource("4_l8eng")]
 position = Vector2(540, -540)
 rotation = 1.5708
 metadata/_edit_lock_ = true
 
-[node name="Ball" parent="." instance=ExtResource("5_hw464")]
-
-[node name="RotationArea" parent="." instance=ExtResource("6_t4mlh")]
+[node name="RotationArea" parent="Game/Map" instance=ExtResource("6_t4mlh")]
 position = Vector2(-4, -4)
 collision_layer = 128
 metadata/_edit_lock_ = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Ball" parent="Game" instance=ExtResource("5_hw464")]
+
+[node name="Camera2D" type="Camera2D" parent="Game"]
+
+[node name="MapObjects" type="Node2D" parent="Game"]
+process_mode = 1
+
+[node name="SimpleBlock" parent="Game/MapObjects" instance=ExtResource("7_6e4qc")]
+position = Vector2(50, 50)
+
+[node name="SimpleBlock2" parent="Game/MapObjects" instance=ExtResource("7_6e4qc")]
+position = Vector2(-50, 50)
+
+[node name="SimpleBlock3" parent="Game/MapObjects" instance=ExtResource("7_6e4qc")]
+position = Vector2(50, -50)
+
+[node name="SimpleBlock4" parent="Game/MapObjects" instance=ExtResource("7_6e4qc")]
+position = Vector2(-50, -50)

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dejaxtlvgobvy"]
+
+[ext_resource type="Script" path="res://Scenes/Blocks/SimpleBlock/SimpleBlock.cs" id="1_tgr5m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ujk61"]
+size = Vector2(40, 40)
+
+[node name="SimpleBlock" type="StaticBody2D"]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("1_tgr5m")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ujk61")

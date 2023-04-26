@@ -2,13 +2,13 @@ using Godot;
 
 public class PlayerInputManager
 {
+    public int DeviceId { get; set; }
+    public float Deadzone { get; set; } = 0.15f;
+
     public PlayerInputManager(int deviceId)
     {
         DeviceId = deviceId;
     }
-
-    public int DeviceId { get; set; }
-    public float Deadzone { get; set; } = 0.15f;
 
     public bool IsPauseButtonPressed()
     {
@@ -91,21 +91,21 @@ public class PlayerInputManager
     {
         if (DeviceId < 0)
         {
-            return Input.GetActionStrength(InputAction.MoveUp) - Input.GetActionStrength(InputAction.MoveDown);
+            return Input.GetActionStrength(InputAction.MoveDown) - Input.GetActionStrength(InputAction.MoveUp);
         }
         else
         {
             var strength = Input.GetJoyAxis(DeviceId, JoyAxis.LeftY);
-            if (strength > Deadzone)
+            if (Mathf.Abs(strength) > Deadzone)
             {
                 return strength;
             }
 
-            if (Input.IsJoyButtonPressed(DeviceId, JoyInputMap.MoveUp))
+            if (Input.IsJoyButtonPressed(DeviceId, JoyInputMap.MoveDown))
             {
                 return 1;
             }
-            else if (Input.IsJoyButtonPressed(DeviceId, JoyInputMap.MoveDown))
+            else if (Input.IsJoyButtonPressed(DeviceId, JoyInputMap.MoveUp))
             {
                 return -1;
             }
@@ -133,7 +133,7 @@ public class PlayerInputManager
     {
         if (DeviceId < 0)
         {
-            return Input.GetActionStrength(InputAction.RocketUp) - Input.GetActionStrength(InputAction.RocketDown);
+            return Input.GetActionStrength(InputAction.RocketDown) - Input.GetActionStrength(InputAction.RocketUp);
         }
         else
         {
