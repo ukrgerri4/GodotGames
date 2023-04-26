@@ -36,6 +36,7 @@
     - shooting?
     - magnetism
 15. Add some perk mechanic, like in crimsonland
+16. Add LOGGER!!!
 
 ## Levels:
 
@@ -47,10 +48,10 @@
 
 ## Sketches
 
-![Alt text](docs/rocket_template.png)
+![Alt text](.docs/rocket_template.png)
 * ball can fly to the open panel when rocket launched, then ball can be burped(відрижка) out with some sound
 
-![Alt text](docs/rocket_template_2.png)
+![Alt text](.docs/rocket_template_2.png)
 
 
 

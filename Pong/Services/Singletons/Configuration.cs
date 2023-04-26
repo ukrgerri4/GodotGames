@@ -1,39 +1,53 @@
+using System.Collections.Generic;
 using Godot;
 
 public partial class Configuration : Node
 {
+    public List<ConnectedDevice> ConnectedDevices = new List<ConnectedDevice>();
     public override void _Ready()
     {
+        InitConnectedDevices();
+    }
+
+    private void InitConnectedDevices()
+    {
+        var deviceIds = Input.GetConnectedJoypads();
+        if (deviceIds is not null)
+        {
+            foreach (var deviceId in deviceIds)
+            {
+                var newDevice = GetConnectedDevice(deviceId);
+                ConnectedDevices.Add(newDevice);
+                GD.Print($"Initialized DeviceId: {newDevice.DeviceId}, Guid: {newDevice.Guid}, Name: {newDevice.Name}");
+            }
+        }
+
         Input.Singleton.Connect("joy_connection_changed", new Callable(this, nameof(OnJoyConnectionChanged)));
     }
 
-    public override void _Input(InputEvent @event)
+    private void OnJoyConnectionChanged(int deviceId, bool connected)
     {
-        // if (Input.IsActionJustPressed("exit"))
-        // {
-        // }
-
-        // if (Input.IsActionJustPressed("change_mouse_caption"))
-        // {
-        // }
-
-        // if (Input.IsActionJustPressed("change_mouse_mode"))
-        // {
-        // }
-
-        // if (Input.IsActionJustPressed("full_screen"))
-        // {
-        // }
+        GD.Print($"Event: JoyConnectionChanged. Device: {deviceId}, Connected: {connected}");
+        if (connected)
+        {
+            var newDevice = GetConnectedDevice(deviceId);
+            ConnectedDevices.Add(newDevice);
+            GD.Print($"Added DeviceId: {newDevice.DeviceId}, Guid: {newDevice.Guid}, Name: {newDevice.Name}");
+        }
+        else
+        {
+            var removedCount = ConnectedDevices.RemoveAll(x => x.DeviceId == deviceId);
+            GD.Print($"Removed DeviceId: {deviceId}. Removed count: {removedCount}");
+        }
     }
 
-    private void OnJoyConnectionChanged(int device, bool connected)
+    private ConnectedDevice GetConnectedDevice(int deviceId)
     {
-        // generate input map for connected device
-        // or create all input maps previously and use it
-        // GD.Print(device, connected);
-        // var key1 = new InputEventJoypadMotion();
-        // var key = new InputEventKey();
-        // key.PhysicalKeycode = Key.A;
-        // InputMap.ActionAddEvent("dsd", key);
+        return new ConnectedDevice
+        {
+            DeviceId = deviceId,
+            Guid = Input.GetJoyGuid(deviceId),
+            Name = Input.GetJoyName(deviceId)
+        };
     }
 }
