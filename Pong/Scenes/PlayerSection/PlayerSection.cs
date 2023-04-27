@@ -9,9 +9,13 @@ public partial class PlayerSection : Node2D
     [Export]
     public bool Active { get; set; } = false;
 
+    [Export]
+    public int PlayerId { get; set; }
+
     public override void _Ready()
     {
         _player = GetNode<Player>("Player");
+        _player.PlayerId = PlayerId;
         _playerStub = GetNode<PlayerStub>("PlayerStub");
 
         if (Active)

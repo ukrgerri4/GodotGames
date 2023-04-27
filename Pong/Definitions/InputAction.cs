@@ -3,6 +3,7 @@ using Godot;
 public static class InputAction
 {
     public static readonly StringName GamePause = new StringName("game_pause");
+    public static readonly StringName GameFullScreen = new StringName("game_full_screen");
 
     public static readonly StringName MoveUp = new StringName("move_up");
     public static readonly StringName MoveDown = new StringName("move_down");

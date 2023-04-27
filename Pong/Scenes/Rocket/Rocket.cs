@@ -6,7 +6,7 @@ public partial class Rocket : CharacterBody2D
     // WHO launched?
 
     public Vector2 _velocity = Vector2.Zero;
-    public float _speed = 300f;
+    public float _speed = 450f;
     private float _rotationMultiplier = 3f;
     private float _minRotationAngle = Mathf.Pi / 6;
     private PlayerInputManager _inputManager;

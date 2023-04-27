@@ -8,6 +8,8 @@ public partial class Ball : CharacterBody2D
     private RayCast2D _rayCast2D;
     private Line2D _line2D;
 
+    private Player _lastTochedPlayer;
+
     public override void _Ready()
     {
         _rayCast2D = GetNode<RayCast2D>("RayCast2D");
@@ -30,35 +32,21 @@ public partial class Ball : CharacterBody2D
 
             if (collider is SimpleBlock block)
             {
-                block.TouchedByBall();
-                velocity = velocity.Bounce(collision.GetNormal()).Normalized();
+                UpdateScore(1);
             }
             if (collider is Player player)
             {
-                player.TouchedByBall();
-                velocity = velocity.Bounce(collision.GetNormal());
-                if (player.IsHorizontalPosition)
-                {
-                    velocity.X = ((collision.GetPosition().X - player.GlobalPosition.X + player.PanelWidth / 2) / player.PanelWidth - 0.5f) * 2;
-                }
-                else
-                {
-                    velocity.Y = ((collision.GetPosition().Y - player.GlobalPosition.Y + player.PanelWidth / 2) / player.PanelWidth - 0.5f) * 2;
-                }
-
-                velocity = velocity.Normalized();
+                UpdatePlayer(player);
+                UpdateScore(1);
+                UpdateBouncingVelocityFromPlayer(collision, player);
+                return;
             }
             else if (collider is Corner corner)
             {
-                corner.TouchedByBall();
-                velocity = velocity.Bounce(collision.GetNormal()).Normalized();
-            }
-            else if (collider is PlayerStub stub)
-            {
-                stub.TouchedByBall();
-                velocity = velocity.Bounce(collision.GetNormal()).Normalized();
+                UpdateScore(3);
             }
 
+            UpdateBouncingVelocityFromWall(collision);
             return;
         }
 
@@ -89,8 +77,39 @@ public partial class Ball : CharacterBody2D
         // }
     }
 
+    private void UpdateBouncingVelocityFromPlayer(KinematicCollision2D collision, Player player)
+    {
+        velocity = velocity.Bounce(collision.GetNormal());
+        if (player.IsHorizontalPosition)
+        {
+            velocity.X = ((collision.GetPosition().X - player.GlobalPosition.X + player.PanelWidth / 2) / player.PanelWidth - 0.5f) * 2;
+        }
+        else
+        {
+            velocity.Y = ((collision.GetPosition().Y - player.GlobalPosition.Y + player.PanelWidth / 2) / player.PanelWidth - 0.5f) * 2;
+        }
+
+        velocity = velocity.Normalized();
+    }
+
+    private void UpdateBouncingVelocityFromWall(KinematicCollision2D collision)
+    {
+        velocity = velocity.Bounce(collision.GetNormal()).Normalized();
+    }
+
+    private void UpdateScore(int points)
+    {
+        _lastTochedPlayer?.UpdateScore(points);
+    }
+
+    private void UpdatePlayer(Player player)
+    {
+        _lastTochedPlayer = player;
+    }
+
     public void Reset()
     {
+        _lastTochedPlayer = null;
         Position = Vector2.Zero;
         RandomizeDirection();
     }
@@ -100,6 +119,5 @@ public partial class Ball : CharacterBody2D
         var random = GD.Randf();
         float angle = random * Mathf.Pi * 2;
         velocity = new Vector2(Mathf.Cos(angle) * 75, Mathf.Sin(angle) * 75).Normalized();
-        // velocity = Vector2.Down;
     }
 }

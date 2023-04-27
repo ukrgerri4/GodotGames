@@ -37,8 +37,14 @@ public partial class Player : CharacterBody2D
 
     public bool IsHorizontalPosition => Mathf.RoundToInt(GlobalRotationDegrees) % 180 == 0;
 
+    private int _score = 0;
+    private EventsBus _eventsBus;
+
+    public int PlayerId { get; set; } = 0;
+
     public override void _Ready()
     {
+        _eventsBus = GetNode<EventsBus>("/root/EventsBus");
         _rectangleShape2D = (RectangleShape2D)GetNode<CollisionShape2D>("CollisionShape2D")?.Shape;
         _actionArea = GetNode<ActionArea>("../ActionArea");
         _marker2D = GetNode<Marker2D>("Marker2D");
@@ -90,10 +96,11 @@ public partial class Player : CharacterBody2D
         MoveAndCollide(motion);
     }
 
-    public void TouchedByBall()
+    public void UpdateScore(int points)
     {
-        // add points
-        // activete post hit ball
+        var value = _score + points;
+        _score = value > 0 ? value : 0;
+        _eventsBus.NotifyPlayerScoreChanged(PlayerId, _score);
     }
 
     private void LaunchRocket()

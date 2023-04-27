@@ -12,5 +12,17 @@ public partial class Main : Node
         {
             GetTree().Paused = !GetTree().Paused;
         }
+
+        if (Input.IsActionJustPressed(InputAction.GameFullScreen))
+        {
+            if (DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Fullscreen)
+            {
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
+            }
+            else
+            {
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
+            }
+        }
     }
 }
