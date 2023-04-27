@@ -3,7 +3,9 @@ using System;
 
 public partial class Ball : CharacterBody2D
 {
-    public const float Speed = 500.0f;
+    private const float _startingSpeed = 350.0f;
+    public float Speed = _startingSpeed;
+    private int _bounceCounter = 0;
     public Vector2 velocity = Vector2.Zero;
     private RayCast2D _rayCast2D;
     private Line2D _line2D;
@@ -28,6 +30,8 @@ public partial class Ball : CharacterBody2D
 
         if (collision is not null)
         {
+            UpdateBallParameters();
+
             var collider = collision.GetCollider();
 
             if (collider is SimpleBlock block)
@@ -77,6 +81,15 @@ public partial class Ball : CharacterBody2D
         // }
     }
 
+    private void UpdateBallParameters()
+    {
+        _bounceCounter++;
+        if (_bounceCounter % 3 == 0)
+        {
+            Speed++;
+        }
+    }
+
     private void UpdateBouncingVelocityFromPlayer(KinematicCollision2D collision, Player player)
     {
         velocity = velocity.Bounce(collision.GetNormal());
@@ -109,6 +122,7 @@ public partial class Ball : CharacterBody2D
 
     public void Reset()
     {
+        Speed = _startingSpeed;
         _lastTochedPlayer = null;
         Position = Vector2.Zero;
         RandomizeDirection();
