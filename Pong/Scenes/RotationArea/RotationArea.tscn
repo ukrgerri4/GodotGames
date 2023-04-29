@@ -6,7 +6,7 @@
 radius = 400.0
 
 [node name="RotationArea" type="Area2D"]
-collision_layer = 256
+collision_layer = 0
 monitorable = false
 script = ExtResource("1_dig3t")
 metadata/_edit_group_ = true

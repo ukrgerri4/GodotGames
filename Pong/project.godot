@@ -104,13 +104,12 @@ map_rotate={
 2d_physics/layer_1="Ball"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Corner"
-2d_physics/layer_4="OutArea"
-2d_physics/layer_5="ActionArea"
-2d_physics/layer_6="Wall"
-2d_physics/layer_7="BallCenter"
-2d_physics/layer_8="RotationArea"
-2d_physics/layer_9="Rocket"
-2d_physics/layer_10="Modifier"
+2d_physics/layer_9="BallCenterArea"
+2d_physics/layer_10="OutArea"
+2d_physics/layer_11="ActionArea"
+2d_physics/layer_12="RotationArea"
+2d_physics/layer_17="Bounceable"
+2d_physics/layer_18="OutDestroyable"
 
 [physics]
 

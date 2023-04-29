@@ -6,7 +6,7 @@
 size = Vector2(1008, 64)
 
 [node name="PlayerStub" type="StaticBody2D"]
-collision_layer = 32
+collision_layer = 65536
 collision_mask = 0
 script = ExtResource("1_obkk5")
 metadata/_edit_group_ = true

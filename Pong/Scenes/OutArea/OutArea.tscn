@@ -8,8 +8,8 @@ size = Vector2(200, 1080)
 [node name="OutArea" type="Area2D"]
 position = Vector2(0, 640)
 rotation = 1.5708
-collision_layer = 8
-collision_mask = 769
+collision_layer = 0
+collision_mask = 131072
 monitorable = false
 script = ExtResource("1_v5km6")
 metadata/_edit_group_ = true

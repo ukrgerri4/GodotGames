@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scenes/Corner/Corner.cs" id="1_p1j3m"]
 
 [node name="Corner" type="StaticBody2D"]
-collision_layer = 4
+collision_layer = 65540
 collision_mask = 0
 script = ExtResource("1_p1j3m")
 metadata/_edit_group_ = true
