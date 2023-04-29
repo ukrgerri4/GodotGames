@@ -3,27 +3,28 @@ using System;
 
 public partial class SimpleBlock : StaticBody2D
 {
-	private Map _map;
-	private PackedScene _modifier;
+	public Player LastTouchedPlayer { get; set; }
+
+	private GameManager _gameManager;
 
 	[Export]
-	public int HitsToDestroy { get; set; } = 3;
+	public int HitsToDestroy { get; set; } = 1;
 
 	public override void _Ready()
 	{
-		_map = GetNode<Map>("/root/Main/Game/Map");
-		_modifier = GD.Load<PackedScene>("res://Scenes/Modifiers/Modifier.tscn");
+		_gameManager = GetNode<GameManager>("/root/GameManager");
 	}
 
-	public void TouchedByBall()
+	public void TouchedByBall(Player player)
 	{
-		// event to get points to player
+		LastTouchedPlayer = player;
 		HitsToDestroy--;
 		if (HitsToDestroy == 0)
 		{
-			var modifier = _modifier.Instantiate<Modifier>();
-			modifier.GlobalPosition = GlobalPosition;
-			_map.AddChild(modifier);
+			if (LastTouchedPlayer is not null)
+			{
+				_gameManager.CreateModifier(this);
+			}
 			QueueFree();
 		}
 	}

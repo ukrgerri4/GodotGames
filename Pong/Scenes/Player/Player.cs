@@ -36,6 +36,7 @@ public partial class Player : CharacterBody2D
 
 	public float Speed = 400f;
 
+	//TODO refactop to map position based
 	public bool IsHorizontalPosition => Mathf.RoundToInt(GlobalRotationDegrees) % 180 == 0;
 
 	private int _score = 0;
@@ -46,6 +47,17 @@ public partial class Player : CharacterBody2D
 	private bool _rocketExist { get; set; } = false;
 
 	private bool CanLaunchRocket => !_rocketExist && _actionArea.ActionAllowed;
+
+	public MapPosition MapPosition { get; set; } = MapPosition.Undefined;
+
+	public Vector2 ItemFallDirection => this.MapPosition switch
+	{
+		MapPosition.Top => Vector2.Up,
+		MapPosition.Down => Vector2.Down,
+		MapPosition.Left => Vector2.Left,
+		MapPosition.Right => Vector2.Right,
+		_ => Vector2.Zero,
+	};
 
 	public override void _Ready()
 	{

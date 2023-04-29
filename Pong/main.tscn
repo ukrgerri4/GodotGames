@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cglq4ciobbu1r"]
+[gd_scene load_steps=11 format=3 uid="uid://75q788gssx57"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_jhkjm"]
 [ext_resource type="PackedScene" uid="uid://dps7jornlit1l" path="res://Scenes/PlayerSection/PlayerSection.tscn" id="2_ojant"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://jb82o6acl81" path="res://Scenes/Ball/Ball.tscn" id="5_hw464"]
 [ext_resource type="PackedScene" uid="uid://t5jaspadowbt" path="res://Scenes/RotationArea/RotationArea.tscn" id="6_t4mlh"]
 [ext_resource type="PackedScene" uid="uid://dejaxtlvgobvy" path="res://Scenes/Blocks/SimpleBlock/SimpleBlock.tscn" id="7_6e4qc"]
+[ext_resource type="PackedScene" uid="uid://dxkde3h6m6uus" path="res://Scenes/PositionArea/PositionArea.tscn" id="10_a2ouk"]
 
 [node name="Main" type="Node"]
 process_mode = 3
@@ -117,3 +118,23 @@ position = Vector2(-50, -50)
 [node name="Ball" parent="Game" instance=ExtResource("5_hw464")]
 
 [node name="Camera2D" type="Camera2D" parent="Game"]
+
+[node name="PlayerPositionAreas" type="Node2D" parent="Game"]
+
+[node name="PositionAreaTop" parent="Game/PlayerPositionAreas" instance=ExtResource("10_a2ouk")]
+position = Vector2(0, -534)
+rotation = 1.5708
+MapPosition = 1
+
+[node name="PositionAreaLeft" parent="Game/PlayerPositionAreas" instance=ExtResource("10_a2ouk")]
+position = Vector2(-534, 0)
+MapPosition = 3
+
+[node name="PositionAreaRight" parent="Game/PlayerPositionAreas" instance=ExtResource("10_a2ouk")]
+position = Vector2(534, 0)
+MapPosition = 4
+
+[node name="PositionAreaDown" parent="Game/PlayerPositionAreas" instance=ExtResource("10_a2ouk")]
+position = Vector2(0, 534)
+rotation = 1.5708
+MapPosition = 2

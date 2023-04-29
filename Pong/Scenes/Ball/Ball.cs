@@ -7,6 +7,7 @@ public partial class Ball : CharacterBody2D
 	public float Speed = _startingSpeed;
 	private int _bounceCounter = 0;
 	public Vector2 velocity = Vector2.Zero;
+	private GameManager _gameManager;
 	private RayCast2D _rayCast2D;
 	private Line2D _line2D;
 
@@ -14,6 +15,8 @@ public partial class Ball : CharacterBody2D
 
 	public override void _Ready()
 	{
+		_gameManager = GetNode<GameManager>("/root/GameManager");
+
 		_rayCast2D = GetNode<RayCast2D>("RayCast2D");
 		_line2D = GetNode<Line2D>("Line2D");
 		Reset();
@@ -37,7 +40,7 @@ public partial class Ball : CharacterBody2D
 			if (collider is SimpleBlock block)
 			{
 				UpdateScore(1);
-				block.TouchedByBall();
+				block.TouchedByBall(_lastTochedPlayer);
 			}
 			if (collider is Player player)
 			{

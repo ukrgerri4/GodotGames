@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Configuration="*res://Services/Singletons/Configuration.cs"
 EventsBus="*res://Services/Singletons/EventsBus.cs"
+GameManager="*res://Services/Singletons/GameManager.cs"
 
 [display]
 
