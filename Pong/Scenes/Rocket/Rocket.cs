@@ -11,6 +11,10 @@ public partial class Rocket : CharacterBody2D
     private float _minRotationAngle = Mathf.Pi / 6;
     private PlayerInputManager _inputManager;
 
+    // public delegate void AttackedEventHandler();
+    // public AttackedEventHandler Destroyed;
+
+
     public override void _Ready()
     {
 

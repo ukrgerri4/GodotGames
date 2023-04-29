@@ -42,6 +42,10 @@ public partial class Player : CharacterBody2D
 
     public int PlayerId { get; set; } = 0;
 
+    private bool _rocketExist { get; set; } = false;
+
+    private bool CanLaunchRocket => !_rocketExist && _actionArea.ActionAllowed;
+
     public override void _Ready()
     {
         _eventsBus = GetNode<EventsBus>("/root/EventsBus");
@@ -55,13 +59,9 @@ public partial class Player : CharacterBody2D
 
     public override void _Input(InputEvent @event)
     {
-        if (_inputManager.IsRocketLaunchButtonPressed() && _actionArea.ActionAllowed)
+        // or rocket already lunched...
+        if (_inputManager.IsRocketLaunchButtonPressed() && CanLaunchRocket)
         {
-            // GD.Print("PlayerSection: " + GetParent<PlayerSection>().GlobalRotationDegrees);
-            // GD.Print("Player: " + Mathf.RoundToInt(GlobalRotationDegrees) % 180);
-            // GD.Print("PlayerStub: " + GetNode<PlayerStub>("../PlayerStub").GlobalRotationDegrees);
-
-            // TODO: ADD TIMER
             LaunchRocket();
         }
     }
@@ -103,13 +103,22 @@ public partial class Player : CharacterBody2D
         _eventsBus.NotifyPlayerScoreChanged(PlayerId, _score);
     }
 
-    private void LaunchRocket()
+    private Rocket LaunchRocket()
     {
         var rocket = _roocketTemplate.Instantiate<Rocket>();
         rocket.TopLevel = true;
         rocket.GlobalRotationDegrees = GlobalRotationDegrees;
         rocket.GlobalPosition = GlobalPosition * 0.9f;
         rocket.Init(_inputManager, (_marker2D.GlobalPosition - GlobalPosition).Normalized());
+        rocket.TreeExited += OnRocketDestroyed;
+        _rocketExist = true;
         AddChild(rocket);
+        return rocket;
+    }
+
+    private void OnRocketDestroyed()
+    {
+        GD.Print("Rocket not exist.");
+        _rocketExist = false;
     }
 }

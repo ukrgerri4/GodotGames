@@ -37,6 +37,7 @@ public partial class Ball : CharacterBody2D
             if (collider is SimpleBlock block)
             {
                 UpdateScore(1);
+                block.TouchedByBall();
             }
             if (collider is Player player)
             {

@@ -15,7 +15,7 @@ position = Vector2(0, 0)
 [node name="OutArea" parent="." instance=ExtResource("2_stvo0")]
 
 [node name="PlayerStub" parent="." instance=ExtResource("1_a7f63")]
-position = Vector2(0, 564)
+position = Vector2(0, 560)
 
 [node name="Player" parent="." instance=ExtResource("2_l02a3")]
-position = Vector2(0, 536)
+position = Vector2(0, 534)

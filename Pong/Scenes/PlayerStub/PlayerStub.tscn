@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scenes/PlayerStub/PlayerStub.cs" id="1_obkk5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_btvjl"]
-size = Vector2(1032, 64)
+size = Vector2(1008, 64)
 
 [node name="PlayerStub" type="StaticBody2D"]
 collision_layer = 32
