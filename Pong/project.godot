@@ -109,6 +109,7 @@ map_rotate={
 2d_physics/layer_7="BallCenter"
 2d_physics/layer_8="RotationArea"
 2d_physics/layer_9="Rocket"
+2d_physics/layer_10="Modifier"
 
 [physics]
 

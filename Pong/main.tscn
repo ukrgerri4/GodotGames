@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://cglq4ciobbu1r"]
+[gd_scene load_steps=10 format=3 uid="uid://cglq4ciobbu1r"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_jhkjm"]
 [ext_resource type="PackedScene" uid="uid://dps7jornlit1l" path="res://Scenes/PlayerSection/PlayerSection.tscn" id="2_ojant"]
 [ext_resource type="Script" path="res://Scenes/Game/Game.cs" id="2_sdotq"]
 [ext_resource type="PackedScene" uid="uid://mghafs10nhqs" path="res://Scenes/GamePanel/PlayerStatistic/PlayerStatistic.tscn" id="3_7uy75"]
+[ext_resource type="Script" path="res://Scenes/Map/Map.cs" id="4_as3cj"]
 [ext_resource type="PackedScene" uid="uid://dinq0k78663fy" path="res://Scenes/Corner/Corner.tscn" id="4_l8eng"]
 [ext_resource type="PackedScene" uid="uid://jb82o6acl81" path="res://Scenes/Ball/Ball.tscn" id="5_hw464"]
 [ext_resource type="PackedScene" uid="uid://t5jaspadowbt" path="res://Scenes/RotationArea/RotationArea.tscn" id="6_t4mlh"]
@@ -51,6 +52,7 @@ PlayerName = "Marina"
 
 [node name="Map" type="Node2D" parent="Game"]
 process_mode = 1
+script = ExtResource("4_as3cj")
 
 [node name="PlayerSection1" parent="Game/Map" instance=ExtResource("2_ojant")]
 PlayerId = 1
