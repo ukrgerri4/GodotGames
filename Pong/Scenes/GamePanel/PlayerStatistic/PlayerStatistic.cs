@@ -20,14 +20,14 @@ public partial class PlayerStatistic : HBoxContainer
         _nameLabel.Text = (PlayerName ?? $"Player{PlayerId}") + " Score:";
         _scoreLabel = GetNode<Label>("Score");
         _scoreLabel.Text = "0";
-        _eventsBus.AddPlayerScoreNotificationHandler(HandelePlayerScoreNotification);
+        _eventsBus.Player.ScoreChanged += OnScoreChanged;
     }
 
-    private void HandelePlayerScoreNotification(PlayerScoreNotificationEvent notification)
+    private void OnScoreChanged(int playerId, int score)
     {
-        if (notification.PlayerId == PlayerId)
+        if (playerId == PlayerId)
         {
-            _scoreLabel.Text = notification.Score.ToString();
+            _scoreLabel.Text = score.ToString();
         }
     }
 }

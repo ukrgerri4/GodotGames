@@ -45,6 +45,8 @@ public partial class Game : Node
                 playerSection.ActivatePlayer(deviceId);
             }
         }
+
+        GetNode<Node>("Balls").GetChild<Ball>(0).Reset();
     }
 
     public override void _Process(double delta)

@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://75q788gssx57"]
+[gd_scene load_steps=12 format=3 uid="uid://75q788gssx57"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_jhkjm"]
 [ext_resource type="PackedScene" uid="uid://dps7jornlit1l" path="res://Scenes/PlayerSection/PlayerSection.tscn" id="2_ojant"]
 [ext_resource type="Script" path="res://Scenes/Game/Game.cs" id="2_sdotq"]
 [ext_resource type="PackedScene" uid="uid://mghafs10nhqs" path="res://Scenes/GamePanel/PlayerStatistic/PlayerStatistic.tscn" id="3_7uy75"]
+[ext_resource type="Script" path="res://Scenes/DebugPanel/DebugPanel.cs" id="4_6bpn4"]
 [ext_resource type="Script" path="res://Scenes/Map/Map.cs" id="4_as3cj"]
 [ext_resource type="PackedScene" uid="uid://dinq0k78663fy" path="res://Scenes/Corner/Corner.tscn" id="4_l8eng"]
 [ext_resource type="PackedScene" uid="uid://jb82o6acl81" path="res://Scenes/Ball/Ball.tscn" id="5_hw464"]
@@ -50,6 +51,62 @@ PlayerName = "Igor"
 layout_mode = 2
 PlayerId = 2
 PlayerName = "Marina"
+
+[node name="DebugPanel" type="VBoxContainer" parent="Game"]
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = -0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_6bpn4")
+
+[node name="BallSpeedContainer" type="HBoxContainer" parent="Game/DebugPanel"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Game/DebugPanel/BallSpeedContainer"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+text = "Ball Speed:"
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Game/DebugPanel/BallSpeedContainer"]
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+vertical_alignment = 1
+
+[node name="BallRadiusContainer" type="HBoxContainer" parent="Game/DebugPanel"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Game/DebugPanel/BallRadiusContainer"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+text = "Ball Radius:"
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Game/DebugPanel/BallRadiusContainer"]
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+vertical_alignment = 1
+
+[node name="ModifierSpeedContainer" type="HBoxContainer" parent="Game/DebugPanel"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Game/DebugPanel/ModifierSpeedContainer"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+text = "Mofifier Speed:"
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Game/DebugPanel/ModifierSpeedContainer"]
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+vertical_alignment = 1
 
 [node name="Map" type="Node2D" parent="Game"]
 process_mode = 1
@@ -115,7 +172,10 @@ position = Vector2(50, -50)
 [node name="SimpleBlock4" parent="Game/MapObjects" instance=ExtResource("7_6e4qc")]
 position = Vector2(-50, -50)
 
-[node name="Ball" parent="Game" instance=ExtResource("5_hw464")]
+[node name="Balls" type="Node" parent="Game"]
+process_mode = 1
+
+[node name="Ball" parent="Game/Balls" instance=ExtResource("5_hw464")]
 
 [node name="Camera2D" type="Camera2D" parent="Game"]
 

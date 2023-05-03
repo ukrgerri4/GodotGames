@@ -4,8 +4,27 @@ using Godot;
 public partial class Configuration : Node
 {
     public List<ConnectedDevice> ConnectedDevices = new List<ConnectedDevice>();
+
+    public BallSettings Ball { get; set; }
+    public PlayerSettings Player { get; set; }
+
     public override void _Ready()
     {
+        Ball = new BallSettings
+        {
+            DefaultSpeed = 350.0f,
+            DefaultRadius = 6.0f
+        };
+
+        Player = new PlayerSettings
+        {
+            DefaultSpeed = 400.0f,
+            DefaultWidth = 80.0f,
+            MinWidth = 20.0f,
+            MaxWidth = 160.0f,
+            StartScore = 0
+        };
+
         InitConnectedDevices();
     }
 
