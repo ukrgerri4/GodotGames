@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://75q788gssx57"]
+[gd_scene load_steps=13 format=3 uid="uid://75q788gssx57"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_jhkjm"]
 [ext_resource type="PackedScene" uid="uid://dps7jornlit1l" path="res://Scenes/PlayerSection/PlayerSection.tscn" id="2_ojant"]
 [ext_resource type="Script" path="res://Scenes/Game/Game.cs" id="2_sdotq"]
 [ext_resource type="PackedScene" uid="uid://mghafs10nhqs" path="res://Scenes/GamePanel/PlayerStatistic/PlayerStatistic.tscn" id="3_7uy75"]
+[ext_resource type="PackedScene" uid="uid://bxt6n5r6d2u30" path="res://Scenes/Backgrounds/Stars.tscn" id="3_ysgfs"]
 [ext_resource type="Script" path="res://Scenes/DebugPanel/DebugPanel.cs" id="4_6bpn4"]
 [ext_resource type="Script" path="res://Scenes/Map/Map.cs" id="4_as3cj"]
 [ext_resource type="PackedScene" uid="uid://dinq0k78663fy" path="res://Scenes/Corner/Corner.tscn" id="4_l8eng"]
@@ -30,6 +31,12 @@ process_mode = 3
 script = ExtResource("2_sdotq")
 
 [node name="Background" type="Node" parent="Game"]
+
+[node name="Stars" parent="Game/Background" instance=ExtResource("3_ysgfs")]
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
 
 [node name="Panel" type="VBoxContainer" parent="Game"]
 anchors_preset = 15

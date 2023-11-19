@@ -12,7 +12,7 @@ config_version=5
 
 config/name="GodotPong"
 run/main_scene="res://Main.tscn"
-config/features=PackedStringArray("4.0", "C#", "Forward Plus")
+config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -25,6 +25,7 @@ GameManager="*res://Services/Singletons/GameManager.cs"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/always_on_top=true
 window/stretch/mode="viewport"
 
 [dotnet]
