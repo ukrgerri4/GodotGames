@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://brp5wqwdpyt73"]
+
+[ext_resource type="Script" path="res://Scenes/OutArea/OutArea.cs" id="1_v5km6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hxiua"]
+size = Vector2(200, 1080)
+
+[node name="OutArea" type="Area2D"]
+position = Vector2(0, 640)
+rotation = 1.5708
+collision_layer = 0
+collision_mask = 131072
+monitorable = false
+script = ExtResource("1_v5km6")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_hxiua")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

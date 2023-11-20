@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxt6n5r6d2u30"]
+
+[ext_resource type="Shader" path="res://Scenes/Backgrounds/Stars.gdshader" id="1_86ib7"]
+
+[sub_resource type="Gradient" id="Gradient_f8nfj"]
+colors = PackedColorArray(0, 0, 0, 1, 0.180392, 0.721569, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_i70yv"]
+gradient = SubResource("Gradient_f8nfj")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_grx00"]
+shader = ExtResource("1_86ib7")
+shader_parameter/iterations = 17
+shader_parameter/formuparam = 0.53
+shader_parameter/volsteps = 10
+shader_parameter/stepsize = 0.1
+shader_parameter/zoom = 0.8
+shader_parameter/tile = 0.85
+shader_parameter/speed = 0.001
+shader_parameter/brightness = 0.0015
+shader_parameter/darkmatter = 0.3
+shader_parameter/distfading = 0.73
+shader_parameter/saturation = 0.85
+shader_parameter/rotation = Vector2(0, 0)
+shader_parameter/colorampMix = 0.5
+shader_parameter/isColoramp = true
+shader_parameter/coloramp = SubResource("GradientTexture1D_i70yv")
+
+[node name="Stars" type="ColorRect"]
+material = SubResource("ShaderMaterial_grx00")
+custom_minimum_size = Vector2(1920, 1080)

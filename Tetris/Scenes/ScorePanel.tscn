@@ -1,0 +1,111 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Assets/Fonts/Press_Start_2P/PressStart2P-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scripts/ScorePanel.cs" type="Script" id=2]
+[ext_resource path="res://Scripts/SpeedProgress.cs" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.27451, 0.27451, 0.27451, 1 )
+
+[sub_resource type="Gradient" id=5]
+offsets = PoolRealArray( 0.11041, 0.583596, 1 )
+colors = PoolColorArray( 0.501961, 0, 0, 1, 0.501961, 0.54902, 0, 1, 0.0509804, 0.501961, 0, 1 )
+
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
+
+[sub_resource type="StyleBoxTexture" id=7]
+texture = SubResource( 6 )
+region_rect = Rect2( 0, 0, 2048, 1 )
+
+[node name="ScorePanel" type="Panel"]
+self_modulate = Color( 0, 0, 0, 1 )
+margin_right = 450.0
+margin_bottom = 250.0
+script = ExtResource( 2 )
+
+[node name="ScoreLabel" type="Label" parent="."]
+margin_left = 25.0
+margin_top = 25.0
+margin_right = 200.0
+margin_bottom = 75.0
+custom_fonts/font = SubResource( 1 )
+text = "Score:"
+valign = 1
+
+[node name="ScoreValueLabel" type="Label" parent="."]
+margin_left = 250.0
+margin_top = 25.0
+margin_right = 450.0
+margin_bottom = 75.0
+rect_pivot_offset = Vector2( 125, 75 )
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="LineCountLabel" type="Label" parent="."]
+margin_left = 25.0
+margin_top = 75.0
+margin_right = 200.0
+margin_bottom = 125.0
+rect_pivot_offset = Vector2( 325, 75 )
+custom_fonts/font = SubResource( 1 )
+text = "Lines:"
+valign = 1
+
+[node name="LineCountValueLabel" type="Label" parent="."]
+margin_left = 250.0
+margin_top = 75.0
+margin_right = 450.0
+margin_bottom = 125.0
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="MultiplyLabel" type="Label" parent="."]
+margin_left = 25.0
+margin_top = 125.0
+margin_right = 241.0
+margin_bottom = 175.0
+rect_pivot_offset = Vector2( 325, 75 )
+custom_fonts/font = SubResource( 1 )
+text = "Multiply:"
+valign = 1
+
+[node name="MultiplyValueLabel" type="Label" parent="."]
+margin_left = 250.0
+margin_top = 125.0
+margin_right = 450.0
+margin_bottom = 175.0
+custom_fonts/font = SubResource( 1 )
+text = "x1"
+align = 1
+valign = 1
+
+[node name="SpeedLabel" type="Label" parent="."]
+margin_left = 25.0
+margin_top = 175.0
+margin_right = 241.0
+margin_bottom = 225.0
+rect_pivot_offset = Vector2( 325, 75 )
+custom_fonts/font = SubResource( 1 )
+text = "Speed:"
+valign = 1
+
+[node name="SpeedProgress" type="ProgressBar" parent="."]
+margin_left = 425.0
+margin_top = 215.0
+margin_right = 600.0
+margin_bottom = 245.0
+rect_rotation = 180.0
+custom_styles/fg = SubResource( 2 )
+custom_styles/bg = SubResource( 7 )
+step = 1.0
+percent_visible = false
+script = ExtResource( 3 )

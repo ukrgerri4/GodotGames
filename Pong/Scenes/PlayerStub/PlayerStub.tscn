@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://pma8wt7unhk0"]
+
+[ext_resource type="Script" path="res://Scenes/PlayerStub/PlayerStub.cs" id="1_obkk5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_btvjl"]
+size = Vector2(1008, 64)
+
+[node name="PlayerStub" type="StaticBody2D"]
+collision_layer = 65536
+collision_mask = 0
+script = ExtResource("1_obkk5")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_btvjl")
+one_way_collision = true

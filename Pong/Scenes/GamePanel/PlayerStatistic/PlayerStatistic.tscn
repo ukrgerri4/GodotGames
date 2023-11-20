@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://mghafs10nhqs"]
+
+[ext_resource type="Script" path="res://Scenes/GamePanel/PlayerStatistic/PlayerStatistic.cs" id="1_bjmvn"]
+
+[node name="PlayerStatistic" type="HBoxContainer"]
+script = ExtResource("1_bjmvn")
+
+[node name="Name" type="Label" parent="."]
+custom_minimum_size = Vector2(120, 25)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Score" type="Label" parent="."]
+custom_minimum_size = Vector2(50, 25)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0

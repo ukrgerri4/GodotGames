@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxkde3h6m6uus"]
+
+[ext_resource type="Script" path="res://Scenes/PositionArea/PositionArea.cs" id="1_u0lv1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5l5kc"]
+size = Vector2(20, 1008)
+
+[node name="PositionArea" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_u0lv1")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_5l5kc")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Assets/Icons/check-white.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Icons/uncheck-white.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/UI/BaseUiButton/BaseUIButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Fonts/Press_Start_2P/PressStart2P-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Scripts/OptionsPanel.cs" type="Script" id=5]
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.2, 0.2, 0.2, 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 64
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 30
+font_data = ExtResource( 4 )
+
+[node name="OptionsPanel" type="Panel"]
+margin_right = 720.0
+margin_bottom = 1280.0
+custom_styles/panel = SubResource( 4 )
+script = ExtResource( 5 )
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -360.0
+margin_top = 325.0
+margin_right = 360.0
+margin_bottom = 475.0
+custom_fonts/font = SubResource( 3 )
+text = "Options:"
+align = 1
+valign = 1
+
+[node name="SoundOption" type="CheckBox" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -190.0
+margin_top = -40.0
+margin_right = 190.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 1 )
+custom_icons/checked = ExtResource( 1 )
+custom_icons/unchecked = ExtResource( 2 )
+text = "Sound"
+align = 1
+
+[node name="BackButton" parent="." instance=ExtResource( 3 )]
+margin_left = 15.0
+margin_top = 307.0
+margin_right = 315.0
+margin_bottom = 457.0
+rect_min_size = Vector2( 0, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+text = "BACK"
+
+[connection signal="toggled" from="SoundOption" to="." method="OnSoundCheckboxChanged"]
+[connection signal="pressed" from="BackButton" to="." method="CloseOptionsPanel"]

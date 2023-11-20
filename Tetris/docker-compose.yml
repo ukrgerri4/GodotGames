@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  godot-games:
+    image: godot-games:${TAG:-latest}
+    container_name: godot-games
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - "80"

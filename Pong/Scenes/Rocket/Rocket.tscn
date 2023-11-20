@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://gkijvaayfjd"]
+
+[ext_resource type="Script" path="res://Scenes/Rocket/Rocket.cs" id="1_0vqq7"]
+
+[node name="Rocket" type="CharacterBody2D"]
+collision_layer = 131072
+collision_mask = 65536
+motion_mode = 1
+script = ExtResource("1_0vqq7")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(-8, 0)
+rotation = 1.5708
+polygon = PackedVector2Array(-2.89599e-05, -8, -7.99996, 12, 8.00004, 12)
