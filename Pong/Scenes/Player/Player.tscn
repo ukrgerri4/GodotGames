@@ -1,9 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://ck8lsf0nj5eo8"]
+[gd_scene load_steps=5 format=3 uid="uid://ck8lsf0nj5eo8"]
 
 [ext_resource type="Script" path="res://Scenes/Player/Player.cs" id="1_0fnei"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6x256"]
 size = Vector2(80, 12)
+
+[sub_resource type="Gradient" id="Gradient_y3b4t"]
+colors = PackedColorArray(0.285976, 0.632812, 0.635339, 1, 0.285976, 0.632812, 0.635339, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mtcnh"]
+gradient = SubResource("Gradient_y3b4t")
+width = 80
 
 [node name="Player" type="CharacterBody2D"]
 process_mode = 1
@@ -18,3 +25,8 @@ shape = SubResource("RectangleShape2D_6x256")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(0, -8)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 4.76837e-07)
+scale = Vector2(1, 12)
+texture = SubResource("GradientTexture1D_mtcnh")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bxt6n5r6d2u30"]
 
-[ext_resource type="Shader" path="res://Scenes/Backgrounds/Stars.gdshader" id="1_86ib7"]
+[ext_resource type="Shader" path="res://Scenes/Backgrounds/Stars3D/Stars3D.gdshader" id="1_86ib7"]
 
 [sub_resource type="Gradient" id="Gradient_f8nfj"]
 colors = PackedColorArray(0, 0, 0, 1, 0.180392, 0.721569, 1, 1)
@@ -14,7 +14,7 @@ shader_parameter/iterations = 17
 shader_parameter/formuparam = 0.53
 shader_parameter/volsteps = 10
 shader_parameter/stepsize = 0.1
-shader_parameter/zoom = 0.8
+shader_parameter/zoom = 25.0
 shader_parameter/tile = 0.85
 shader_parameter/speed = 0.001
 shader_parameter/brightness = 0.0015

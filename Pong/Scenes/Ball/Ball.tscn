@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://jb82o6acl81"]
+[gd_scene load_steps=5 format=3 uid="uid://jb82o6acl81"]
 
 [ext_resource type="Script" path="res://Scenes/Ball/Ball.cs" id="1_0i3am"]
 [ext_resource type="PackedScene" uid="uid://cgm8p1wn07kl0" path="res://Scenes/Ball/BallCenterArea/BallCenterArea.tscn" id="2_wpi10"]
+[ext_resource type="Texture2D" uid="uid://da73mhtpq1o0q" path="res://Assets/ball_1.png" id="3_m50qg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2o2h5"]
 radius = 6.0
@@ -28,3 +29,8 @@ top_level = true
 width = 1.0
 default_color = Color(0.121569, 1, 0.0588235, 1)
 sharp_limit = 0.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-5.96046e-07, -1.19209e-07)
+scale = Vector2(0.375, 0.375)
+texture = ExtResource("3_m50qg")

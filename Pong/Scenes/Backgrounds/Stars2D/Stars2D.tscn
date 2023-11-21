@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3v3qvj3b3taa"]
+
+[ext_resource type="Shader" path="res://Shaders/Stars_2d.gdshader" id="1_u8l43"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_egg1i"]
+shader = ExtResource("1_u8l43")
+shader_parameter/OCTAVE = 12
+shader_parameter/timescale = 0.1
+shader_parameter/CLOUD1_COL = Color(0.41, 0.64, 0.78, 0.4)
+shader_parameter/CLOUD2_COL = Color(0.99, 0.79, 0.46, 0.2)
+shader_parameter/CLOUD3_COL = Color(0.81, 0.31, 0.59, 1)
+shader_parameter/CLOUD4_COL = Color(0.27, 0.15, 0.33, 1)
+shader_parameter/SPACE = Color(0.09, 0.06, 0.28, 0.3)
+shader_parameter/zoomScale = 6.0
+shader_parameter/size = 10.0
+shader_parameter/starscale = 20.0
+shader_parameter/prob = 0.98
+
+[node name="Stars2D" type="ColorRect"]
+material = SubResource("ShaderMaterial_egg1i")
+offset_right = 1920.0
+offset_bottom = 1080.0

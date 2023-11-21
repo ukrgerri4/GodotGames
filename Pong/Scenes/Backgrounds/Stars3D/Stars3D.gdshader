@@ -27,7 +27,7 @@ void fragment()
 {
 	vec2 fragCoord = FRAGCOORD.xy;
 	vec2 iResolution = 1.0 / SCREEN_PIXEL_SIZE;
-	float iTime = TIME;
+	float iTime = TIME*.05;
 
 	//get coords and direction
 	vec2 uv=fragCoord.xy/iResolution.xy-.5;

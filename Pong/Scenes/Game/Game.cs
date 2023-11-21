@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class Game : Node
+public partial class Game : Node2D
 {
     private Configuration _configuration;
     private RotationArea _rotationArea;

@@ -1,12 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://dinq0k78663fy"]
+[gd_scene load_steps=3 format=3 uid="uid://dinq0k78663fy"]
 
 [ext_resource type="Script" path="res://Scenes/Corner/Corner.cs" id="1_p1j3m"]
+[ext_resource type="Texture2D" uid="uid://b2kco72k55yxr" path="res://Assets/corner_1.png" id="2_ll3c4"]
 
 [node name="Corner" type="StaticBody2D"]
 collision_layer = 65540
 collision_mask = 0
 script = ExtResource("1_p1j3m")
-metadata/_edit_group_ = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(0, 0, 0, 36, 12, 36, 36, 12, 36, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.933333, 0, 0.627451, 1)
+position = Vector2(18, 18)
+rotation = -4.71239
+texture = ExtResource("2_ll3c4")
