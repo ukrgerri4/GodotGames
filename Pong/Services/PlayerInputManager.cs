@@ -2,12 +2,14 @@ using Godot;
 
 public class PlayerInputManager
 {
-    public int DeviceId { get; set; }
+    public Device Device { get; set; }
     public float Deadzone { get; set; } = 0.15f;
 
-    public PlayerInputManager(int deviceId)
+    private int DeviceId => (int)Device;
+
+    public PlayerInputManager(Device device)
     {
-        DeviceId = deviceId;
+        Device = device;
     }
 
     public bool IsPauseButtonPressed()

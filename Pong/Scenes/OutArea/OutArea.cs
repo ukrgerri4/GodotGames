@@ -7,7 +7,7 @@ public partial class OutArea : Area2D
     {
         if (body is Ball ball)
         {
-            // ball.Reset();
+            ball.Reset(); // TODO: for testing (delete)
             ball.QueueFree();
         }
         else if (body is Rocket rocket)

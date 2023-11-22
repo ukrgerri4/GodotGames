@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Player : CharacterBody2D
+public partial class LocalPlayer : CharacterBody2D, IPlayer
 {
     private RectangleShape2D _rectangleShape2D;
     private ActionArea _actionArea;
@@ -10,18 +10,19 @@ public partial class Player : CharacterBody2D
     private PackedScene _roocketTemplate;
     private PlayerInputManager _inputManager;
 
-    public string Nickname;
 
-    private int _deviceId = (int)Device.Keyboard;
-    public int DeviceId
+    public int Id { get; set; } = 0;
+    public string NickName { get; set; } = "";
+    private Device _device = Device.Keyboard;
+    public Device Device
     {
-        get => _deviceId;
+        get => _device;
         set
         {
-            _deviceId = value;
+            _device = value;
             if (_inputManager is not null)
             {
-                _inputManager.DeviceId = _deviceId;
+                _inputManager.Device = _device;
             }
         }
     }
@@ -48,6 +49,7 @@ public partial class Player : CharacterBody2D
 
     //TODO refactop to map position based
     public bool IsHorizontalPosition => Mathf.RoundToInt(GlobalRotationDegrees) % 180 == 0;
+
 
     private int _score;
     public int Score
@@ -89,7 +91,7 @@ public partial class Player : CharacterBody2D
         _map = GetNode<Map>("/root/Main/Game/Map");
 
         _roocketTemplate = GD.Load<PackedScene>("res://Scenes/Rocket/Rocket.tscn");
-        _inputManager = new PlayerInputManager(DeviceId);
+        _inputManager = new PlayerInputManager(Device);
 
         Speed = _configuration.Player.DefaultSpeed;
         Score = _configuration.Player.StartScore;
@@ -127,7 +129,7 @@ public partial class Player : CharacterBody2D
         motion = motion * Speed * (float)delta;
         if (_inputManager.IsPadAccelerateButtonPressed())
         {
-            motion = motion * 2;
+            motion *= 2;
         }
         // TODO: handle collision
         MoveAndCollide(motion);
@@ -155,7 +157,7 @@ public partial class Player : CharacterBody2D
 
     private void OnRocketDestroyed()
     {
-        GD.Print("Rocket not exist.");
+        GD.Print($"[{Id}] Rocket not exist.");
         _rocketExist = false;
     }
 }

@@ -3,53 +3,27 @@ using System;
 
 public partial class PlayerSection : Node2D
 {
-    private Player _player;
-    private PlayerStub _playerStub;
-
-    [Export]
-    public bool Active { get; set; } = false;
-
     [Export]
     public int PlayerId { get; set; }
 
+    [Export]
+    public bool IsStub { get; set; } = false;
+
+    private IPlayer _player;
+
     public override void _Ready()
     {
-        _player = GetNode<Player>("Player");
-        _player.PlayerId = PlayerId;
-        _playerStub = GetNode<PlayerStub>("PlayerStub");
+        _player = GetNode<IPlayer>("Player");
+        _player.Id = PlayerId;
 
-        if (Active)
-        {
-            ActivatePlayer((int)Device.Keyboard);
-        }
-        else
-        {
-            ActivateStub();
-        }
+        ActivatePlayer((int)Device.Keyboard);
+
     }
 
     public void ActivatePlayer(int deviceId)
     {
-        _playerStub.ProcessMode = ProcessModeEnum.Disabled;
-        _playerStub.Visible = false;
-
         _player.ProcessMode = ProcessModeEnum.Inherit;
         _player.Visible = true;
         _player.DeviceId = deviceId;
-
-        Active = true;
-
-    }
-
-    public void ActivateStub()
-    {
-        _player.ProcessMode = ProcessModeEnum.Disabled;
-        _player.Visible = false;
-        // TODO: do somthing with player deviceId
-
-        _playerStub.ProcessMode = ProcessModeEnum.Inherit;
-        _playerStub.Visible = true;
-
-        Active = false;
     }
 }
