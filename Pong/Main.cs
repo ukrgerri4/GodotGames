@@ -9,21 +9,30 @@ public partial class Main : Node
 
 	public override void _Ready()
 	{
+		_eventsBus = GetNode<EventsBus>("/root/EventsBus");
 		_userInterface = GetNode<Node2D>("UserInterface");
 		_game = GetNode<Node2D>("Game");
 
-		_eventsBus = GetNode<EventsBus>("/root/EventsBus");
 		_eventsBus.Ui.StartButtonPressed += OnStartButtonPressed;
 		_eventsBus.Ui.QuitButtonPressed += OnQuitButtonPressed;
 	}
 
 	public override void _Input(InputEvent @event)
 	{
+		HandlePauseInput();
+		HandleWindowModeInput();
+	}
+
+	private void HandlePauseInput()
+	{
 		if (Input.IsActionJustPressed(InputAction.GamePause))
 		{
 			GetTree().Paused = !GetTree().Paused;
 		}
+	}
 
+	private void HandleWindowModeInput()
+	{
 		if (Input.IsActionJustPressed(InputAction.GameFullScreen))
 		{
 			if (DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Fullscreen)
@@ -39,8 +48,13 @@ public partial class Main : Node
 
 	private void OnStartButtonPressed()
 	{
+		// TODO: setup game
 		_userInterface.Visible = false;
 		_game.Visible = true;
+	}
+
+	private void OnMultiplayerButtonPressed()
+	{
 	}
 
 	private void OnQuitButtonPressed()

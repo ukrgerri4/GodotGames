@@ -1,11 +1,12 @@
 using Godot;
 
-public class PlayerInputManager
+public class PlayerInputManager : IPlayerInputManager
 {
     public Device Device { get; set; }
     public float Deadzone { get; set; } = 0.15f;
 
     private int DeviceId => (int)Device;
+    private bool IsKeyboardDevice => DeviceId < 0;
 
     public PlayerInputManager(Device device)
     {
@@ -14,7 +15,7 @@ public class PlayerInputManager
 
     public bool IsPauseButtonPressed()
     {
-        if (DeviceId < 0)
+        if (IsKeyboardDevice)
         {
             return Input.IsActionPressed(InputAction.GamePause);
         }
@@ -26,7 +27,7 @@ public class PlayerInputManager
 
     public bool IsRocketLaunchButtonPressed()
     {
-        if (DeviceId < 0)
+        if (IsKeyboardDevice)
         {
             return Input.IsActionPressed(InputAction.RocketLaunch);
         }
@@ -38,7 +39,7 @@ public class PlayerInputManager
 
     public bool IsRotateButtonPressed()
     {
-        if (DeviceId < 0)
+        if (IsKeyboardDevice)
         {
             return Input.IsActionPressed(InputAction.MapRotate);
         }
@@ -50,7 +51,7 @@ public class PlayerInputManager
 
     public bool IsPadAccelerateButtonPressed()
     {
-        if (DeviceId < 0)
+        if (IsKeyboardDevice)
         {
             return Input.IsActionPressed(InputAction.PadAccelerate);
         }
@@ -62,7 +63,7 @@ public class PlayerInputManager
 
     public float GetLeftXStrength()
     {
-        if (DeviceId < 0)
+        if (IsKeyboardDevice)
         {
             return Input.GetActionStrength(InputAction.MoveRight) - Input.GetActionStrength(InputAction.MoveLeft);
         }
@@ -91,7 +92,7 @@ public class PlayerInputManager
 
     public float GetLeftYStrength()
     {
-        if (DeviceId < 0)
+        if (IsKeyboardDevice)
         {
             return Input.GetActionStrength(InputAction.MoveDown) - Input.GetActionStrength(InputAction.MoveUp);
         }
@@ -120,7 +121,7 @@ public class PlayerInputManager
 
     public float GetRightXStrength()
     {
-        if (DeviceId < 0)
+        if (IsKeyboardDevice)
         {
             return Input.GetActionStrength(InputAction.RocketRight) - Input.GetActionStrength(InputAction.RocketLeft);
         }
@@ -133,7 +134,7 @@ public class PlayerInputManager
 
     public float GetRightYStrength()
     {
-        if (DeviceId < 0)
+        if (IsKeyboardDevice)
         {
             return Input.GetActionStrength(InputAction.RocketDown) - Input.GetActionStrength(InputAction.RocketUp);
         }

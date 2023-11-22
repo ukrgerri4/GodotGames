@@ -85,10 +85,10 @@ text = "Quit"
 script = ExtResource("4_qwj7t")
 
 [node name="PauseScreen" type="Panel" parent="UserInterface"]
-visible = false
 
 [node name="Game" type="Node2D" parent="."]
 process_mode = 3
+visible = false
 self_modulate = Color(0, 0, 0, 1)
 script = ExtResource("2_sdotq")
 
@@ -223,19 +223,19 @@ metadata/_edit_lock_ = true
 collision_layer = 128
 metadata/_edit_lock_ = true
 
-[node name="MapObjects" type="Node2D" parent="Game"]
+[node name="LevelObjects" type="Node2D" parent="Game"]
 process_mode = 1
 
-[node name="SimpleBlock" parent="Game/MapObjects" instance=ExtResource("7_6e4qc")]
+[node name="SimpleBlock" parent="Game/LevelObjects" instance=ExtResource("7_6e4qc")]
 position = Vector2(50, 50)
 
-[node name="SimpleBlock2" parent="Game/MapObjects" instance=ExtResource("7_6e4qc")]
+[node name="SimpleBlock2" parent="Game/LevelObjects" instance=ExtResource("7_6e4qc")]
 position = Vector2(-50, 50)
 
-[node name="SimpleBlock3" parent="Game/MapObjects" instance=ExtResource("7_6e4qc")]
+[node name="SimpleBlock3" parent="Game/LevelObjects" instance=ExtResource("7_6e4qc")]
 position = Vector2(50, -50)
 
-[node name="SimpleBlock4" parent="Game/MapObjects" instance=ExtResource("7_6e4qc")]
+[node name="SimpleBlock4" parent="Game/LevelObjects" instance=ExtResource("7_6e4qc")]
 position = Vector2(-50, -50)
 
 [node name="Balls" type="Node2D" parent="Game"]

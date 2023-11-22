@@ -9,7 +9,7 @@ public partial class Rocket : CharacterBody2D
 	public float _speed = 370f;
 	private float _rotationMultiplier = 3f;
 	private float _minRotationAngle = Mathf.Pi / 6;
-	private PlayerInputManager _inputManager;
+	private IPlayerInputManager _inputManager;
 
 	// public delegate void AttackedEventHandler();
 	// public AttackedEventHandler Destroyed;
@@ -20,7 +20,7 @@ public partial class Rocket : CharacterBody2D
 
 	}
 
-	public void Init(PlayerInputManager inputManager, Vector2 baseVelocity)
+	public void Init(IPlayerInputManager inputManager, Vector2 baseVelocity)
 	{
 		_inputManager = inputManager;
 		_velocity = baseVelocity;

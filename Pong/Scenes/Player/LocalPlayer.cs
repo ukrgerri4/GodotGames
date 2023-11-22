@@ -3,161 +3,160 @@ using System;
 
 public partial class LocalPlayer : CharacterBody2D, IPlayer
 {
-    private RectangleShape2D _rectangleShape2D;
-    private ActionArea _actionArea;
-    private Marker2D _marker2D;
-    private Map _map;
-    private PackedScene _roocketTemplate;
-    private PlayerInputManager _inputManager;
+	private Configuration _configuration;
+	private EventsBus _eventsBus;
+	private GameManager _gameManager;
+
+	private RectangleShape2D _rectangleShape2D;
+	private ActionArea _actionArea;
+	private Marker2D _marker2D;
+	private IPlayerInputManager _inputManager;
 
 
-    public int Id { get; set; } = 0;
-    public string NickName { get; set; } = "";
-    private Device _device = Device.Keyboard;
-    public Device Device
-    {
-        get => _device;
-        set
-        {
-            _device = value;
-            if (_inputManager is not null)
-            {
-                _inputManager.Device = _device;
-            }
-        }
-    }
+	public int Id { get; set; } = 0;
+	public string NickName { get; set; } = "";
+	private Device _device = Device.Keyboard;
+	public Device Device
+	{
+		get => _device;
+		set
+		{
+			_device = value;
+			if (_inputManager is not null)
+			{
+				_inputManager.Device = _device;
+			}
+		}
+	}
 
-    public float PanelWidth
-    {
-        get
-        {
-            return _rectangleShape2D.Size.X;
-        }
-    }
+	public float PanelWidth
+	{
+		get
+		{
+			return _rectangleShape2D.Size.X;
+		}
+	}
+
+	private float _speed;
+	public float Speed
+	{
+		get => _speed;
+		set
+		{
+			_speed = value;
+			_eventsBus.Player.NotifySpeedChanged(Id, _speed);
+		}
+	}
+
+	private int _score;
+	public int Score
+	{
+		get => _score;
+		set
+		{
+			_score = value;
+			_eventsBus.Player.NotifyScoreChanged(Id, _score);
+		}
+	}
+
+	//TODO refactop to map position based
+	public bool IsHorizontalPosition => Mathf.RoundToInt(GlobalRotationDegrees) % 180 == 0;
 
 
-    private float _speed;
-    public float Speed
-    {
-        get => _speed;
-        set
-        {
-            _speed = value;
-            _eventsBus.Player.NotifySpeedChanged(PlayerId, _speed);
-        }
-    }
+	private bool _rocketExist = false;
 
-    //TODO refactop to map position based
-    public bool IsHorizontalPosition => Mathf.RoundToInt(GlobalRotationDegrees) % 180 == 0;
+	private bool CanLaunchRocket => !_rocketExist && _actionArea.ActionAllowed;
 
+	public MapPosition MapPosition { get; set; } = MapPosition.Undefined;
 
-    private int _score;
-    public int Score
-    {
-        get => _score;
-        set
-        {
-            _score = value;
-            _eventsBus.Player.NotifyScoreChanged(PlayerId, _score);
-        }
-    }
-    private Configuration _configuration;
-    private EventsBus _eventsBus;
+	public Vector2 ItemFallDirection => MapPosition switch
+	{
+		MapPosition.Top => Vector2.Up,
+		MapPosition.Down => Vector2.Down,
+		MapPosition.Left => Vector2.Left,
+		MapPosition.Right => Vector2.Right,
+		_ => Vector2.Zero,
+	};
 
-    public int PlayerId { get; set; } = 0;
+	public override void _Ready()
+	{
+		_configuration = GetNode<Configuration>("/root/Configuration");
+		_eventsBus = GetNode<EventsBus>("/root/EventsBus");
+		_rectangleShape2D = (RectangleShape2D)GetNode<CollisionShape2D>("CollisionShape2D")?.Shape;
+		_actionArea = GetNode<ActionArea>("../ActionArea");
+		_marker2D = GetNode<Marker2D>("Marker2D");
+		_gameManager = GetNode<GameManager>("/root/GameManager");
 
-    private bool _rocketExist { get; set; } = false;
+		_inputManager = new PlayerInputManager(Device);
 
-    private bool CanLaunchRocket => !_rocketExist && _actionArea.ActionAllowed;
+		Speed = _configuration.Player.DefaultSpeed;
+		Score = _configuration.Player.StartScore;
+	}
 
-    public MapPosition MapPosition { get; set; } = MapPosition.Undefined;
+	public override void _Input(InputEvent @event)
+	{
+		if (_inputManager.IsRocketLaunchButtonPressed() && CanLaunchRocket)
+		{
+			LaunchRocket();
+		}
+	}
 
-    public Vector2 ItemFallDirection => this.MapPosition switch
-    {
-        MapPosition.Top => Vector2.Up,
-        MapPosition.Down => Vector2.Down,
-        MapPosition.Left => Vector2.Left,
-        MapPosition.Right => Vector2.Right,
-        _ => Vector2.Zero,
-    };
+	public override void _PhysicsProcess(double delta)
+	{
+		Vector2 motion = GetMotionVector();
 
-    public override void _Ready()
-    {
-        _configuration = GetNode<Configuration>("/root/Configuration");
-        _eventsBus = GetNode<EventsBus>("/root/EventsBus");
-        _rectangleShape2D = (RectangleShape2D)GetNode<CollisionShape2D>("CollisionShape2D")?.Shape;
-        _actionArea = GetNode<ActionArea>("../ActionArea");
-        _marker2D = GetNode<Marker2D>("Marker2D");
-        _map = GetNode<Map>("/root/Main/Game/Map");
+		if (motion.LengthSquared() > _inputManager.Deadzone)
+		{
+			Move(delta, motion);
+		}
+	}
 
-        _roocketTemplate = GD.Load<PackedScene>("res://Scenes/Rocket/Rocket.tscn");
-        _inputManager = new PlayerInputManager(Device);
+	private Vector2 GetMotionVector()
+	{
+		return IsHorizontalPosition
+			? new Vector2(_inputManager.GetLeftXStrength(), 0)
+			: new Vector2(0, _inputManager.GetLeftYStrength());
+	}
 
-        Speed = _configuration.Player.DefaultSpeed;
-        Score = _configuration.Player.StartScore;
-    }
+	private void Move(double delta, Vector2 motion)
+	{
+		motion = motion.Normalized();
+		motion = motion * Speed * (float)delta;
+		if (_inputManager.IsPadAccelerateButtonPressed())
+		{
+			motion *= 2;
+		}
+		// TODO: handle collision
+		MoveAndCollide(motion);
+	}
 
-    public override void _Input(InputEvent @event)
-    {
-        if (_inputManager.IsRocketLaunchButtonPressed() && CanLaunchRocket)
-        {
-            LaunchRocket();
-        }
-    }
+	public void UpdateScore(int points)
+	{
+		var value = Score + points;
+		Score = value > 0 ? value : 0;
+		_eventsBus.Player.NotifyScoreChanged(Id, Score);
+	}
 
-    public override void _PhysicsProcess(double delta)
-    {
-        Vector2 motion = Vector2.Zero;
-        if (IsHorizontalPosition)
-        {
-            motion = new Vector2(_inputManager.GetLeftXStrength(), 0);
-        }
-        else
-        {
-            motion = new Vector2(0, _inputManager.GetLeftYStrength());
-        }
+	private void LaunchRocket()
+	{
+		var rocket = _gameManager.RocketTemplate.Instantiate<Rocket>();
+		rocket.TopLevel = true;
+		rocket.GlobalRotationDegrees = GlobalRotationDegrees;
+		rocket.GlobalPosition = GlobalPosition * 0.9f;
+		rocket.Init(_inputManager, (_marker2D.GlobalPosition - GlobalPosition).Normalized());
+		rocket.TreeExited += OnRocketDestroyed;
+		_rocketExist = true;
+		_gameManager.AddRocket(rocket);
+	}
 
-        if (motion.LengthSquared() > 0.15f)
-        {
-            Move(delta, motion);
-        }
-    }
+	private void OnRocketDestroyed()
+	{
+		GD.Print($"[{Id}] The rocket has been destroyed.");
+		_rocketExist = false;
+	}
 
-    private void Move(double delta, Vector2 motion)
-    {
-        motion = motion.Normalized();
-        motion = motion * Speed * (float)delta;
-        if (_inputManager.IsPadAccelerateButtonPressed())
-        {
-            motion *= 2;
-        }
-        // TODO: handle collision
-        MoveAndCollide(motion);
-    }
-
-    public void UpdateScore(int points)
-    {
-        var value = Score + points;
-        Score = value > 0 ? value : 0;
-        _eventsBus.Player.NotifyScoreChanged(PlayerId, Score);
-    }
-
-    private Rocket LaunchRocket()
-    {
-        var rocket = _roocketTemplate.Instantiate<Rocket>();
-        rocket.TopLevel = true;
-        rocket.GlobalRotationDegrees = GlobalRotationDegrees;
-        rocket.GlobalPosition = GlobalPosition * 0.9f;
-        rocket.Init(_inputManager, (_marker2D.GlobalPosition - GlobalPosition).Normalized());
-        rocket.TreeExited += OnRocketDestroyed;
-        _rocketExist = true;
-        _map.AddChild(rocket);
-        return rocket;
-    }
-
-    private void OnRocketDestroyed()
-    {
-        GD.Print($"[{Id}] Rocket not exist.");
-        _rocketExist = false;
-    }
+	public void InitBotInput()
+	{
+		_inputManager = new BotInputManager(Device.Keyboard);
+	}
 }

@@ -3,27 +3,31 @@ using System;
 
 public partial class PlayerSection : Node2D
 {
-    [Export]
-    public int PlayerId { get; set; }
+	[Export]
+	public int PlayerId { get; set; }
 
-    [Export]
-    public bool IsStub { get; set; } = false;
+	[Export]
+	public bool IsStub { get; set; } = false;
 
-    private IPlayer _player;
+	private IPlayer _player;
 
-    public override void _Ready()
-    {
-        _player = GetNode<IPlayer>("Player");
-        _player.Id = PlayerId;
+	public override void _Ready()
+	{
+		_player = GetNode<IPlayer>("Player");
+		_player.Id = PlayerId;
 
-        ActivatePlayer((int)Device.Keyboard);
+		if (PlayerId == 1)
+		{
+			ActivatePlayer(Device.Keyboard);
+		}
+		else
+		{
+			_player.InitBotInput();
+		}
+	}
 
-    }
-
-    public void ActivatePlayer(int deviceId)
-    {
-        _player.ProcessMode = ProcessModeEnum.Inherit;
-        _player.Visible = true;
-        _player.DeviceId = deviceId;
-    }
+	public void ActivatePlayer(Device device)
+	{
+		_player.Device = device;
+	}
 }
