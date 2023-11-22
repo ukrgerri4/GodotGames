@@ -5,6 +5,8 @@ using System.Linq;
 
 public partial class Game : Node2D
 {
+	private GameManager _gameManager;
+
 	private RotationArea _rotationArea;
 	private Node2D _map;
 	private PropertyTweener _tweener;
@@ -12,9 +14,12 @@ public partial class Game : Node2D
 
 	public override void _Ready()
 	{
+		_gameManager = _gameManager = GetNode<GameManager>("/root/GameManager");
+
 		_map = GetNode<Node2D>("Map");
 		_rotationArea = GetNode<RotationArea>("Map/RotationArea");
 
+		_gameManager.AddLevel();
 		GetNode<Node>("Balls").GetChild<Ball>(0).Reset();
 	}
 

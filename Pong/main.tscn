@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://75q788gssx57"]
+[gd_scene load_steps=16 format=3 uid="uid://75q788gssx57"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_jhkjm"]
 [ext_resource type="Script" path="res://Scenes/UI/StartScreen/StartBtn.cs" id="2_57jwh"]
@@ -13,7 +13,6 @@
 [ext_resource type="Script" path="res://Scenes/UI/StartScreen/QuitBtn.cs" id="4_qwj7t"]
 [ext_resource type="PackedScene" uid="uid://jb82o6acl81" path="res://Scenes/Ball/Ball.tscn" id="5_hw464"]
 [ext_resource type="PackedScene" uid="uid://t5jaspadowbt" path="res://Scenes/RotationArea/RotationArea.tscn" id="6_t4mlh"]
-[ext_resource type="PackedScene" uid="uid://dejaxtlvgobvy" path="res://Scenes/Blocks/SimpleBlock/SimpleBlock.tscn" id="7_6e4qc"]
 [ext_resource type="PackedScene" uid="uid://dxkde3h6m6uus" path="res://Scenes/PositionArea/PositionArea.tscn" id="10_a2ouk"]
 
 [sub_resource type="Theme" id="Theme_qagee"]
@@ -225,18 +224,6 @@ metadata/_edit_lock_ = true
 
 [node name="LevelObjects" type="Node2D" parent="Game"]
 process_mode = 1
-
-[node name="SimpleBlock" parent="Game/LevelObjects" instance=ExtResource("7_6e4qc")]
-position = Vector2(50, 50)
-
-[node name="SimpleBlock2" parent="Game/LevelObjects" instance=ExtResource("7_6e4qc")]
-position = Vector2(-50, 50)
-
-[node name="SimpleBlock3" parent="Game/LevelObjects" instance=ExtResource("7_6e4qc")]
-position = Vector2(50, -50)
-
-[node name="SimpleBlock4" parent="Game/LevelObjects" instance=ExtResource("7_6e4qc")]
-position = Vector2(-50, -50)
 
 [node name="Balls" type="Node2D" parent="Game"]
 process_mode = 1

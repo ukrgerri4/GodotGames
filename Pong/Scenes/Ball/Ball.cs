@@ -18,7 +18,7 @@ public partial class Ball : CharacterBody2D
 		}
 	}
 	public Vector2 MoveVelocity = Vector2.Zero;
-	private IPlayer _lastTochedPlayer;
+	private Player _lastTochedPlayer;
 	private int _bounceCounter = 0;
 
 	private RayCast2D _rayCast2D;
@@ -58,7 +58,7 @@ public partial class Ball : CharacterBody2D
 				UpdateScore(1);
 				block.TouchedByBall(_lastTochedPlayer);
 			}
-			if (collider is IPlayer player)
+			if (collider is Player player)
 			{
 				UpdatePlayer(player);
 				UpdateScore(1);
@@ -110,7 +110,7 @@ public partial class Ball : CharacterBody2D
 		}
 	}
 
-	private void UpdateBouncingVelocityFromPlayer(KinematicCollision2D collision, IPlayer player)
+	private void UpdateBouncingVelocityFromPlayer(KinematicCollision2D collision, Player player)
 	{
 		MoveVelocity = MoveVelocity.Bounce(collision.GetNormal());
 		if (player.IsHorizontalPosition)
@@ -135,7 +135,7 @@ public partial class Ball : CharacterBody2D
 		_lastTochedPlayer?.UpdateScore(points);
 	}
 
-	private void UpdatePlayer(IPlayer player)
+	private void UpdatePlayer(Player player)
 	{
 		_lastTochedPlayer = player;
 	}

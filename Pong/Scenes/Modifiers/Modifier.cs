@@ -26,7 +26,7 @@ public partial class Modifier : Area2D
 
 	private void _on_body_entered(Node2D body)
 	{
-		if (body is IPlayer player)
+		if (body is Player player)
 		{
 			_gameManager.AddBall();
 			QueueFree();

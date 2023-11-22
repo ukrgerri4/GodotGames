@@ -2,20 +2,33 @@ using Godot;
 
 public partial class GameManager : Node
 {
-	private Node2D _mapObjects;
+	private Node2D _levelObjects;
 	private Node2D _balls;
 	public PackedScene RocketTemplate;
 	public PackedScene ModifierTemplate;
 	public PackedScene BallTemplate;
+	public PackedScene Level0;
 
 	public override void _Ready()
 	{
 		RocketTemplate = GD.Load<PackedScene>("res://Scenes/Rocket/Rocket.tscn");
 		ModifierTemplate = GD.Load<PackedScene>("res://Scenes/Modifiers/Modifier.tscn");
 		BallTemplate = GD.Load<PackedScene>("res://Scenes/Ball/Ball.tscn");
+		Level0 = GD.Load<PackedScene>("res://Scenes/Levels/Level0/Level0.tscn");
 
-		_mapObjects = GetNode<Node2D>("/root/Main/Game/MapObjects");
+		_levelObjects = GetNode<Node2D>("/root/Main/Game/LevelObjects");
 		_balls = GetNode<Node2D>("/root/Main/Game/Balls");
+	}
+
+	public void AddLevel()
+	{
+		var children = _levelObjects.GetChildren();
+		foreach (var child in children)
+		{
+			child.QueueFree();
+		}
+
+		_levelObjects.AddChild(Level0.Instantiate<Node2D>());
 	}
 
 	public void AddModifier(SimpleBlock block)
@@ -23,7 +36,7 @@ public partial class GameManager : Node
 		var modifier = ModifierTemplate.Instantiate<Modifier>();
 		modifier.GlobalPosition = block.GlobalPosition;
 		modifier.Init(block.LastTouchedPlayer.ItemFallDirection); // TODO: add random direction if no last player
-		_mapObjects.AddChild(modifier);
+		_levelObjects.AddChild(modifier);
 	}
 
 	public void AddBall()
@@ -51,6 +64,6 @@ public partial class GameManager : Node
 
 	public void AddRocket(Rocket rocket)
 	{
-		_mapObjects.AddChild(rocket);
+		_levelObjects.AddChild(rocket);
 	}
 }

@@ -5,13 +5,13 @@ public partial class Main : Node
 	private EventsBus _eventsBus;
 
 	private Node2D _userInterface;
-	private Node2D _game;
+	private Game _game;
 
 	public override void _Ready()
 	{
 		_eventsBus = GetNode<EventsBus>("/root/EventsBus");
 		_userInterface = GetNode<Node2D>("UserInterface");
-		_game = GetNode<Node2D>("Game");
+		_game = GetNode<Game>("Game");
 
 		_eventsBus.Ui.StartButtonPressed += OnStartButtonPressed;
 		_eventsBus.Ui.QuitButtonPressed += OnQuitButtonPressed;
@@ -53,7 +53,7 @@ public partial class Main : Node
 		_game.Visible = true;
 	}
 
-	private void OnMultiplayerButtonPressed()
+	private void OnMultPlayerButtonPressed()
 	{
 	}
 

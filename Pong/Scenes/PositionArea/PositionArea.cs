@@ -17,7 +17,7 @@ public partial class PositionArea : Area2D
 
 	private void _on_body_entered(Node2D body)
 	{
-		if (body is IPlayer player)
+		if (body is Player player)
 		{
 			GD.Print($"Map position playerId: {player.Id}, position: {MapPosition}");
 			player.MapPosition = MapPosition;

@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dv1wicl17gsej"]
+[gd_scene load_steps=4 format=3 uid="uid://dv1wicl17gsej"]
 
 [ext_resource type="Script" path="res://Scenes/Modifiers/Modifier.cs" id="1_0mt64"]
+[ext_resource type="Texture2D" uid="uid://da73mhtpq1o0q" path="res://Assets/ball_1.png" id="2_rrerp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ruj3b"]
 radius = 15.0
@@ -13,5 +14,8 @@ metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ruj3b")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_rrerp")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

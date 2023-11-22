@@ -3,7 +3,7 @@ using System;
 
 public partial class SimpleBlock : StaticBody2D
 {
-	public IPlayer LastTouchedPlayer { get; set; }
+	public Player LastTouchedPlayer { get; set; }
 
 	private GameManager _gameManager;
 
@@ -15,7 +15,7 @@ public partial class SimpleBlock : StaticBody2D
 		_gameManager = GetNode<GameManager>("/root/GameManager");
 	}
 
-	public void TouchedByBall(IPlayer player)
+	public void TouchedByBall(Player player)
 	{
 		LastTouchedPlayer = player;
 		HitsToDestroy--;

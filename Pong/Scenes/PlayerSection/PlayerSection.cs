@@ -9,11 +9,11 @@ public partial class PlayerSection : Node2D
 	[Export]
 	public bool IsStub { get; set; } = false;
 
-	private IPlayer _player;
+	private Player _player;
 
 	public override void _Ready()
 	{
-		_player = GetNode<IPlayer>("Player");
+		_player = GetNode<Player>("Player");
 		_player.Id = PlayerId;
 
 		if (PlayerId == 1)
@@ -22,7 +22,7 @@ public partial class PlayerSection : Node2D
 		}
 		else
 		{
-			_player.InitBotInput();
+			_player.IsBot = true;
 		}
 	}
 

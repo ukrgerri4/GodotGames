@@ -3,24 +3,30 @@ using System;
 
 public partial class OutArea : Area2D
 {
-    private void _on_body_entered(Node2D body)
-    {
-        if (body is Ball ball)
-        {
-            ball.Reset(); // TODO: for testing (delete)
-            ball.QueueFree();
-        }
-        else if (body is Rocket rocket)
-        {
-            rocket.QueueFree();
-        }
-    }
+	private void _on_body_entered(Node2D body)
+	{
+		if (body is Ball ball)
+		{
+			// TODO: for testing (delete)
+			if (OS.IsDebugBuild())
+			{
+				ball.Reset();
+				return;
+			}
 
-    private void _on_area_entered(Area2D area)
-    {
-        if (area is Modifier modifier)
-        {
-            modifier.QueueFree();
-        }
-    }
+			ball.QueueFree();
+		}
+		else if (body is Rocket rocket)
+		{
+			rocket.QueueFree();
+		}
+	}
+
+	private void _on_area_entered(Area2D area)
+	{
+		if (area is Modifier modifier)
+		{
+			modifier.QueueFree();
+		}
+	}
 }

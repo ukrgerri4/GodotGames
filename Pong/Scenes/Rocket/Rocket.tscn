@@ -13,3 +13,8 @@ metadata/_edit_group_ = true
 position = Vector2(-8, 0)
 rotation = 1.5708
 polygon = PackedVector2Array(-2.89599e-05, -8, -7.99996, 12, 8.00004, 12)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(-8, 0)
+rotation = 1.5708
+polygon = PackedVector2Array(0, -8, -8, 12, 8, 12)

@@ -1,7 +1,8 @@
 using Godot;
 using System;
+using System.Linq;
 
-public partial class LocalPlayer : CharacterBody2D, IPlayer
+public partial class Player : CharacterBody2D
 {
 	private Configuration _configuration;
 	private EventsBus _eventsBus;
@@ -10,7 +11,7 @@ public partial class LocalPlayer : CharacterBody2D, IPlayer
 	private RectangleShape2D _rectangleShape2D;
 	private ActionArea _actionArea;
 	private Marker2D _marker2D;
-	private IPlayerInputManager _inputManager;
+	private PlayerInputManager _inputManager;
 
 
 	public int Id { get; set; } = 0;
@@ -28,6 +29,8 @@ public partial class LocalPlayer : CharacterBody2D, IPlayer
 			}
 		}
 	}
+
+	public bool IsBot { get; set; } = false;
 
 	public float PanelWidth
 	{
@@ -95,6 +98,11 @@ public partial class LocalPlayer : CharacterBody2D, IPlayer
 
 	public override void _Input(InputEvent @event)
 	{
+		if (IsBot)
+		{
+			return;
+		}
+
 		if (_inputManager.IsRocketLaunchButtonPressed() && CanLaunchRocket)
 		{
 			LaunchRocket();
@@ -103,6 +111,12 @@ public partial class LocalPlayer : CharacterBody2D, IPlayer
 
 	public override void _PhysicsProcess(double delta)
 	{
+		if (IsBot)
+		{
+			HanleBotMovement(delta);
+			return;
+		}
+
 		Vector2 motion = GetMotionVector();
 
 		if (motion.LengthSquared() > _inputManager.Deadzone)
@@ -155,8 +169,27 @@ public partial class LocalPlayer : CharacterBody2D, IPlayer
 		_rocketExist = false;
 	}
 
-	public void InitBotInput()
+	private void HanleBotMovement(double delta)
 	{
-		_inputManager = new BotInputManager(Device.Keyboard);
+		var balls = GetTree().GetNodesInGroup("Balls");
+
+		if (balls is not null && balls.Count > 0)
+		{
+			Ball firstBall = balls[0] as Ball;
+
+			Vector2 motion;
+			if (MapPosition == MapPosition.Top || MapPosition == MapPosition.Down)
+			{
+				motion = new Vector2(firstBall.GlobalPosition.X - GlobalPosition.X, 0);
+			}
+			else
+			{
+				motion = new Vector2(0, firstBall.GlobalPosition.Y - GlobalPosition.Y);
+			}
+
+			motion = motion.Normalized();
+			motion = motion * Speed * (float)delta;
+			MoveAndCollide(motion);
+		}
 	}
 }

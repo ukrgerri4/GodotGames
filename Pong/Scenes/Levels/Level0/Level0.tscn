@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://dr0kcfwhvw54h"]
+
+[ext_resource type="PackedScene" uid="uid://dejaxtlvgobvy" path="res://Scenes/Blocks/SimpleBlock/SimpleBlock.tscn" id="1_mfdrl"]
+
+[node name="Level0" type="Node2D"]
+
+[node name="SimpleBlock" parent="." instance=ExtResource("1_mfdrl")]
+position = Vector2(50, 50)
+
+[node name="SimpleBlock2" parent="." instance=ExtResource("1_mfdrl")]
+position = Vector2(-50, 50)
+
+[node name="SimpleBlock3" parent="." instance=ExtResource("1_mfdrl")]
+position = Vector2(50, -50)
+
+[node name="SimpleBlock4" parent="." instance=ExtResource("1_mfdrl")]
+position = Vector2(-50, -50)
