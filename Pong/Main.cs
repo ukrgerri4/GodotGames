@@ -4,13 +4,15 @@ public partial class Main : Node
 {
 	private EventsBus _eventsBus;
 
-	private Node2D _userInterface;
+	private UserInterface _userInterface;
 	private Game _game;
+
+	private ApplicationState _state = ApplicationState.MainMenu;
 
 	public override void _Ready()
 	{
 		_eventsBus = GetNode<EventsBus>("/root/EventsBus");
-		_userInterface = GetNode<Node2D>("UserInterface");
+		_userInterface = GetNode<UserInterface>("UserInterface");
 		_game = GetNode<Game>("Game");
 
 		_eventsBus.Ui.StartButtonPressed += OnStartButtonPressed;
@@ -27,7 +29,22 @@ public partial class Main : Node
 	{
 		if (Input.IsActionJustPressed(InputAction.GamePause))
 		{
-			GetTree().Paused = !GetTree().Paused;
+			switch (_state)
+			{
+				case ApplicationState.Game:
+					_state = ApplicationState.Pause;
+					GetTree().Paused = true;
+					_userInterface.PauseScreen.Show();
+					return;
+				case ApplicationState.Pause:
+					_state = ApplicationState.Game;
+					_userInterface.PauseScreen.Hide();
+					GetTree().Paused = false;
+					return;
+				case ApplicationState.MainMenu:
+				default:
+					return;
+			}
 		}
 	}
 
@@ -49,8 +66,9 @@ public partial class Main : Node
 	private void OnStartButtonPressed()
 	{
 		// TODO: setup game
-		_userInterface.Visible = false;
-		_game.Visible = true;
+		_userInterface.HideChildren();
+		_game.Show();
+		_state = ApplicationState.Game;
 	}
 
 	private void OnMultPlayerButtonPressed()

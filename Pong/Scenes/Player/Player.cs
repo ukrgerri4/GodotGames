@@ -178,7 +178,7 @@ public partial class Player : CharacterBody2D
 			Ball firstBall = balls[0] as Ball;
 
 			Vector2 motion;
-			if (MapPosition == MapPosition.Top || MapPosition == MapPosition.Down)
+			if (IsHorizontalPosition)
 			{
 				motion = new Vector2(firstBall.GlobalPosition.X - GlobalPosition.X, 0);
 			}
