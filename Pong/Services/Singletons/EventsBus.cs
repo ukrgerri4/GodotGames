@@ -60,6 +60,9 @@ public class UiEvents
 	public event Action PauseButtonPressed;
 	public void NotifyPauseButtonPressed() => PauseButtonPressed?.Invoke();
 
+	public event Action ContinueButtonPressed;
+	public void NotifyContinueButtonPressed() => ContinueButtonPressed?.Invoke();
+
 	public event Action QuitButtonPressed;
 	public void NotifyQuitButtonPressed() => QuitButtonPressed?.Invoke();
 }

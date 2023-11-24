@@ -5,5 +5,3 @@
 [node name="QuitBtn" type="Button"]
 text = "Quit"
 script = ExtResource("1_wyg21")
-
-[connection signal="button_up" from="." to="." method="_on_button_up"]

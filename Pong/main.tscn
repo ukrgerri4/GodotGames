@@ -1,8 +1,7 @@
-[gd_scene load_steps=19 format=3 uid="uid://75q788gssx57"]
+[gd_scene load_steps=21 format=3 uid="uid://75q788gssx57"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_jhkjm"]
 [ext_resource type="Script" path="res://Scenes/UI/UserInterface.cs" id="2_6ww7m"]
-[ext_resource type="Script" path="res://Scenes/UI/StartScreen/StartBtn.cs" id="2_57jwh"]
 [ext_resource type="PackedScene" uid="uid://dps7jornlit1l" path="res://Scenes/PlayerSection/PlayerSection.tscn" id="2_ojant"]
 [ext_resource type="Texture2D" uid="uid://d2si2agclbake" path="res://Assets/start_screen_bg.jpg" id="2_q3bs5"]
 [ext_resource type="Script" path="res://Scenes/Game/Game.cs" id="2_sdotq"]
@@ -17,7 +16,16 @@
 [ext_resource type="PackedScene" uid="uid://t5jaspadowbt" path="res://Scenes/RotationArea/RotationArea.tscn" id="6_t4mlh"]
 [ext_resource type="PackedScene" uid="uid://dxkde3h6m6uus" path="res://Scenes/PositionArea/PositionArea.tscn" id="10_a2ouk"]
 [ext_resource type="Script" path="res://Scenes/UI/StartScreen/StartScreen.cs" id="13_447yn"]
+[ext_resource type="PackedScene" uid="uid://cx6flcs7iawpp" path="res://Scenes/UI/StartBtn/StartBtn.tscn" id="16_wmnwq"]
 [ext_resource type="Script" path="res://Scenes/UI/PauseScreen/PauseScreen.cs" id="18_pppu5"]
+[ext_resource type="PackedScene" uid="uid://mbb0wyp4tb0v" path="res://Scenes/UI/ContinueBtn/ContinueBtn.tscn" id="19_wkenr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3x8qr"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0, 0, 0, 0.701961)
 
 [node name="Main" type="Node"]
 process_mode = 3
@@ -29,7 +37,6 @@ self_modulate = Color(0, 0, 0, 1)
 script = ExtResource("2_sdotq")
 
 [node name="Stars" parent="Game" instance=ExtResource("3_ysgfs")]
-visible = false
 offset_left = -960.0
 offset_top = -540.0
 offset_right = 960.0
@@ -56,58 +63,55 @@ layout_mode = 2
 PlayerId = 2
 PlayerName = "Marina"
 
-[node name="DebugPanel" type="VBoxContainer" parent="Game"]
-anchors_preset = -1
-anchor_left = 0.3
-anchor_top = -0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 748.0
-offset_top = -512.0
-offset_right = 924.0
-offset_bottom = -414.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Debug" type="PanelContainer" parent="Game"]
+offset_left = 745.0
+offset_top = -528.0
+offset_right = 952.0
+offset_bottom = -8.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_3x8qr")
+
+[node name="DebugPanel" type="VBoxContainer" parent="Game/Debug"]
+layout_mode = 2
 script = ExtResource("4_6bpn4")
 
-[node name="BallSpeedContainer" type="HBoxContainer" parent="Game/DebugPanel"]
+[node name="BallSpeedContainer" type="HBoxContainer" parent="Game/Debug/DebugPanel"]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="Game/DebugPanel/BallSpeedContainer"]
+[node name="Name" type="Label" parent="Game/Debug/DebugPanel/BallSpeedContainer"]
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 2
 text = "Ball Speed:"
 vertical_alignment = 1
 
-[node name="Value" type="Label" parent="Game/DebugPanel/BallSpeedContainer"]
+[node name="Value" type="Label" parent="Game/Debug/DebugPanel/BallSpeedContainer"]
 custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
 vertical_alignment = 1
 
-[node name="BallRadiusContainer" type="HBoxContainer" parent="Game/DebugPanel"]
+[node name="BallRadiusContainer" type="HBoxContainer" parent="Game/Debug/DebugPanel"]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="Game/DebugPanel/BallRadiusContainer"]
+[node name="Name" type="Label" parent="Game/Debug/DebugPanel/BallRadiusContainer"]
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 2
 text = "Ball Radius:"
 vertical_alignment = 1
 
-[node name="Value" type="Label" parent="Game/DebugPanel/BallRadiusContainer"]
+[node name="Value" type="Label" parent="Game/Debug/DebugPanel/BallRadiusContainer"]
 custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
 vertical_alignment = 1
 
-[node name="ModifierSpeedContainer" type="HBoxContainer" parent="Game/DebugPanel"]
+[node name="ModifierSpeedContainer" type="HBoxContainer" parent="Game/Debug/DebugPanel"]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="Game/DebugPanel/ModifierSpeedContainer"]
+[node name="Name" type="Label" parent="Game/Debug/DebugPanel/ModifierSpeedContainer"]
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 2
 text = "Modifier Speed:"
 vertical_alignment = 1
 
-[node name="Value" type="Label" parent="Game/DebugPanel/ModifierSpeedContainer"]
+[node name="Value" type="Label" parent="Game/Debug/DebugPanel/ModifierSpeedContainer"]
 custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
 vertical_alignment = 1
@@ -199,6 +203,7 @@ PauseScreen = NodePath("PauseScreen")
 
 [node name="StartScreen" type="Panel" parent="UserInterface" node_paths=PackedStringArray("StartBtn")]
 process_mode = 3
+visible = false
 custom_minimum_size = Vector2(1920, 1080)
 anchors_preset = 8
 anchor_left = 0.5
@@ -244,10 +249,8 @@ offset_bottom = 353.0
 theme = ExtResource("3_3v7in")
 theme_override_constants/separation = 10
 
-[node name="StartBtn" type="Button" parent="UserInterface/StartScreen/VBoxContainer"]
+[node name="StartBtn" parent="UserInterface/StartScreen/VBoxContainer" instance=ExtResource("16_wmnwq")]
 layout_mode = 2
-text = "Start"
-script = ExtResource("2_57jwh")
 
 [node name="MultiplayerBtn" type="Button" parent="UserInterface/StartScreen/VBoxContainer"]
 layout_mode = 2
@@ -300,9 +303,8 @@ grow_vertical = 2
 theme = ExtResource("3_3v7in")
 theme_override_constants/separation = 10
 
-[node name="ContinueBtn" type="Button" parent="UserInterface/PauseScreen/VBoxContainer"]
+[node name="ContinueBtn" parent="UserInterface/PauseScreen/VBoxContainer" instance=ExtResource("19_wkenr")]
 layout_mode = 2
-text = "Continue"
 
 [node name="RestartBtn" type="Button" parent="UserInterface/PauseScreen/VBoxContainer"]
 layout_mode = 2
@@ -314,14 +316,3 @@ text = "Options"
 
 [node name="QuitBtn" parent="UserInterface/PauseScreen/VBoxContainer" instance=ExtResource("5_35bc3")]
 layout_mode = 2
-
-[node name="PopupPanel" type="PopupPanel" parent="UserInterface/PauseScreen"]
-disable_3d = true
-initial_position = 1
-size = Vector2i(500, 500)
-wrap_controls = false
-unresizable = false
-borderless = false
-transparent = true
-
-[connection signal="button_up" from="UserInterface/StartScreen/VBoxContainer/StartBtn" to="UserInterface/StartScreen/VBoxContainer/StartBtn" method="_on_button_up"]

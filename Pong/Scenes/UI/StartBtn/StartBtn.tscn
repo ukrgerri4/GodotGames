@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cx6flcs7iawpp"]
+
+[ext_resource type="Script" path="res://Scenes/UI/StartBtn/StartBtn.cs" id="1_wewmi"]
+
+[node name="StartBtn" type="Button"]
+text = "Start"
+script = ExtResource("1_wewmi")

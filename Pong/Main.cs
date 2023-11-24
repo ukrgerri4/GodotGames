@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public partial class Main : Node
@@ -16,6 +17,7 @@ public partial class Main : Node
 		_game = GetNode<Game>("Game");
 
 		_eventsBus.Ui.StartButtonPressed += OnStartButtonPressed;
+		_eventsBus.Ui.ContinueButtonPressed += OnContinueButtonPressed;
 		_eventsBus.Ui.QuitButtonPressed += OnQuitButtonPressed;
 	}
 
@@ -32,14 +34,10 @@ public partial class Main : Node
 			switch (_state)
 			{
 				case ApplicationState.Game:
-					_state = ApplicationState.Pause;
-					GetTree().Paused = true;
-					_userInterface.PauseScreen.Show();
+					PauseGame();
 					return;
 				case ApplicationState.Pause:
-					_state = ApplicationState.Game;
-					_userInterface.PauseScreen.Hide();
-					GetTree().Paused = false;
+					UnPauseGame();
 					return;
 				case ApplicationState.MainMenu:
 				default:
@@ -71,6 +69,11 @@ public partial class Main : Node
 		_state = ApplicationState.Game;
 	}
 
+	private void OnContinueButtonPressed()
+	{
+		UnPauseGame();
+	}
+
 	private void OnMultPlayerButtonPressed()
 	{
 	}
@@ -78,5 +81,19 @@ public partial class Main : Node
 	private void OnQuitButtonPressed()
 	{
 		GetTree().Quit();
+	}
+
+	private void PauseGame()
+	{
+		_state = ApplicationState.Pause;
+		GetTree().Paused = true;
+		_userInterface.PauseScreen.Show();
+	}
+
+	private void UnPauseGame()
+	{
+		_state = ApplicationState.Game;
+		_userInterface.PauseScreen.Hide();
+		GetTree().Paused = false;
 	}
 }

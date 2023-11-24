@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://mbb0wyp4tb0v"]
+
+[ext_resource type="Script" path="res://Scenes/UI/ContinueBtn/ContinueBtn.cs" id="1_ytoh5"]
+
+[node name="ContinueBtn" type="Button"]
+text = "Continue"
+script = ExtResource("1_ytoh5")
