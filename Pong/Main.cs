@@ -4,7 +4,7 @@ using Godot;
 public partial class Main : Node
 {
 	private EventsBus _eventsBus;
-
+	private GameManager _gameManager;
 	private UserInterface _userInterface;
 	private Game _game;
 
@@ -13,6 +13,7 @@ public partial class Main : Node
 	public override void _Ready()
 	{
 		_eventsBus = GetNode<EventsBus>("/root/EventsBus");
+		_gameManager = GetNode<GameManager>("/root/GameManager");
 		_userInterface = GetNode<UserInterface>("UserInterface");
 		_game = GetNode<Game>("Game");
 
@@ -64,6 +65,7 @@ public partial class Main : Node
 	private void OnStartButtonPressed()
 	{
 		// TODO: setup game
+		_gameManager.InitPlayerInputDevices();
 		_userInterface.HideChildren();
 		_game.Show();
 		_state = ApplicationState.Game;

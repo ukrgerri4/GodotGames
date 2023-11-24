@@ -16,16 +16,16 @@ public partial class Player : CharacterBody2D
 
 	public int Id { get; set; } = 0;
 	public string NickName { get; set; } = "";
-	private Device _device = Device.Keyboard;
-	public Device Device
+	private int _deviceId = (int)Device.Keyboard;
+	public int DeviceId
 	{
-		get => _device;
+		get => _deviceId;
 		set
 		{
-			_device = value;
+			_deviceId = value;
 			if (_inputManager is not null)
 			{
-				_inputManager.Device = _device;
+				_inputManager.DeviceId = _deviceId;
 			}
 		}
 	}
@@ -90,7 +90,7 @@ public partial class Player : CharacterBody2D
 		_marker2D = GetNode<Marker2D>("Marker2D");
 		_gameManager = GetNode<GameManager>("/root/GameManager");
 
-		_inputManager = new PlayerInputManager(Device);
+		_inputManager = new PlayerInputManager(DeviceId);
 
 		Speed = _configuration.Player.DefaultSpeed;
 		Score = _configuration.Player.StartScore;

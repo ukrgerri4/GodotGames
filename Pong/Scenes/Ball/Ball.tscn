@@ -31,6 +31,7 @@ default_color = Color(0.121569, 1, 0.0588235, 1)
 sharp_limit = 0.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.866667, 0.6, 0, 1)
 position = Vector2(-5.96046e-07, -1.19209e-07)
 scale = Vector2(0.375, 0.375)
 texture = ExtResource("3_m50qg")

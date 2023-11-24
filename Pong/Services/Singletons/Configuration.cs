@@ -32,17 +32,6 @@ public partial class Configuration : Node
 
 	private void InitConnectedDevices()
 	{
-		var deviceIds = Input.GetConnectedJoypads();
-		if (deviceIds is not null)
-		{
-			foreach (var deviceId in deviceIds)
-			{
-				var newDevice = GetConnectedDevice(deviceId);
-				ConnectedDevices.Add(newDevice);
-				GD.Print($"Initialized DeviceId: {newDevice.DeviceId}, Guid: {newDevice.Guid}, Name: {newDevice.Name}");
-			}
-		}
-
 		Input.Singleton.Connect("joy_connection_changed", new Callable(this, nameof(OnJoyConnectionChanged)));
 	}
 
@@ -68,7 +57,8 @@ public partial class Configuration : Node
 		{
 			DeviceId = deviceId,
 			Guid = Input.GetJoyGuid(deviceId),
-			Name = Input.GetJoyName(deviceId)
+			Name = Input.GetJoyName(deviceId),
+			ConnectedToPlayer = false
 		};
 	}
 }

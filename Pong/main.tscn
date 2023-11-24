@@ -37,10 +37,12 @@ self_modulate = Color(0, 0, 0, 1)
 script = ExtResource("2_sdotq")
 
 [node name="Stars" parent="Game" instance=ExtResource("3_ysgfs")]
+visible = false
 offset_left = -960.0
 offset_top = -540.0
 offset_right = 960.0
 offset_bottom = 540.0
+color = Color(0, 0, 0, 1)
 
 [node name="Panel" type="VBoxContainer" parent="Game"]
 anchors_preset = 15

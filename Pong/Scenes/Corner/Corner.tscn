@@ -12,7 +12,7 @@ script = ExtResource("1_p1j3m")
 polygon = PackedVector2Array(0, 0, 0, 36, 12, 36, 36, 12, 36, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-self_modulate = Color(0.933333, 0, 0.627451, 1)
+self_modulate = Color(0.8, 0, 0.6, 1)
 position = Vector2(18, 18)
 rotation = -4.71239
 texture = ExtResource("2_ll3c4")
